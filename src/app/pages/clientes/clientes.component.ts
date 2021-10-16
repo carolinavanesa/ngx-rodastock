@@ -1,14 +1,21 @@
-import { Component, OnDestroy, OnInit } from "@angular/core";
-import { LocalDataSource } from "ng2-smart-table";
-import { ClientesService } from "./clientes.service";
+import { Component, OnDestroy, OnInit } from '@angular/core';
+import { NbDialogService } from '@nebular/theme';
+import { LocalDataSource } from 'ng2-smart-table';
+import { take } from 'rxjs/operators';
+import { ModalService } from '../../shared/modal/modal.service';
+import { ClientesService } from './clientes.service';
+import { NuevoClienteModalComponent } from './nuevo-cliente-modal/nuevo-cliente-modal.component';
 
 @Component({
-  selector: "ngx-dashboard",
-  styleUrls: ["./clientes.component.scss"],
-  templateUrl: "./clientes.component.html",
+  selector: 'ngx-dashboard',
+  styleUrls: ['./clientes.component.scss'],
+  templateUrl: './clientes.component.html',
 })
 export class ClientesComponent implements OnInit, OnDestroy {
   settings = {
+    actions: {
+      add: false,
+    },
     add: {
       addButtonContent: '<i class="nb-plus"></i>',
       createButtonContent: '<i class="nb-checkmark"></i>',
@@ -27,29 +34,33 @@ export class ClientesComponent implements OnInit, OnDestroy {
     },
     columns: {
       id: {
-        title: "ID",
-        type: "number",
+        title: 'ID',
+        type: 'number',
         hide: true,
         editable: false,
       },
       nombre: {
-        title: "Nombre",
-        type: "string",
+        title: 'Nombre',
+        type: 'string',
       },
       barrio: {
-        title: "Barrio",
-        type: "string",
+        title: 'Barrio',
+        type: 'string',
       },
       telefono: {
-        title: "Telefono",
-        type: "number",
+        title: 'Telefono',
+        type: 'number',
       },
     },
   };
 
   source: LocalDataSource = new LocalDataSource();
 
-  constructor(private service: ClientesService) {}
+  constructor(
+    private service: ClientesService,
+    private modalService: ModalService,
+    private dialogService: NbDialogService
+  ) {}
 
   ngOnInit() {
     this.cargarCliente();
@@ -64,11 +75,20 @@ export class ClientesComponent implements OnInit, OnDestroy {
   }
 
   onDeleteConfirm(event: any) {
-    this.service
-      .eliminarCliente(
-        event.newData.id
-      )
-      .then((res) => (res ? event.confirm.resolve() : event.confirm.reject()));
+    const config = {
+      title: 'Eliminar Cliente',
+      body: `Estas seguro que quieres eliminar el cliente ${event.data.nombre}`,
+      icon: 'exclamation',
+    };
+    this.modalService.showConfirmationModal(config).then((res) => {
+      if (res) {
+        this.service
+          .eliminarCliente(event.data.id)
+          .then((res) =>
+            res ? event.confirm.resolve() : event.confirm.reject()
+          );
+      }
+    });
   }
 
   onCreateConfirm(event: any) {
@@ -78,7 +98,14 @@ export class ClientesComponent implements OnInit, OnDestroy {
         event.newData.barrio,
         Number(event.newData.telefono)
       )
-      .then((res) => (res ? event.confirm.resolve() : event.confirm.reject()));
+      .then((res) => {
+        if (res) {
+          event.confirm.resolve();
+          this.cargarCliente();
+        } else {
+          event.confirm.reject();
+        }
+      });
   }
 
   onEditConfirm(event: any) {
@@ -95,6 +122,18 @@ export class ClientesComponent implements OnInit, OnDestroy {
           this.cargarCliente();
         } else {
           event.confirm.reject();
+        }
+      });
+  }
+
+  nuevoCliente() {
+    this.dialogService
+      .open(NuevoClienteModalComponent)
+      .onClose.pipe(take(1))
+      .toPromise()
+      .then((res) => {
+        if (res) {
+          this.cargarCliente();
         }
       });
   }

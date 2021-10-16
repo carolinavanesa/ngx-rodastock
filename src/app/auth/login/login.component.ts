@@ -8,14 +8,6 @@ import { LoginService } from './login.service';
   templateUrl: './login.component.html',
 })
 export class LoginComponent implements OnInit {
-    // redirectDelay: number;
-    // showMessages: any;
-    // strategy: string;
-    // errors: string[];
-    // messages: string[];
-    // user: any;
-    // submitted: boolean;
-    // rememberMe: boolean;
 
     constructor(private formBuilder: FormBuilder, private loginService: LoginService) {}
 

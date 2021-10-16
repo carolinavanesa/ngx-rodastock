@@ -10,18 +10,21 @@ import {
   NbIconModule,
 } from '@nebular/theme';
 
-
 import { ThemeModule } from '../../@theme/theme.module';
-import { FormsModule } from '@angular/forms';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { ClientesComponent } from './clientes.component';
 import { Ng2SmartTableModule } from 'ng2-smart-table';
 import { ClientesRoutingModule } from './clientes-routing.module';
 import { ClientesService } from './clientes.service';
+import { SharedModalModule } from '../../shared/modal/modal.module';
+import { NuevoClienteModalComponent } from './nuevo-cliente-modal/nuevo-cliente-modal.component';
+import { SharedAngularMaterialModule } from '../../shared/shared-angular-material.module';
 
 @NgModule({
   imports: [
     FormsModule,
     ThemeModule,
+    ReactiveFormsModule,
     NbCardModule,
     NbButtonModule,
     NbTabsetModule,
@@ -32,11 +35,11 @@ import { ClientesService } from './clientes.service';
     NbIconModule,
     NbButtonModule,
     Ng2SmartTableModule,
-    ClientesRoutingModule
+    SharedModalModule,
+    SharedAngularMaterialModule,
+    ClientesRoutingModule,
   ],
-  declarations: [
-    ClientesComponent
-  ],
-  providers: [ClientesService]
+  declarations: [ClientesComponent, NuevoClienteModalComponent],
+  providers: [ClientesService],
 })
-export class ClientesModule { }
+export class ClientesModule {}

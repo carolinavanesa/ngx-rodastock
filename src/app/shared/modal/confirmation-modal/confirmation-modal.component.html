@@ -1,0 +1,30 @@
+<nb-card [status]="status">
+  <nb-card-header>{{ title }}</nb-card-header>
+  <nb-card-body class="m-2">
+    <div *ngIf="icon == 'exclamation'" class="text-center text-warning mb-4">
+      <i class="fa fa-exclamation-triangle fa-2x mx-auto"></i>
+    </div>
+    <p>{{ body }}</p>
+  </nb-card-body>
+  <nb-card-footer>
+    <div class="row">
+      <div class="col">
+        <button nbButton matRipple ghost status="primary" (click)="dismiss()">
+          {{ cancelText }}
+        </button>
+      </div>
+      <div class="col">
+        <button
+          nbButton
+          matRipple
+          hero
+          status="primary"
+          (click)="confirm()"
+          class="float-right"
+        >
+          {{ confirmText }}
+        </button>
+      </div>
+    </div>
+  </nb-card-footer>
+</nb-card>

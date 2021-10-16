@@ -2,6 +2,9 @@
   <nb-card-header> Clientes </nb-card-header>
 
   <nb-card-body>
+    <button nbButton matRipple hero status="primary" (click)="nuevoCliente()" class="mb-3">
+      Nuevo Cliente
+    </button>
     <ng2-smart-table
       [settings]="settings"
       [source]="source"

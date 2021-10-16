@@ -19,6 +19,7 @@ export class HeaderComponent implements OnInit, OnDestroy {
   public readonly materialTheme$: Observable<boolean>;
   userPictureOnly: boolean = false;
   user: any;
+  username: string;
 
   themes = [
     {
@@ -76,6 +77,8 @@ export class HeaderComponent implements OnInit, OnDestroy {
         this.currentTheme = themeName;
         this.rippleService.toggle(themeName?.startsWith('material'));
       });
+
+    this.username = this.loginService.getCurrentUser()?.get('username');
   }
 
   ngOnDestroy() {

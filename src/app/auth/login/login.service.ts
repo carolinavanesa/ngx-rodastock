@@ -13,7 +13,7 @@ export class LoginService {
       await Parse.User.logIn(username, password);
       this.router.navigateByUrl("/pages");
     } catch (e) {
-      this.alertService.showPrimaryToast("Error", "Por favor compruebe que los datos ingresados son correctos");
+      this.alertService.showErrorToast("Error", "Por favor compruebe que los datos ingresados son correctos");
     }
   }
 
@@ -23,7 +23,11 @@ export class LoginService {
       this.alertService.showPrimaryToast("Exito","Se ha deslogueado correctamente");
       this.router.navigateByUrl("auth/login");
     } catch (e) {
-      this.alertService.showPrimaryToast("Error","No se puede desloguear. Intente nuevamente");
+      this.alertService.showErrorToast("Error","No se puede desloguear. Intente nuevamente");
     }
+  }
+
+  getCurrentUser() {
+    return Parse.User.current();
   }
 }
