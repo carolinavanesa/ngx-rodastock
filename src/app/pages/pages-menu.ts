@@ -11,5 +11,15 @@ export const MENU_ITEMS: NbMenuItem[] = [
     title: 'Clientes',
     icon: 'people-outline',
     link: '/pages/clientes',
+  },
+  {
+    title: 'Inventario',
+    icon: 'layers-outline',
+    link: '/pages/inventario',
+  },
+  {
+    title: 'Tipo Reparaciones',
+    icon: 'brush-outline',
+    link: '/pages/tipo-reparaciones',
   }
 ];

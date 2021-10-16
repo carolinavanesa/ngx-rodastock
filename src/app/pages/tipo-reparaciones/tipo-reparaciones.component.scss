@@ -1,0 +1,48 @@
+@import '../../@theme/styles/themes';
+
+// nb-card div.picture {
+//   height: 100% !important;
+//   width: 100% !important;
+//   max-width: 400px !important;
+//   max-height: 200px !important;
+// }
+
+.picture {
+  background-position: center;
+  background-size: cover;
+  position: relative;
+  border-top-left-radius: nb-theme(card-border-radius);
+  border-top-right-radius: nb-theme(card-border-radius);
+  flex: 1;
+  // height: 100% !important;
+  // width: 100% !important;
+  // max-width: 400px !important;
+  // max-height: 200px !important;
+}
+
+.details {
+  padding: nb-theme(card-padding);
+}
+
+.description {
+  text-align: justify;
+}
+
+nb-card-footer {
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
+}
+
+.link-icon {
+  font-size: 1.75rem;
+}
+
+nb-icon {
+  font-size: 1.55rem;
+
+  ::ng-deep svg {
+    vertical-align: top;
+  }
+}
+

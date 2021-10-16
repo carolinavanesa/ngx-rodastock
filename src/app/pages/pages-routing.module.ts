@@ -19,6 +19,16 @@ const routes: Routes = [{
         .then(m => m.ClientesModule),
     },
     {
+      path: 'inventario',
+      loadChildren: () => import('./inventario/inventario.module')
+        .then(m => m.InventarioModule),
+    },
+    {
+      path: 'tipo-reparaciones',
+      loadChildren: () => import('./tipo-reparaciones/tipo-reparaciones.module')
+        .then(m => m.TipoReparacionModule),
+    },
+    {
       path: 'miscellaneous',
       loadChildren: () => import('./miscellaneous/miscellaneous.module')
         .then(m => m.MiscellaneousModule),

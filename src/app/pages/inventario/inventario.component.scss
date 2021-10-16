@@ -1,0 +1,9 @@
+@import '../../@theme/styles/themes';
+@import '~bootstrap/scss/mixins/breakpoints';
+@import '~@nebular/theme/styles/global/breakpoints';
+
+ng2-smart-table.custom-table table tr td {
+  &:hover {
+    cursor: pointer;
+  }
+}
