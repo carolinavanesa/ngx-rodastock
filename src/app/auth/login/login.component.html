@@ -1,0 +1,44 @@
+<nb-layout windowMode>
+  <nb-layout-column>
+    <div class="row">
+      <div class="col-lg-4 offset-lg-4">
+        <nb-card>
+          <nb-card-header>Login</nb-card-header>
+          <nb-card-body>
+            <form [formGroup]="loginForm">
+
+              <div class="row">
+                <mat-form-field class="mx-auto">
+                  <mat-label>Usuario</mat-label>
+                  <input formControlName="username" matInput autocomplete="off" />
+                  <!-- <mat-hint>hint</mat-hint> -->
+                </mat-form-field>
+              </div>
+
+              <div class="row">
+              <mat-form-field class="mx-auto">
+                <mat-label>Password</mat-label>
+                <input formControlName="password" type="password" matInput autocomplete="off" />
+                <!-- <mat-hint>hint</mat-hint> -->
+              </mat-form-field>
+            </div>
+
+              <div class="row" >
+              <button
+                class="mx-auto"
+                (click)="login()"
+                [disabled]="!loginForm.valid"
+                nbButton
+                matRipple
+                status="primary"
+              >
+                Login
+              </button>
+            </div>
+            </form>
+          </nb-card-body>
+        </nb-card>
+      </div>
+    </div>
+  </nb-layout-column>
+</nb-layout>
