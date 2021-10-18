@@ -19,6 +19,7 @@ import { TipoReparacionService } from './tipo-reparaciones.service';
 import { SharedModalModule } from '../../shared/modal/modal.module';
 import { SharedAngularMaterialModule } from '../../shared/shared-angular-material.module';
 import { FilterPipe } from '../../shared/filter.pipe';
+import { NuevoReparacionComponent } from './nuevo-reparacion/nuevo-reparacion.component';
 
 @NgModule({
   imports: [
@@ -39,7 +40,7 @@ import { FilterPipe } from '../../shared/filter.pipe';
     SharedAngularMaterialModule,
     TipoReparacionRoutingModule,
   ],
-  declarations: [TipoReparacionComponent, FilterPipe],
+  declarations: [TipoReparacionComponent, FilterPipe, NuevoReparacionComponent, NuevoReparacionComponent],
   providers: [TipoReparacionService],
 })
 export class TipoReparacionModule {}

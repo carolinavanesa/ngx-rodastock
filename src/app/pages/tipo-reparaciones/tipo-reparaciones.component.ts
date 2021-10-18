@@ -1,4 +1,5 @@
 import { Component, OnDestroy, OnInit, ViewEncapsulation } from '@angular/core';
+import { Router } from '@angular/router';
 import { NbDialogService } from '@nebular/theme';
 import { LocalDataSource } from 'ng2-smart-table';
 import { take } from 'rxjs/operators';
@@ -13,13 +14,56 @@ import { TipoReparacionService } from './tipo-reparaciones.service';
   encapsulation: ViewEncapsulation.None,
 })
 export class TipoReparacionComponent implements OnInit, OnDestroy {
-  tipoReparaciones = [];
-  searchText = '';
+  settings = {
+    actions: {
+      add: false,
+      columnTitle: ''
+    },
+    add: {
+      addButtonContent: '<i class="nb-plus"></i>',
+      createButtonContent: '<i class="nb-checkmark"></i>',
+      cancelButtonContent: '<i class="nb-close"></i>',
+      confirmCreate: true,
+    },
+    edit: {
+      editButtonContent: '<i class="nb-edit"></i>',
+      saveButtonContent: '<i class="nb-checkmark"></i>',
+      cancelButtonContent: '<i class="nb-close"></i>',
+      confirmSave: true,
+    },
+    delete: {
+      deleteButtonContent: '<i class="nb-trash"></i>',
+      confirmDelete: true,
+    },
+    columns: {
+      id: {
+        title: 'ID',
+        type: 'text',
+        hide: true,
+        editable: false,
+      },
+      nombre: {
+        title: 'Nombre',
+        type: 'text',
+      },
+      descripcion: {
+        title: 'descripcion',
+        type: 'text',
+      },
+      tiempoEstimado: {
+        title: 'Tiempo Estimado',
+        type: 'text',
+      },
+    },
+  };
+
+  source: LocalDataSource = new LocalDataSource();
 
   constructor(
     private service: TipoReparacionService,
     private modalService: ModalService,
-    private dialogService: NbDialogService
+    private dialogService: NbDialogService,
+    private router: Router,
   ) {}
 
   ngOnInit() {
@@ -30,8 +74,61 @@ export class TipoReparacionComponent implements OnInit, OnDestroy {
 
   cargarTipoReparacion() {
     this.service.cargarTipoReparacion().then((tipoReparaciones) => {
-      this.tipoReparaciones = tipoReparaciones;
+      this.source.load(tipoReparaciones);
     });
+  }
+
+  onDeleteConfirm(event: any) {
+    const config = {
+      title: 'Eliminar Tipo de Reparacion',
+      body: `Estas seguro que quieres eliminar el tipo de reparacion ${event.data.nombre}`,
+      icon: 'exclamation',
+    };
+    this.modalService.showConfirmationModal(config).then((res) => {
+      if (res) {
+        this.service
+          .eliminarTipoReparacion(event.data.id)
+          .then((res) =>
+            res ? event.confirm.resolve() : event.confirm.reject()
+          );
+      }
+    });
+  }
+
+  onCreateConfirm(event: any) {
+    this.service
+      .agregarTipoReparacion(
+        event.newData.nombre,
+        event.newData.descripcion,
+        event.newData.tiempoEstimado
+      )
+      .then((res) => {
+        if (res) {
+          event.confirm.resolve();
+          this.cargarTipoReparacion();
+        } else {
+          event.confirm.reject();
+        }
+      });
+  }
+
+  onEditConfirm(event: any) {
+    // this.service
+    //   .editarTipoReparacion(
+    //     event.newData.id,
+    //     event.newData.nombre,
+    //     event.newData.descripcion,
+    //     event.newData.tiempoEstimado
+    //   )
+    //   .then((res) => {
+    //     if (res) {
+    //       event.confirm.resolve();
+    //       this.cargarTipoReparacion();
+    //     } else {
+    //       event.confirm.reject();
+    //     }
+    //   });
+    this.router.navigateByUrl(`pages/tipo-reparaciones/repuesto/${event.data.id}`);
   }
 
   nuevoTipoReparacion() {

@@ -1,0 +1,77 @@
+<nb-card status="primary" class="nueva-card">
+  <nb-card-header>Nueva Reparacion</nb-card-header>
+  <nb-card-body class="m-2">
+    <form [formGroup]="nuevoForm">
+      <p class="dialog-hint">Ingrese la información referida al repuesto que desea registrar</p>
+      <div class="row m-3">
+        <mat-form-field class="mx-auto w-100">
+          <mat-label>Nombre</mat-label>
+          <input
+            formControlName="nombre"
+            matInput
+            autocomplete="off"
+            maxlength="30"
+          />
+          <mat-error *ngIf="nuevoForm.get('nombre')?.hasError('required')">
+            Este campo es requerido
+          </mat-error>
+        </mat-form-field>
+      </div>
+
+      <div class="row m-3">
+        <mat-form-field class="mx-auto w-100">
+          <mat-label>Descripcion</mat-label>
+          <input
+            formControlName="stock"
+            matInput
+            autocomplete="off"
+          />
+        </mat-form-field>
+      </div>
+
+      <div class="row m-3">
+        <mat-label>Tiempo Estimado</mat-label>
+        <nb-select matRipple formControlName="tiempoEstimadoMedida" placeholder="horas/dias">
+          <nb-option matRipple value="1">Horas</nb-option>
+          <nb-option matRipple value="2">Dias</nb-option>
+        </nb-select>
+
+        <mat-form-field class="mx-auto w-100">
+          <input
+            formControlName="tiempoEstimadoUnidad"
+            matInput
+            autocomplete="off"
+            maxLength="1"
+            currency-mask
+          />
+          <mat-error *ngIf="nuevoForm.get('tiempoEstimadoUnidad').hasError('pattern')">
+            Solo se permiten numeros
+          </mat-error>
+          <mat-hint>Cantidad de horas/dias estimada</mat-hint>
+        </mat-form-field>
+      </div>
+    </form>
+  </nb-card-body>
+  <nb-card-footer>
+    <div class="row">
+      <div class="col">
+        <button nbButton matRipple ghost status="primary" (click)="dismiss()">
+          Cancelar
+        </button>
+      </div>
+      <div class="col">
+        <button
+          [disabled]="!nuevoForm.valid || nuevoForm.pristine"
+          nbButton
+          matRipple
+          hero
+          status="primary"
+          (click)="confirm()"
+          class="float-right"
+        >
+          Crear
+        </button>
+      </div>
+    </div>
+  </nb-card-footer>
+</nb-card>

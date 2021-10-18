@@ -2,55 +2,24 @@
   <nb-card-header>Listado de Reparaciones disponibles</nb-card-header>
 
   <nb-card-body>
-    <div class="row">
-      <div class="col col-md-2">
-        <button
-          nbButton
-          matRipple
-          hero
-          status="primary"
-          (click)="nuevoTipoReparacion()"
-          class="mb-3"
-        >
-          Nueva Reparacion
-        </button>
-      </div>
-
-      <div class="col">
-        <nb-icon icon="search-outline" pack="eva" class="mr-4"></nb-icon>
-        <mat-form-field floatLabel="never">
-          <input
-            matInput
-            [(ngModel)]="searchText"
-            placeholder="Buscar"
-            autocomplete="off"
-          />
-        </mat-form-field>
-      </div>
-    </div>
-
-    <div
-      *ngFor="let reparacion of tipoReparaciones | filter: searchText"
-      class="col-md-3"
+    <button
+      nbButton
+      matRipple
+      hero
+      status="primary"
+      (click)="nuevoTipoReparacion()"
+      class="mb-3"
     >
-      <nb-card size="medium">
-        <div
-          class="picture"
-          style.background-image="url('{{ reparacion.imagen }}')"
-        ></div>
-
-        <div class="details">
-          <div class="h6">{{ reparacion.nombre }}</div>
-          <div class="description">
-            {{ reparacion.descripcion }}
-          </div>
-        </div>
-
-        <nb-card-footer>
-          <nb-icon icon="edit-outline" pack="eva"></nb-icon>
-          <nb-icon icon="trash-outline" pack="eva"></nb-icon>
-        </nb-card-footer>
-      </nb-card>
-    </div>
+      Nuevo Tipo de Reparacion
+    </button>
+    <ng2-smart-table
+      class="custom-table"
+      [settings]="settings"
+      [source]="source"
+      (createConfirm)="onCreateConfirm($event)"
+      (editConfirm)="onEditConfirm($event)"
+      (deleteConfirm)="onDeleteConfirm($event)"
+    >
+    </ng2-smart-table>
   </nb-card-body>
 </nb-card>

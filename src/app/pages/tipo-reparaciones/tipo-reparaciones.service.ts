@@ -24,7 +24,6 @@ export class TipoReparacionService {
           nombre: o.get('nombre'),
           descripcion: o.get('descripcion'),
           tiempoEstimado: o.get('tiempoEstimado'),
-          imagen: o.get('imagen')._url
         }
       })
 
