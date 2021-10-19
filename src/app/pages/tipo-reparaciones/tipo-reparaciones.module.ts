@@ -12,14 +12,16 @@ import {
 
 import { ThemeModule } from '../../@theme/theme.module';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
-import { TipoReparacionComponent } from './tipo-reparaciones.component';
+import { TipoReparacionComponent } from './tipo-reparaciones/tipo-reparaciones.component';
 import { Ng2SmartTableModule } from 'ng2-smart-table';
 import { TipoReparacionRoutingModule } from './tipo-reparaciones-routing.module';
 import { TipoReparacionService } from './tipo-reparaciones.service';
 import { SharedModalModule } from '../../shared/modal/modal.module';
 import { SharedAngularMaterialModule } from '../../shared/shared-angular-material.module';
-import { FilterPipe } from '../../shared/filter.pipe';
 import { NuevoReparacionComponent } from './nuevo-reparacion/nuevo-reparacion.component';
+import { InventarioService } from '../inventario/inventario.service';
+import { NuevoRepuestoUnidadModalComponent } from './nuevo-repuesto-unidad-modal/nuevo-repuesto-unidad-modal.component';
+import { TipoReparacionesMainComponent } from './tipo-reparaciones-main.component';
 
 @NgModule({
   imports: [
@@ -40,7 +42,7 @@ import { NuevoReparacionComponent } from './nuevo-reparacion/nuevo-reparacion.co
     SharedAngularMaterialModule,
     TipoReparacionRoutingModule,
   ],
-  declarations: [TipoReparacionComponent, FilterPipe, NuevoReparacionComponent, NuevoReparacionComponent],
-  providers: [TipoReparacionService],
+  declarations: [TipoReparacionesMainComponent, TipoReparacionComponent, NuevoReparacionComponent, NuevoRepuestoUnidadModalComponent],
+  providers: [TipoReparacionService, InventarioService],
 })
 export class TipoReparacionModule {}

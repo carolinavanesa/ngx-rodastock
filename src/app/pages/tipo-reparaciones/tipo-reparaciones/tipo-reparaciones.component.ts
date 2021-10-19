@@ -3,8 +3,8 @@ import { Router } from '@angular/router';
 import { NbDialogService } from '@nebular/theme';
 import { LocalDataSource } from 'ng2-smart-table';
 import { take } from 'rxjs/operators';
-import { ModalService } from '../../shared/modal/modal.service';
-import { TipoReparacionService } from './tipo-reparaciones.service';
+import { ModalService } from '../../../shared/modal/modal.service';
+import { TipoReparacionService } from '../tipo-reparaciones.service';
 
 
 @Component({
@@ -141,5 +141,6 @@ export class TipoReparacionComponent implements OnInit, OnDestroy {
     //       this.cargarTipoReparacion();
     //     }
     //   });
+    this.router.navigateByUrl(`pages/tipo-reparaciones/nueva-reparacion`);
   }
 }

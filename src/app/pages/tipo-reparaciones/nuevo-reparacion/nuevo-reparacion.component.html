@@ -1,8 +1,8 @@
-<nb-card status="primary" class="nueva-card">
+<nb-card>
   <nb-card-header>Nueva Reparacion</nb-card-header>
   <nb-card-body class="m-2">
     <form [formGroup]="nuevoForm">
-      <p class="dialog-hint">Ingrese la información referida al repuesto que desea registrar</p>
+      <p class="dialog-hint">Ingrese la información referida a la reparacion</p>
       <div class="row m-3">
         <mat-form-field class="mx-auto w-100">
           <mat-label>Nombre</mat-label>
@@ -21,17 +21,22 @@
       <div class="row m-3">
         <mat-form-field class="mx-auto w-100">
           <mat-label>Descripcion</mat-label>
-          <input
+          <!-- <input
             formControlName="stock"
             matInput
             autocomplete="off"
-          />
+          /> -->
+          <ngx-tiny-mce></ngx-tiny-mce>
         </mat-form-field>
       </div>
 
       <div class="row m-3">
         <mat-label>Tiempo Estimado</mat-label>
-        <nb-select matRipple formControlName="tiempoEstimadoMedida" placeholder="horas/dias">
+        <nb-select
+          matRipple
+          formControlName="tiempoEstimadoMedida"
+          placeholder="horas/dias"
+        >
           <nb-option matRipple value="1">Horas</nb-option>
           <nb-option matRipple value="2">Dias</nb-option>
         </nb-select>
@@ -44,19 +49,32 @@
             maxLength="1"
             currency-mask
           />
-          <mat-error *ngIf="nuevoForm.get('tiempoEstimadoUnidad').hasError('pattern')">
+          <mat-error
+            *ngIf="nuevoForm.get('tiempoEstimadoUnidad').hasError('pattern')"
+          >
             Solo se permiten numeros
           </mat-error>
           <mat-hint>Cantidad de horas/dias estimada</mat-hint>
         </mat-form-field>
       </div>
+
+      <mat-label>Unidades necesarias</mat-label>
+      <ng2-smart-table
+        class="custom-table"
+        [settings]="settings"
+        [source]="source"
+        (createConfirm)="onCreateConfirm($event)"
+        (editConfirm)="onEditConfirm($event)"
+        (deleteConfirm)="onDeleteConfirm($event)"
+      >
+      </ng2-smart-table>
     </form>
   </nb-card-body>
   <nb-card-footer>
     <div class="row">
       <div class="col">
-        <button nbButton matRipple ghost status="primary" (click)="dismiss()">
-          Cancelar
+        <button nbButton matRipple ghost status="primary" (click)="goBack()">
+          Volver a Reparaciones
         </button>
       </div>
       <div class="col">

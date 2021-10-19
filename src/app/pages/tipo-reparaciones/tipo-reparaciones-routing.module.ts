@@ -1,17 +1,26 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
 import { NuevoReparacionComponent } from './nuevo-reparacion/nuevo-reparacion.component';
-import { TipoReparacionComponent } from './tipo-reparaciones.component';
+import { TipoReparacionesMainComponent } from './tipo-reparaciones-main.component';
+import { TipoReparacionComponent } from './tipo-reparaciones/tipo-reparaciones.component';
 
 const routes: Routes = [
   {
     path: '',
-    component: TipoReparacionComponent,
+    component: TipoReparacionesMainComponent,
     children: [
       {
-        path: 'reparacion/:id',
+        path: '',
+        component: TipoReparacionComponent,
+      },
+      {
+        path: 'nueva-reparacion',
         component: NuevoReparacionComponent,
-      }
+      },
+      // {
+      //   path: 'editar-reparacion/:id',
+      //   component: NuevoReparacionComponent,
+      // },
     ]
   }
 ];
