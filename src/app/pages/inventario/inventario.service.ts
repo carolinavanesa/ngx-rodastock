@@ -33,6 +33,20 @@ export class InventarioService {
     return result;
   }
 
+  async cargarInventarioForNuevaUnidad() {
+    let result = [];
+    const query = new Parse.Query(RepuestoInventario);
+    query.limit(1000);
+    query.equalTo('deleted', false);
+    try {
+      result = await query.find();
+    } catch (e) {
+      this.alertService.showPrimaryToast('Error', 'No se pudo cargar el inventario');
+    }
+
+    return result;
+  }
+
   async agregarRepuestoInventario(
     nombre: string,
     costo: number,

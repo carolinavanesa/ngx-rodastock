@@ -1,8 +1,10 @@
 <nb-card>
-  <nb-card-header>Nueva Reparacion</nb-card-header>
+  <nb-card-header>Nuevo Tipo de Reparacion</nb-card-header>
   <nb-card-body class="m-2">
     <form [formGroup]="nuevoForm">
       <p class="dialog-hint">Ingrese la información referida a la reparacion</p>
+
+      <!-- NOMBRE -->
       <div class="row m-3">
         <mat-form-field class="mx-auto w-100">
           <mat-label>Nombre</mat-label>
@@ -18,56 +20,77 @@
         </mat-form-field>
       </div>
 
-      <div class="row m-3">
-        <mat-form-field class="mx-auto w-100">
-          <mat-label>Descripcion</mat-label>
-          <!-- <input
-            formControlName="stock"
-            matInput
-            autocomplete="off"
-          /> -->
-          <ngx-tiny-mce></ngx-tiny-mce>
-        </mat-form-field>
+      <!-- DESCRIPCION -->
+      <div class="row m-3 w-100">
+        <p>Descripcion</p>
+        <ngx-tiny-mce (editorKeyup)="updateDescripcion($event)"></ngx-tiny-mce>
       </div>
 
-      <div class="row m-3">
-        <mat-label>Tiempo Estimado</mat-label>
-        <nb-select
-          matRipple
-          formControlName="tiempoEstimadoMedida"
-          placeholder="horas/dias"
-        >
-          <nb-option matRipple value="1">Horas</nb-option>
-          <nb-option matRipple value="2">Dias</nb-option>
-        </nb-select>
+      <!-- TIEMPO ESTIMADO  -->
+      <div class="row m-3 w-100">
+        <p class="mr-3 mt-3">Tiempo estimado</p>
+        <div class="row">
+          <div class="col-6 col-md-4">
+            <mat-form-field class="mx-auto w-100">
+              <mat-label>horas/dias</mat-label>
+              <mat-select formControlName="tiempoEstimadoMedida">
+                <mat-option value="horas">Horas</mat-option>
+                <mat-option value="dias">Dias</mat-option>
+              </mat-select>
+              <mat-hint>Cantidad de horas/dias estimada</mat-hint>
+            </mat-form-field>
+          </div>
 
-        <mat-form-field class="mx-auto w-100">
-          <input
-            formControlName="tiempoEstimadoUnidad"
-            matInput
-            autocomplete="off"
-            maxLength="1"
-            currency-mask
-          />
-          <mat-error
-            *ngIf="nuevoForm.get('tiempoEstimadoUnidad').hasError('pattern')"
+          <div class="col-6 col-md-4">
+            <mat-form-field class="mx-auto w-100">
+              <input
+                formControlName="tiempoEstimadoUnidad"
+                matInput
+                autocomplete="off"
+                maxLength="1"
+                currency-mask
+              />
+              <mat-error
+                *ngIf="
+                  nuevoForm.get('tiempoEstimadoUnidad').hasError('pattern')
+                "
+              >
+                Solo se permiten numeros
+              </mat-error>
+              <mat-hint>Cantidad de horas/dias estimada</mat-hint>
+            </mat-form-field>
+          </div>
+        </div>
+      </div>
+
+      <!-- UNIDADES NECESARIOS -->
+      <div class="row m-3 w-100">
+        <p class="mt-5" >Unidades necesarias</p>
+
+        <div class="col-md-12">
+          <button
+            nbButton
+            matRipple
+            hero
+            status="primary"
+            (click)="nuevoRepuesto()"
+            class="mb-2"
           >
-            Solo se permiten numeros
-          </mat-error>
-          <mat-hint>Cantidad de horas/dias estimada</mat-hint>
-        </mat-form-field>
+            Nueva Unidad
+          </button>
+        </div>
+        <div class="col-md-12">
+          <ng2-smart-table
+            class="custom-table"
+            [settings]="settings"
+            [source]="source"
+            (createConfirm)="onCreateConfirm($event)"
+            (editConfirm)="onEditConfirm($event)"
+            (deleteConfirm)="onDeleteConfirm($event)"
+          >
+          </ng2-smart-table>
+        </div>
       </div>
-
-      <mat-label>Unidades necesarias</mat-label>
-      <ng2-smart-table
-        class="custom-table"
-        [settings]="settings"
-        [source]="source"
-        (createConfirm)="onCreateConfirm($event)"
-        (editConfirm)="onEditConfirm($event)"
-        (deleteConfirm)="onDeleteConfirm($event)"
-      >
-      </ng2-smart-table>
     </form>
   </nb-card-body>
   <nb-card-footer>

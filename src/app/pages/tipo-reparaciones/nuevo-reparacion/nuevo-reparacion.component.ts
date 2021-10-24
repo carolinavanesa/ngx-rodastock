@@ -3,8 +3,10 @@ import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { ActivatedRoute, ParamMap, Router } from '@angular/router';
 import { NbDialogRef, NbDialogService } from '@nebular/theme';
 import { LocalDataSource } from 'ng2-smart-table';
+import { take } from 'rxjs/operators';
 import { ModalService } from '../../../shared/modal/modal.service';
 import { InventarioService } from '../../inventario/inventario.service';
+import { NuevoRepuestoUnidadModalComponent } from '../nuevo-repuesto-unidad-modal/nuevo-repuesto-unidad-modal.component';
 import { TipoReparacionService } from '../tipo-reparaciones.service';
 
 @Component({
@@ -16,18 +18,13 @@ export class NuevoReparacionComponent {
   settings = {
     actions: {
       add: false,
+      edit: false,
       columnTitle: ''
     },
     add: {
-      addButtonContent: '<i class="nb-plus"></i>',
-      createButtonContent: '<i class="nb-checkmark"></i>',
-      cancelButtonContent: '<i class="nb-close"></i>',
       confirmCreate: true,
     },
     edit: {
-      editButtonContent: '<i class="nb-edit"></i>',
-      saveButtonContent: '<i class="nb-checkmark"></i>',
-      cancelButtonContent: '<i class="nb-close"></i>',
       confirmSave: true,
     },
     delete: {
@@ -40,19 +37,24 @@ export class NuevoReparacionComponent {
         type: 'text',
         hide: true,
         editable: false,
+        filter: false,
       },
       nombre: {
         title: 'Nombre',
         type: 'text',
+        filter: false,
       },
       cantidad: {
         title: 'Cantidad',
         type: 'text',
+        filter: false,
       },
     },
   };
 
   source: LocalDataSource = new LocalDataSource();
+  unidades = [];
+  descripcion = "";
 
   constructor(
     private formBuilder: FormBuilder,
@@ -66,9 +68,8 @@ export class NuevoReparacionComponent {
 
   nuevoForm: FormGroup = this.formBuilder.group({
     nombre: ['', [Validators.required, Validators.maxLength(30), Validators.pattern("[a-zA-Z0-9 ,']*")]],
-    descripcion: ['', [Validators.maxLength(600)]],
-    tiempoEstimadoMedida: '',
-    tiempoEstimadoUnidad: ['', [Validators.pattern('[0-9]')]],
+    tiempoEstimadoMedida: 'horas',
+    tiempoEstimadoUnidad: [0, [Validators.pattern('[0-9]')]],
   });
 
   ngOnInit(): void {
@@ -83,10 +84,18 @@ export class NuevoReparacionComponent {
 
   ngOnDestroy() {}
 
-  cargarRepuestoUnidades() {
-    this.service.cargarTipoReparacion().then((tipoReparaciones) => {
-      this.source.load(tipoReparaciones);
-    });
+  // Dispara el modal y luego agrega el repuesto agregado a la lista
+  nuevoRepuesto() {
+    this.dialogService
+      .open(NuevoRepuestoUnidadModalComponent)
+      .onClose.pipe(take(1))
+      .toPromise()
+      .then((res) => {
+        if (res) {
+          this.unidades.push(res);
+          this.source.load(this.unidades);
+        }
+      });
   }
 
   goBack() {
@@ -94,14 +103,21 @@ export class NuevoReparacionComponent {
   }
 
   confirm() {
+    const tiempoEstimado = `${this.nuevoForm.get('tiempoEstimadoUnidad').value}  ${this.nuevoForm.get('tiempoEstimadoMedida').value}`
+
     this.service
       .agregarTipoReparacion(
         this.nuevoForm.get('nombre').value,
-        this.nuevoForm.get('descripcion').value,
-        this.nuevoForm.get('tiempoEstimado').value
+        this.descripcion,
+        tiempoEstimado,
+        this.unidades
       )
       // .then((res) => this.ref.close(true))
       // .catch((e) => this.ref.close(false));
+  }
+
+  updateDescripcion(event) {
+    this.descripcion = event;
   }
 
   onDeleteConfirm(event: any) {
@@ -112,30 +128,30 @@ export class NuevoReparacionComponent {
     };
     this.modalService.showConfirmationModal(config).then((res) => {
       if (res) {
-        this.service
-          .eliminarTipoReparacion(event.data.id)
-          .then((res) =>
-            res ? event.confirm.resolve() : event.confirm.reject()
-          );
+        event.confirm.resolve();
+        // this.service
+        //   .eliminarTipoReparacion(event.data.id)
+        //   .then((res) =>
+        //     res ? event.confirm.resolve() : event.confirm.reject()
+        //   );
       }
     });
   }
 
   onCreateConfirm(event: any) {
-    this.service
-      .agregarTipoReparacion(
-        event.newData.nombre,
-        event.newData.descripcion,
-        event.newData.tiempoEstimado
-      )
-      .then((res) => {
-        if (res) {
-          event.confirm.resolve();
-          this.cargarRepuestoUnidades();
-        } else {
-          event.confirm.reject();
-        }
-      });
+    // this.service
+    //   .agregarTipoReparacion(
+    //     event.newData.nombre,
+    //     event.newData.descripcion,
+    //     event.newData.tiempoEstimado
+    //   )
+    //   .then((res) => {
+    //     if (res) {
+    //       event.confirm.resolve();
+    //     } else {
+    //       event.confirm.reject();
+    //     }
+    //   });
   }
 
   onEditConfirm(event: any) {

@@ -48,7 +48,7 @@ export class TipoReparacionComponent implements OnInit, OnDestroy {
       },
       descripcion: {
         title: 'descripcion',
-        type: 'text',
+        type: 'html',
       },
       tiempoEstimado: {
         title: 'Tiempo Estimado',
@@ -95,52 +95,11 @@ export class TipoReparacionComponent implements OnInit, OnDestroy {
     });
   }
 
-  onCreateConfirm(event: any) {
-    this.service
-      .agregarTipoReparacion(
-        event.newData.nombre,
-        event.newData.descripcion,
-        event.newData.tiempoEstimado
-      )
-      .then((res) => {
-        if (res) {
-          event.confirm.resolve();
-          this.cargarTipoReparacion();
-        } else {
-          event.confirm.reject();
-        }
-      });
-  }
-
   onEditConfirm(event: any) {
-    // this.service
-    //   .editarTipoReparacion(
-    //     event.newData.id,
-    //     event.newData.nombre,
-    //     event.newData.descripcion,
-    //     event.newData.tiempoEstimado
-    //   )
-    //   .then((res) => {
-    //     if (res) {
-    //       event.confirm.resolve();
-    //       this.cargarTipoReparacion();
-    //     } else {
-    //       event.confirm.reject();
-    //     }
-    //   });
     this.router.navigateByUrl(`pages/tipo-reparaciones/repuesto/${event.data.id}`);
   }
 
   nuevoTipoReparacion() {
-    // this.dialogService
-    //   .open(NuevoTipoReparacionModalComponent)
-    //   .onClose.pipe(take(1))
-    //   .toPromise()
-    //   .then((res) => {
-    //     if (res) {
-    //       this.cargarTipoReparacion();
-    //     }
-    //   });
     this.router.navigateByUrl(`pages/tipo-reparaciones/nueva-reparacion`);
   }
 }

@@ -5,6 +5,7 @@ import { Parse } from 'parse';
 import { AlertService } from '../../shared/alert.service';
 
 const TipoReparacion = Parse.Object.extend('TipoReparacion');
+const RepuestoUnidad = Parse.Object.extend('RepuestoUnidad');
 
 @Injectable()
 export class TipoReparacionService {
@@ -37,20 +38,43 @@ export class TipoReparacionService {
 
   async agregarTipoReparacion(
     nombre: string,
-    costo: number,
-    stock: number
+    descripcion: string,
+    tiempoEstimado: string,
+    unidades: any[],
   ): Promise<boolean> {
     const nuevoTipoReparacion = new TipoReparacion();
     nuevoTipoReparacion.set('nombre', nombre);
-    nuevoTipoReparacion.set('costo', costo);
-    nuevoTipoReparacion.set('stock', stock);
+    nuevoTipoReparacion.set('descripcion', descripcion);
+    nuevoTipoReparacion.set('tiempoEstimado', tiempoEstimado);
+
+    // Repuesta de todas los RepuestoUnidad que se guardaron
+    let repuestoUnidadesSavedPromises = [];
+    if(unidades.length > 0) {
+      unidades.forEach(unidad => {
+        const nuevoRepuestoUnidad = new RepuestoUnidad();
+        nuevoRepuestoUnidad.set('cantidad', unidad.cantidad);
+        nuevoRepuestoUnidad.set('repuesto', unidad.repuesto);
+
+        try {
+          repuestoUnidadesSavedPromises.push(nuevoRepuestoUnidad.save());
+        } catch (e) {
+          this.alertService.showErrorToast('Error', 'No se pudo agregar la Unidad ' + unidad.nombre);
+        }
+      })
+    }
 
     try {
+      // Una vez todos terminados agregar la relation
+      if (repuestoUnidadesSavedPromises.length > 0) {
+        const repuestoUnidades = await Promise.all(repuestoUnidadesSavedPromises);
+        nuevoTipoReparacion.relation('repuestos').add(repuestoUnidades);
+      }
+
       nuevoTipoReparacion.save();
-      this.alertService.showSuccessToast('Exito', 'Se ha agregado un nuevo tipoReparacion');
+      this.alertService.showSuccessToast('Exito', 'Se ha agregado un nuevo Tipo de Reparacion');
       return true;
     } catch (e) {
-      this.alertService.showErrorToast('Error', 'No se pudo agregar el tipoReparacion');
+      this.alertService.showErrorToast('Error', 'No se pudo agregar el Tipo de Reparacion');
       return false;
     }
   }

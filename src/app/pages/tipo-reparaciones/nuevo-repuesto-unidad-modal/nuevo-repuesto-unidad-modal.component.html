@@ -1,67 +1,42 @@
 <nb-card status="primary" class="nueva-card">
   <nb-card-header>Nuevo Repuesto</nb-card-header>
   <nb-card-body class="m-2">
-
-    <form class="example-form">
-      <mat-form-field class="example-full-width" appearance="fill">
-        <mat-label>Assignee</mat-label>
-        <input type="text" matInput [formControl]="myControl" [matAutocomplete]="auto">
-        <mat-autocomplete #auto="matAutocomplete" [displayWith]="displayFn">
-          <mat-option *ngFor="let option of filteredOptions | async" [value]="option">
-            {{option.name}}
-          </mat-option>
-        </mat-autocomplete>
-      </mat-form-field>
-    </form>
-    <!-- <form>
-      <p class="dialog-hint">
-        Ingrese la información referida al repuesto que desea registrar
-      </p>
-      <div class="row m-3">
-        <mat-form-field class="w-100" appearance="fill">
-          <mat-label>Number</mat-label>
-          <input
-            type="text"
-            placeholder=""
-            aria-label="Number"
-            matInput
-            [formControl]="myControl"
-            [matAutocomplete]="auto"
-          />
-          <mat-autocomplete #auto="matAutocomplete">
-            <mat-option
-              *ngFor="let option of filteredOptions | async"
-              [value]="option.id"
-            >
-              {{ option.nombre - option.costo }}
-            </mat-option>
-          </mat-autocomplete>
-        </mat-form-field>
-      </div>
-    </form>
-
     <form [formGroup]="nuevoForm">
       <div class="row m-3">
+        <mat-form-field appearance="fill">
+          <mat-label>Repuesto</mat-label>
+          <mat-select formControlName="repuesto">
+            <mat-option
+              *ngFor="let repuesto of repuestoOptions"
+              [value]="repuesto.id"
+            >
+              {{ repuesto.get('nombre') + " - $" + repuesto.get('costo')}}
+            </mat-option>
+          </mat-select>
+        </mat-form-field>
+      </div>
+
+      <div class="row m-3">
         <mat-form-field class="mx-auto w-100">
-          <mat-label></mat-label>
+          <mat-label>Cantidad</mat-label>
           <input
-            formControlName="stock"
+            formControlName="cantidad"
             type="number"
             matInput
             autocomplete="off"
             max="999"
             min="0"
           />
-          <mat-error *ngIf="nuevoForm.get('stock')?.hasError('required')">
+          <mat-error *ngIf="nuevoForm.get('cantidad')?.hasError('required')">
             Este campo es requerido
           </mat-error>
           <mat-hint>Solo se permiten números</mat-hint>
         </mat-form-field>
       </div>
-    </form> -->
+    </form>
   </nb-card-body>
   <nb-card-footer>
-    <!-- <div class="row">
+    <div class="row">
       <div class="col">
         <button nbButton matRipple ghost status="primary" (click)="dismiss()">
           Cancelar
@@ -80,6 +55,6 @@
           Agregar
         </button>
       </div>
-    </div> -->
+    </div>
   </nb-card-footer>
 </nb-card>
