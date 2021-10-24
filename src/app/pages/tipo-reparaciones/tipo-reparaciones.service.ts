@@ -25,10 +25,29 @@ export class TipoReparacionService {
           nombre: o.get('nombre'),
           descripcion: o.get('descripcion'),
           tiempoEstimado: o.get('tiempoEstimado'),
+          costoMano: o.get('costoMano'),
         }
       })
 
       console.log(result);
+    } catch (e) {
+      this.alertService.showPrimaryToast('Error', 'No se pudo cargar el tipoReparacion');
+    }
+
+    return result;
+  }
+
+  async getTipoReparacion(id: string) {
+    const query = new Parse.Query(TipoReparacion);
+    query.include(['repuestos.repuesto']);
+    query.equalTo('deleted', false);
+    query.equalTo('objectId', id);
+    let result;
+
+    try {
+      result = await query.first();
+      const repuestos = await result.get('repuestos').query().include('repuesto').find();
+      result.repuestosFetched = repuestos;
     } catch (e) {
       this.alertService.showPrimaryToast('Error', 'No se pudo cargar el tipoReparacion');
     }
@@ -41,11 +60,13 @@ export class TipoReparacionService {
     descripcion: string,
     tiempoEstimado: string,
     unidades: any[],
+    costoMano: number,
   ): Promise<boolean> {
     const nuevoTipoReparacion = new TipoReparacion();
     nuevoTipoReparacion.set('nombre', nombre);
     nuevoTipoReparacion.set('descripcion', descripcion);
     nuevoTipoReparacion.set('tiempoEstimado', tiempoEstimado);
+    nuevoTipoReparacion.set('costoMano', costoMano);
 
     // Repuesta de todas los RepuestoUnidad que se guardaron
     let repuestoUnidadesSavedPromises = [];
@@ -79,30 +100,51 @@ export class TipoReparacionService {
     }
   }
 
+
   async editarTipoReparacion(
-    id: string,
     nombre: string,
-    costo: number,
-    stock: number
+    descripcion: string,
+    tiempoEstimado: string,
+    unidades: any[],
+    costoMano: number,
+    parseObject: any,
   ): Promise<boolean> {
-    const query = new Parse.Query(TipoReparacion);
+
+    parseObject.set('nombre', nombre);
+    parseObject.set('descripcion', descripcion);
+    parseObject.set('tiempoEstimado', tiempoEstimado);
+    parseObject.set('costoMano', costoMano);
+
+    // Repuesta de todas los RepuestoUnidad que se guardaron
+    let repuestoUnidadesSavedPromises = [];
+    if(unidades.length > 0) {
+      unidades.forEach(unidad => {
+        if (!unidad.id) {
+          const nuevoRepuestoUnidad = new RepuestoUnidad();
+          nuevoRepuestoUnidad.set('cantidad', unidad.cantidad);
+          nuevoRepuestoUnidad.set('repuesto', unidad.repuesto);
+
+          try {
+            repuestoUnidadesSavedPromises.push(nuevoRepuestoUnidad.save());
+          } catch (e) {
+            this.alertService.showErrorToast('Error', 'No se pudo agregar la Unidad ' + unidad.nombre);
+          }
+        }
+      })
+    }
 
     try {
-      const tipoReparacionAEditar = await query.get(id);
-      tipoReparacionAEditar.set('nombre', nombre);
-      tipoReparacionAEditar.set('costo', costo);
-      tipoReparacionAEditar.set('stock', stock);
-      tipoReparacionAEditar.save();
-      this.alertService.showSuccessToast(
-        'Exito',
-        'Se ha modificado un tipoReparacion'
-      );
+      // Una vez todos terminados agregar la relation
+      if (repuestoUnidadesSavedPromises.length > 0) {
+        const repuestoUnidades = await Promise.all(repuestoUnidadesSavedPromises);
+        parseObject.relation('repuestos').add(repuestoUnidades);
+      }
+
+      parseObject.save();
+      this.alertService.showSuccessToast('Exito', 'Se ha editado el Tipo de Reparacion');
       return true;
     } catch (e) {
-      this.alertService.showErrorToast(
-        'Error',
-        'No se pudo modificar el tipoReparacion'
-      );
+      this.alertService.showErrorToast('Error', 'No se pudo editar el Tipo de Reparacion');
       return false;
     }
   }
@@ -114,12 +156,12 @@ export class TipoReparacionService {
       const tipoReparacionAEliminar = await query.get(id);
       tipoReparacionAEliminar.set('deleted', true);
       tipoReparacionAEliminar.save();
-      this.alertService.showSuccessToast('Exito', 'Se ha eliminado un tipoReparacion');
+      this.alertService.showSuccessToast('Exito', 'Se ha eliminado un Tipo de Reparacion');
       return true;
     } catch (e) {
       this.alertService.showErrorToast(
         'Error',
-        'No se pudo eliminar el tipoReparacion'
+        'No se pudo eliminar el Tipo de Reparacion'
       );
       return false;
     }

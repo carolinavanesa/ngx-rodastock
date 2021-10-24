@@ -19,7 +19,7 @@ export class NuevoReparacionComponent {
     actions: {
       add: false,
       edit: false,
-      columnTitle: ''
+      columnTitle: '',
     },
     add: {
       confirmCreate: true,
@@ -54,7 +54,11 @@ export class NuevoReparacionComponent {
 
   source: LocalDataSource = new LocalDataSource();
   unidades = [];
-  descripcion = "";
+  tipoReparacionAEditar;
+  descripcion = '';
+  modoEdicion = false;
+  content = '';
+  costoTotalRepuestos = 0;
 
   constructor(
     private formBuilder: FormBuilder,
@@ -63,36 +67,82 @@ export class NuevoReparacionComponent {
     private router: Router,
     private inventarioService: InventarioService,
     private modalService: ModalService,
-    private dialogService: NbDialogService,
+    private dialogService: NbDialogService
   ) {}
 
   nuevoForm: FormGroup = this.formBuilder.group({
-    nombre: ['', [Validators.required, Validators.maxLength(30), Validators.pattern("[a-zA-Z0-9 ,']*")]],
+    nombre: [
+      '',
+      [
+        Validators.required,
+        Validators.maxLength(30),
+        Validators.pattern("[a-zA-Z0-9 ,']*"),
+      ],
+    ],
     tiempoEstimadoMedida: 'horas',
     tiempoEstimadoUnidad: [0, [Validators.pattern('[0-9]')]],
+    costoMano: ['0', [Validators.required, Validators.maxLength(5), Validators.pattern('([0-9]+\.?[0-9]*|\.[0-9]+)')]],
   });
 
   ngOnInit(): void {
     const id = this.route.snapshot.paramMap.get('id');
     if (id) {
       // traer el objeto con ese id y patchear el form
-      // this.service.cargarUnidad().then((Unidades) => {
-      //   this.source.load(Unidades);
-      // });
+      this.service.getTipoReparacion(id).then((tipoReparacion) => {
+        this.tipoReparacionAEditar = tipoReparacion;
+        this.nuevoForm.patchValue({
+          nombre: tipoReparacion.get('nombre'),
+          tiempoEstimadoUnidad: tipoReparacion
+            .get('tiempoEstimado')
+            .split(' ')[0],
+          tiempoEstimadoMedida: tipoReparacion
+            .get('tiempoEstimado')
+            .split(' ')[2],
+        });
+
+        this.unidades = tipoReparacion.repuestosFetched.map((unidad) => {
+          return {
+            id: unidad.id,
+            repuesto: unidad.get('repuesto'),
+            cantidad: unidad.get('cantidad'),
+            nombre: unidad.get('repuesto').get('nombre'),
+          };
+        });
+
+        this.calcularCostoTotalRepuesto();
+
+        this.content = tipoReparacion.get('descripcion');
+        this.descripcion = tipoReparacion.get('descripcion');
+
+        this.source.load(this.unidades);
+        this.modoEdicion = true;
+      });
     }
   }
 
   ngOnDestroy() {}
 
+  calcularCostoTotalRepuesto(){
+    this.costoTotalRepuestos = 0;
+    this.unidades.forEach(unidad => {
+      this.costoTotalRepuestos = unidad.repuesto.get('costo') * unidad.cantidad
+    });
+  }
+
   // Dispara el modal y luego agrega el repuesto agregado a la lista
   nuevoRepuesto() {
     this.dialogService
-      .open(NuevoRepuestoUnidadModalComponent)
+      .open(NuevoRepuestoUnidadModalComponent, {
+        context: {
+          addedRepuestoUnidades: this.unidades,
+        },
+      })
       .onClose.pipe(take(1))
       .toPromise()
       .then((res) => {
         if (res) {
           this.unidades.push(res);
+          this.calcularCostoTotalRepuesto();
           this.source.load(this.unidades);
         }
       });
@@ -103,17 +153,32 @@ export class NuevoReparacionComponent {
   }
 
   confirm() {
-    const tiempoEstimado = `${this.nuevoForm.get('tiempoEstimadoUnidad').value}  ${this.nuevoForm.get('tiempoEstimadoMedida').value}`
+    const tiempoEstimado = `${
+      this.nuevoForm.get('tiempoEstimadoUnidad').value
+    }  ${this.nuevoForm.get('tiempoEstimadoMedida').value}`;
 
-    this.service
-      .agregarTipoReparacion(
-        this.nuevoForm.get('nombre').value,
-        this.descripcion,
-        tiempoEstimado,
-        this.unidades
-      )
-      // .then((res) => this.ref.close(true))
-      // .catch((e) => this.ref.close(false));
+    if (!this.modoEdicion) {
+      this.service
+        .agregarTipoReparacion(
+          this.nuevoForm.get('nombre').value,
+          this.descripcion,
+          tiempoEstimado,
+          this.unidades,
+          this.nuevoForm.get('costoMano').value || 0,
+        )
+        .then((res) => this.router.navigateByUrl(`pages/tipo-reparaciones`));
+    } else {
+      this.service
+        .editarTipoReparacion(
+          this.nuevoForm.get('nombre').value,
+          this.descripcion,
+          tiempoEstimado,
+          this.unidades,
+          this.nuevoForm.get('costoMano').value || 0,
+          this.tipoReparacionAEditar
+        )
+        .then((res) => this.router.navigateByUrl(`pages/tipo-reparaciones`));
+    }
   }
 
   updateDescripcion(event) {
@@ -121,58 +186,23 @@ export class NuevoReparacionComponent {
   }
 
   onDeleteConfirm(event: any) {
-    const config = {
-      title: 'Eliminar Tipo de Reparacion',
-      body: `Estas seguro que quieres eliminar el tipo de reparacion ${event.data.nombre}`,
-      icon: 'exclamation',
-    };
-    this.modalService.showConfirmationModal(config).then((res) => {
-      if (res) {
-        event.confirm.resolve();
-        // this.service
-        //   .eliminarTipoReparacion(event.data.id)
-        //   .then((res) =>
-        //     res ? event.confirm.resolve() : event.confirm.reject()
-        //   );
-      }
-    });
+    if (!event.data.id) {
+      event.confirm.resolve();
+    } else {
+      const config = {
+        title: 'Eliminar Repuesto',
+        body: `¿Seguro que quieres quitar la unidad ${event.data.nombre} para este tipo de reparacion?`,
+        icon: 'exclamation',
+      };
+      this.modalService.showConfirmationModal(config).then((res) => {
+        if (res) {
+          this.inventarioService
+            .eliminarRepuestoUnidad(event.data.id)
+            .then((res) =>
+              res ? event.confirm.resolve() : event.confirm.reject()
+            );
+        }
+      });
+    }
   }
-
-  onCreateConfirm(event: any) {
-    // this.service
-    //   .agregarTipoReparacion(
-    //     event.newData.nombre,
-    //     event.newData.descripcion,
-    //     event.newData.tiempoEstimado
-    //   )
-    //   .then((res) => {
-    //     if (res) {
-    //       event.confirm.resolve();
-    //     } else {
-    //       event.confirm.reject();
-    //     }
-    //   });
-  }
-
-  onEditConfirm(event: any) {
-    // this.service
-    //   .editarTipoReparacion(
-    //     event.newData.id,
-    //     event.newData.nombre,
-    //     event.newData.descripcion,
-    //     event.newData.tiempoEstimado
-    //   )
-    //   .then((res) => {
-    //     if (res) {
-    //       event.confirm.resolve();
-    //       this.cargarTipoReparacion();
-    //     } else {
-    //       event.confirm.reject();
-    //     }
-    //   });
-    this.router.navigateByUrl(`pages/tipo-reparaciones/repuesto/${event.data.id}`);
-  }
-
-
-
 }

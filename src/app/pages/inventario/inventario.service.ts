@@ -5,6 +5,7 @@ import { Parse } from 'parse';
 import { AlertService } from '../../shared/alert.service';
 
 const RepuestoInventario = Parse.Object.extend('RepuestoInventario');
+const RepuestoUnidad = Parse.Object.extend('RepuestoUnidad');
 
 @Injectable()
 export class InventarioService {
@@ -112,4 +113,23 @@ export class InventarioService {
       return false;
     }
   }
+
+  async eliminarRepuestoUnidad(id: string): Promise<boolean> {
+    const query = new Parse.Query(RepuestoUnidad);
+
+    try {
+      const repuestoAEliminar = await query.get(id);
+      const result = await repuestoAEliminar.destroy();
+      this.alertService.showSuccessToast('Exito', 'Se ha quitado el repuesto');
+      return true;
+    } catch (e) {
+      this.alertService.showErrorToast(
+        'Error',
+        'No se pudo quitar el repuesto'
+      );
+      return false;
+    }
+  }
+
+
 }

@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, Input } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { NbDialogRef } from '@nebular/theme';
 import { InventarioService } from '../../inventario/inventario.service';
@@ -16,13 +16,18 @@ export class NuevoRepuestoUnidadModalComponent {
   ) {}
   repuestoOptions = [];
 
+  @Input() addedRepuestoUnidades = [];
+
+
   nuevoForm: FormGroup = this.formBuilder.group({
     repuesto: ['' , [Validators.required]],
     cantidad: ['', [Validators.required, Validators.maxLength(3), Validators.pattern('[0-9]*')]],
   });
 
   ngOnInit() {
-    this.service.cargarInventarioForNuevaUnidad().then(repuestos => this.repuestoOptions = repuestos)
+    this.service.cargarInventarioForNuevaUnidad().then(repuestos => {
+      this.repuestoOptions = this.addedRepuestoUnidades.length > 0 ? repuestos.filter(rep => this.addedRepuestoUnidades.find(a => a.repuesto.id !== rep.id)) : repuestos
+    })
   }
 
   dismiss() {

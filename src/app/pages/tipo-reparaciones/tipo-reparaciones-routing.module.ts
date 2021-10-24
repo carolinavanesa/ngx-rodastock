@@ -17,10 +17,10 @@ const routes: Routes = [
         path: 'nueva-reparacion',
         component: NuevoReparacionComponent,
       },
-      // {
-      //   path: 'editar-reparacion/:id',
-      //   component: NuevoReparacionComponent,
-      // },
+      {
+        path: 'editar-reparacion/:id',
+        component: NuevoReparacionComponent,
+      },
     ]
   }
 ];

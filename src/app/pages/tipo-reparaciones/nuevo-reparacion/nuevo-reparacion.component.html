@@ -1,8 +1,10 @@
-<nb-card>
-  <nb-card-header>Nuevo Tipo de Reparacion</nb-card-header>
+<nb-card class="main">
+  <nb-card-header
+    >{{ modoEdicion ? 'Editar' : 'Nuevo' }} Tipo de Reparacion</nb-card-header
+  >
   <nb-card-body class="m-2">
     <form [formGroup]="nuevoForm">
-      <p class="dialog-hint">Ingrese la información referida a la reparacion</p>
+      <h5 class="text-hint mb-5">Ingrese la información referida a la reparacion</h5>
 
       <!-- NOMBRE -->
       <div class="row m-3">
@@ -23,12 +25,12 @@
       <!-- DESCRIPCION -->
       <div class="row m-3 w-100">
         <p>Descripcion</p>
-        <ngx-tiny-mce (editorKeyup)="updateDescripcion($event)"></ngx-tiny-mce>
+        <ngx-tiny-mce (editorKeyup)="updateDescripcion($event)" initialContent="{{content}}"></ngx-tiny-mce>
       </div>
 
       <!-- TIEMPO ESTIMADO  -->
-      <div class="row m-3 w-100">
-        <p class="mr-3 mt-3">Tiempo estimado</p>
+      <div class="row m-3 mt-5 w-100">
+        <p class="mr-3 mt-3">Tiempo estimado del trabajo a realizar</p>
         <div class="row">
           <div class="col-6 col-md-4">
             <mat-form-field class="mx-auto w-100">
@@ -63,9 +65,30 @@
         </div>
       </div>
 
+      <!-- COSTO MANO DE OBRA -->
+      <div class="row m-3 mt-5">
+        <div class="pl-0 col-6 col-md-4 col-lg-3">
+          <mat-form-field class="mx-auto w-100">
+            <mat-label>Costo de mano de obra</mat-label>
+            <input
+              formControlName="costoMano"
+              type="text"
+              matInput
+              autocomplete="off"
+              maxLength="10"
+              currency-mask
+            />
+            <mat-error *ngIf="nuevoForm.get('costoMano').hasError('required')">
+              Este campo es requerido
+            </mat-error>
+            <mat-hint>Solo se permiten numeros</mat-hint>
+          </mat-form-field>
+        </div>
+      </div>
+
       <!-- UNIDADES NECESARIOS -->
       <div class="row m-3 w-100">
-        <p class="mt-5" >Unidades necesarias</p>
+        <h5 class="text-hint mt-5">Agregue las unidades necesarias para llevar a cabo esta reparacion</h5>
 
         <div class="col-md-12">
           <button
@@ -84,13 +107,17 @@
             class="custom-table"
             [settings]="settings"
             [source]="source"
-            (createConfirm)="onCreateConfirm($event)"
-            (editConfirm)="onEditConfirm($event)"
             (deleteConfirm)="onDeleteConfirm($event)"
           >
           </ng2-smart-table>
         </div>
       </div>
+
+      <div class="row m-3">
+        <p>Costo total de unidades requeridas: $ {{ costoTotalRepuestos }}</p>
+      </div>
+
+
     </form>
   </nb-card-body>
   <nb-card-footer>
@@ -102,7 +129,7 @@
       </div>
       <div class="col">
         <button
-          [disabled]="!nuevoForm.valid || nuevoForm.pristine"
+          [disabled]="!modoEdicion && (!nuevoForm.valid || nuevoForm.pristine)"
           nbButton
           matRipple
           hero
@@ -110,7 +137,7 @@
           (click)="confirm()"
           class="float-right"
         >
-          Crear
+          {{ modoEdicion ? 'Editar' : 'Crear' }}
         </button>
       </div>
     </div>

@@ -15,6 +15,7 @@ import { TipoReparacionService } from '../tipo-reparaciones.service';
 })
 export class TipoReparacionComponent implements OnInit, OnDestroy {
   settings = {
+    mode: 'external',
     actions: {
       add: false,
       columnTitle: ''
@@ -23,13 +24,11 @@ export class TipoReparacionComponent implements OnInit, OnDestroy {
       addButtonContent: '<i class="nb-plus"></i>',
       createButtonContent: '<i class="nb-checkmark"></i>',
       cancelButtonContent: '<i class="nb-close"></i>',
-      confirmCreate: true,
     },
     edit: {
       editButtonContent: '<i class="nb-edit"></i>',
       saveButtonContent: '<i class="nb-checkmark"></i>',
       cancelButtonContent: '<i class="nb-close"></i>',
-      confirmSave: true,
     },
     delete: {
       deleteButtonContent: '<i class="nb-trash"></i>',
@@ -52,6 +51,10 @@ export class TipoReparacionComponent implements OnInit, OnDestroy {
       },
       tiempoEstimado: {
         title: 'Tiempo Estimado',
+        type: 'text',
+      },
+      costoMano: {
+        title: 'Costo Mano Obra',
         type: 'text',
       },
     },
@@ -95,8 +98,8 @@ export class TipoReparacionComponent implements OnInit, OnDestroy {
     });
   }
 
-  onEditConfirm(event: any) {
-    this.router.navigateByUrl(`pages/tipo-reparaciones/repuesto/${event.data.id}`);
+  onEdit(event: any) {
+    this.router.navigateByUrl(`pages/tipo-reparaciones/editar-reparacion/${event.data.id}`);
   }
 
   nuevoTipoReparacion() {
