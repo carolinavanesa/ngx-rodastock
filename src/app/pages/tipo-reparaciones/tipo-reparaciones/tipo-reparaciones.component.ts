@@ -6,7 +6,6 @@ import { take } from 'rxjs/operators';
 import { ModalService } from '../../../shared/modal/modal.service';
 import { TipoReparacionService } from '../tipo-reparaciones.service';
 
-
 @Component({
   selector: 'ngx-dashboard',
   styleUrls: ['./tipo-reparaciones.component.scss'],
@@ -18,7 +17,7 @@ export class TipoReparacionComponent implements OnInit, OnDestroy {
     mode: 'external',
     actions: {
       add: false,
-      columnTitle: ''
+      columnTitle: '',
     },
     add: {
       addButtonContent: '<i class="nb-plus"></i>',
@@ -66,7 +65,7 @@ export class TipoReparacionComponent implements OnInit, OnDestroy {
     private service: TipoReparacionService,
     private modalService: ModalService,
     private dialogService: NbDialogService,
-    private router: Router,
+    private router: Router
   ) {}
 
   ngOnInit() {
@@ -81,7 +80,7 @@ export class TipoReparacionComponent implements OnInit, OnDestroy {
     });
   }
 
-  onDeleteConfirm(event: any) {
+  onDelete(event: any) {
     const config = {
       title: 'Eliminar Tipo de Reparacion',
       body: `Estas seguro que quieres eliminar el tipo de reparacion ${event.data.nombre}`,
@@ -91,15 +90,15 @@ export class TipoReparacionComponent implements OnInit, OnDestroy {
       if (res) {
         this.service
           .eliminarTipoReparacion(event.data.id)
-          .then((res) =>
-            res ? event.confirm.resolve() : event.confirm.reject()
-          );
+          .then((res) => this.cargarTipoReparacion());
       }
     });
   }
 
   onEdit(event: any) {
-    this.router.navigateByUrl(`pages/tipo-reparaciones/editar-reparacion/${event.data.id}`);
+    this.router.navigateByUrl(
+      `pages/tipo-reparaciones/editar-reparacion/${event.data.id}`
+    );
   }
 
   nuevoTipoReparacion() {
