@@ -29,7 +29,6 @@ export class TipoReparacionService {
         }
       })
 
-      console.log(result);
     } catch (e) {
       this.alertService.showPrimaryToast('Error', 'No se pudo cargar el tipoReparacion');
     }
@@ -39,7 +38,6 @@ export class TipoReparacionService {
 
   async getTipoReparacion(id: string) {
     const query = new Parse.Query(TipoReparacion);
-    query.include(['repuestos.repuesto']);
     query.equalTo('deleted', false);
     query.equalTo('objectId', id);
     let result;

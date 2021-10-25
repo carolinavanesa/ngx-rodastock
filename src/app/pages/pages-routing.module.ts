@@ -29,6 +29,11 @@ const routes: Routes = [{
         .then(m => m.TipoReparacionModule),
     },
     {
+      path: 'ordenes',
+      loadChildren: () => import('./ordenes/ordenes.module')
+        .then(m => m.OrdenesModule),
+    },
+    {
       path: 'miscellaneous',
       loadChildren: () => import('./miscellaneous/miscellaneous.module')
         .then(m => m.MiscellaneousModule),

@@ -21,5 +21,10 @@ export const MENU_ITEMS: NbMenuItem[] = [
     title: 'Tipo Reparaciones',
     icon: 'brush-outline',
     link: '/pages/tipo-reparaciones',
+  },
+  {
+    title: 'Ordenes',
+    icon: 'paper-plane-outline',
+    link: '/pages/ordenes',
   }
 ];
