@@ -1,0 +1,142 @@
+<nb-card class="main">
+  <nb-card-header
+    >{{ modoEdicion ? 'Editar' : 'Nuevo' }} Orden de Reparacion</nb-card-header
+  >
+  <nb-card-body class="m-2">
+    <form [formGroup]="nuevoForm">
+      <h5 class="text-hint mb-5">Ingrese la información referida a la orden</h5>
+
+      <div class="row m-3">
+        Orden Nº: {{ modoEdicion ? orden.numero : numeroOrdenSiguiente }}
+      </div>
+
+      <!-- FECHA PEDIDO -->
+      <div class="row m-3">
+        <mat-form-field class="mx-auto w-100">
+          <mat-label>Fecha</mat-label>
+          <input
+            formControlName="fecha"
+            autocomplete="off"
+            matInput
+            [matDatepicker]="picker"
+          />
+          <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+          <mat-datepicker #picker></mat-datepicker>
+          <mat-error *ngIf="nuevoForm.get('fecha')?.hasError('required')">
+            Este campo es requerido
+          </mat-error>
+        </mat-form-field>
+      </div>
+
+      <!-- CLIENTE -->
+      <div class="row m-3">
+        <mat-form-field appearance="fill">
+          <mat-label>Cliente</mat-label>
+          <mat-select formControlName="cliente">
+            <mat-option
+              *ngFor="let cliente of clienteOptions"
+              [value]="cliente.id"
+            >
+              {{ cliente.get('nombre') }}
+            </mat-option>
+          </mat-select>
+        </mat-form-field>
+      </div>
+
+      <!-- DESCRIPCION -->
+      <div class="row m-3 w-100">
+        <mat-form-field>
+          <mat-label>Observaciones</mat-label>
+          <textarea formControlName="observaciones" matInput autocomplete="off"></textarea>
+        </mat-form-field>
+      </div>
+
+      <!-- RODADO -->
+      <div class="row m-3 w-100">
+        <mat-form-field>
+          <mat-label>Rodado</mat-label>
+          <input
+            formControlName="rodado"
+            matInput
+          />
+        </mat-form-field>
+        <mat-error *ngIf="nuevoForm.get('rodado')?.hasError('required')">
+          Este campo es requerido
+        </mat-error>
+      </div>
+
+      <!-- Reparaciones a realizar -->
+      <div class="row m-3 w-100">
+        <h5 class="text-hint mt-5">Agregue las reparaciones a realizar</h5>
+
+        <div class="col-md-12">
+          <button
+            nbButton
+            matRipple
+            hero
+            status="primary"
+            (click)="nuevoReparacion()"
+            class="mb-2"
+          >
+            Nueva Reparacion
+          </button>
+        </div>
+        <div class="col-md-12">
+          <ng2-smart-table
+            class="custom-table"
+            [settings]="settings"
+            [source]="source"
+            (deleteConfirm)="onDeleteConfirm($event)"
+          >
+          </ng2-smart-table>
+        </div>
+      </div>
+
+      <!-- COSTO TOTAL -->
+      <div class="row m-3">
+        <p>Costo total de reparaciones: $ {{ costoTotalReparacion }}</p>
+      </div>
+
+      <!-- COSTO ADICIONAL -->
+      <div class="row m-3">
+        <mat-label>Costo Adicional</mat-label>
+        <input
+          formControlName="costoAdicional"
+          type="text"
+          matInput
+          autocomplete="off"
+          maxLength="10"
+          currency-mask
+        />
+        <mat-error *ngIf="nuevoForm.get('costoAdicional').hasError('required')">
+          Este campo es requerido
+        </mat-error>
+        <mat-hint>Solo se permiten numeros</mat-hint>
+      </mat-form-field>
+      </div>
+
+    </form>
+  </nb-card-body>
+  <nb-card-footer>
+    <div class="row">
+      <div class="col">
+        <button nbButton matRipple ghost status="primary" (click)="goBack()">
+          Volver a Ordenes
+        </button>
+      </div>
+      <div class="col">
+        <button
+          [disabled]="!modoEdicion && (!nuevoForm.valid || nuevoForm.pristine)"
+          nbButton
+          matRipple
+          hero
+          status="primary"
+          (click)="confirm()"
+          class="float-right"
+        >
+          {{ modoEdicion ? 'Editar' : 'Crear' }}
+        </button>
+      </div>
+    </div>
+  </nb-card-footer>
+</nb-card>

@@ -47,7 +47,7 @@ export class TipoReparacionService {
       const repuestos = await result.get('repuestos').query().include('repuesto').find();
       result.repuestosFetched = repuestos;
     } catch (e) {
-      this.alertService.showPrimaryToast('Error', 'No se pudo cargar el tipoReparacion');
+      this.alertService.showPrimaryToast('Error', 'No se pudo cargar la orden');
     }
 
     return result;
@@ -59,12 +59,14 @@ export class TipoReparacionService {
     tiempoEstimado: string,
     unidades: any[],
     costoMano: number,
+    costoTotalRepuestos: number,
   ): Promise<boolean> {
     const nuevoTipoReparacion = new TipoReparacion();
     nuevoTipoReparacion.set('nombre', nombre);
     nuevoTipoReparacion.set('descripcion', descripcion);
     nuevoTipoReparacion.set('tiempoEstimado', tiempoEstimado);
     nuevoTipoReparacion.set('costoMano', costoMano);
+    nuevoTipoReparacion.set('costoRepuestos', costoTotalRepuestos);
 
     // Repuesta de todas los RepuestoUnidad que se guardaron
     let repuestoUnidadesSavedPromises = [];
@@ -106,12 +108,14 @@ export class TipoReparacionService {
     unidades: any[],
     costoMano: number,
     parseObject: any,
+    costoTotalRepuestos: number,
   ): Promise<boolean> {
 
     parseObject.set('nombre', nombre);
     parseObject.set('descripcion', descripcion);
     parseObject.set('tiempoEstimado', tiempoEstimado);
     parseObject.set('costoMano', costoMano);
+    parseObject.set('costoRepuestos', costoTotalRepuestos);
 
     // Repuesta de todas los RepuestoUnidad que se guardaron
     let repuestoUnidadesSavedPromises = [];

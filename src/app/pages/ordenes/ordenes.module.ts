@@ -21,6 +21,7 @@ import { TipoReparacionService } from '../tipo-reparaciones/tipo-reparaciones.se
 import { OrdenesMainComponent } from './ordenes-main.component';
 import { OrdenesComponent } from './ordenes/ordenes.component';
 import { FilterOrdenPipe } from './filter-orden.pipe';
+import { OrdenStatusComponent } from './orden-status/orden-status.component';
 
 
 @NgModule({
@@ -42,7 +43,7 @@ import { FilterOrdenPipe } from './filter-orden.pipe';
     SharedAngularMaterialModule,
     OrdenesRoutingModule,
   ],
-  declarations: [OrdenesMainComponent, OrdenesComponent, FilterOrdenPipe],
+  declarations: [OrdenesMainComponent, OrdenesComponent, OrdenStatusComponent,FilterOrdenPipe],
   providers: [OrdenesService, TipoReparacionService],
 })
 export class OrdenesModule {}

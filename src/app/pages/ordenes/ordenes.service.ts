@@ -52,6 +52,35 @@ export class OrdenesService {
     return result;
   }
 
+  async getOrden(id: string) {
+    const query = new Parse.Query(Orden);
+    query.equalTo('deleted', false);
+    query.equalTo('objectId', id);
+    let result;
 
-  private g
+    try {
+      result = await query.first();
+      const reparaciones = await result.get('reparaciones').query().find();
+      result.reparacionesFetched = reparaciones;
+    } catch (e) {
+      this.alertService.showPrimaryToast('Error', 'No se pudo cargar la orden');
+    }
+
+    return result;
+  }
+
+  async getSiguienteNumeroOrden() {
+    const query = new Parse.Query(Orden);
+
+    let result = 0;
+
+    try {
+      result = await query.count();
+    } catch (e) {
+      this.alertService.showPrimaryToast('Error', 'No se pudo cargar la orden');
+    }
+
+    return result;
+  }
+
 }

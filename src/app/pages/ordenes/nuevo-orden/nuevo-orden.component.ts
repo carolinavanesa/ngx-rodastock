@@ -7,14 +7,16 @@ import { take } from 'rxjs/operators';
 import { ModalService } from '../../../shared/modal/modal.service';
 import { InventarioService } from '../../inventario/inventario.service';
 import { NuevoRepuestoUnidadModalComponent } from '../nuevo-repuesto-unidad-modal/nuevo-repuesto-unidad-modal.component';
-import { TipoReparacionService } from '../tipo-reparaciones.service';
+import { OrdenesService } from '../ordenes.service';
+import { TipoReparacionService } from '../../tipo-reparaciones/tipo-reparaciones.service';
+import { ClientesService } from '../../clientes/clientes.service';
 
 @Component({
-  selector: 'ngx-nuevo-reparacion',
-  templateUrl: './nuevo-reparacion.component.html',
-  styleUrls: ['./nuevo-reparacion.component.scss'],
+  selector: 'ngx-nuevo-orden',
+  templateUrl: './nuevo-orden.component.html',
+  styleUrls: ['./nuevo-Orden.component.scss'],
 })
-export class NuevoReparacionComponent {
+export class NuevoOrdenComponent {
   settings = {
     actions: {
       add: false,
@@ -44,25 +46,24 @@ export class NuevoReparacionComponent {
         type: 'text',
         filter: false,
       },
-      cantidad: {
-        title: 'Cantidad',
-        type: 'text',
-        filter: false,
-      },
     },
   };
 
   source: LocalDataSource = new LocalDataSource();
-  unidades = [];
-  tipoReparacionAEditar;
-  descripcion = '';
+  reparaciones = [];
+  ordenAEditar;
+  numeroOrdenSiguiente = 0;
   modoEdicion = false;
-  content = '';
-  costoTotalRepuestos = 0;
+  costoTotal = 0;
+  clienteOptions = [];
+  tipoReparacionesOptions = [];
+  costoAdicional = 0;
 
   constructor(
     private formBuilder: FormBuilder,
-    private service: TipoReparacionService,
+    private service: OrdenesService,
+    private tipoReparacionService: TipoReparacionService,
+    private clienteService: ClientesService,
     private route: ActivatedRoute,
     private router: Router,
     private inventarioService: InventarioService,
@@ -71,61 +72,60 @@ export class NuevoReparacionComponent {
   ) {}
 
   nuevoForm: FormGroup = this.formBuilder.group({
-    nombre: [
-      '',
-      [
-        Validators.required,
-        Validators.maxLength(30),
-        Validators.pattern("[a-zA-Z0-9 ,']*"),
-      ],
-    ],
-    tiempoEstimadoMedida: 'horas',
-    tiempoEstimadoUnidad: [0, [Validators.pattern('[0-9]')]],
-    costoMano: ['0', [Validators.required, Validators.maxLength(5), Validators.pattern('([0-9]+\.?[0-9]*|\.[0-9]+)')]],
+    // nombre: [
+    //   '',
+    //   [
+    //     Validators.required,
+    //     Validators.maxLength(30),
+    //     Validators.pattern("[a-zA-Z0-9 ,']*"),
+    //   ],
+    // ],
+    // tiempoEstimadoMedida: 'horas',
+    // tiempoEstimadoUnidad: [0, [Validators.pattern('[0-9]')]],
+    // costoMano: ['0', [Validators.required, Validators.maxLength(5), Validators.pattern('([0-9]+\.?[0-9]*|\.[0-9]+)')]],
   });
 
   ngOnInit(): void {
     const id = this.route.snapshot.paramMap.get('id');
     if (id) {
       // traer el objeto con ese id y patchear el form
-      this.service.getTipoReparacion(id).then((tipoReparacion) => {
-        this.tipoReparacionAEditar = tipoReparacion;
+      this.service.getOrden(id).then((orden) => {
+        this.ordenAEditar = orden;
         this.nuevoForm.patchValue({
-          nombre: tipoReparacion.get('nombre'),
-          tiempoEstimadoUnidad: tipoReparacion
-            .get('tiempoEstimado')
-            .split(' ')[0],
-          tiempoEstimadoMedida: tipoReparacion
-            .get('tiempoEstimado')
-            .split(' ')[2],
+          nombre: orden.get('nombre'),
         });
 
-        this.unidades = tipoReparacion.repuestosFetched.map((unidad) => {
+        this.reparaciones = orden.repuestosFetched.map((reparacion) => {
           return {
-            id: unidad.id,
-            repuesto: unidad.get('repuesto'),
-            cantidad: unidad.get('cantidad'),
-            nombre: unidad.get('repuesto').get('nombre'),
+            id: reparacion.id,
+            nombre: reparacion.get('nombre'),
+            descripcion: reparacion.get('descripcion'),
+            tiempoEstimado: reparacion.get('tiempoEstimado'),
+            costoMano: reparacion.get('costoMano'),
           };
         });
 
-        this.calcularCostoTotalRepuesto();
-
-        this.content = tipoReparacion.get('descripcion');
-        this.descripcion = tipoReparacion.get('descripcion');
-
-        this.source.load(this.unidades);
+        this.calcularCostoTotalReparaciones();
+        this.source.load(this.reparaciones);
         this.modoEdicion = true;
       });
+    } else {
+      this.service.getOrden(id).then((numero) => {
+        this.numeroOrdenSiguiente = numero;
+      });
     }
+
+    // Necesarias para cargar la orden
+    this.clienteService.cargarClientes().then(clientes => this.clienteOptions = clientes);
+    this.tipoReparacionService.cargarTipoReparacion().then(tipoReparaciones => this.tipoReparacionesOptions = tipoReparaciones);
   }
 
   ngOnDestroy() {}
 
-  calcularCostoTotalRepuesto(){
-    this.costoTotalRepuestos = 0;
-    this.unidades.forEach(unidad => {
-      this.costoTotalRepuestos = unidad.repuesto.get('costo') * unidad.cantidad
+  calcularCostoTotalReparaciones(){
+    this.costoTotal = 0;
+    this.reparaciones.forEach(reparacion => {
+      this.costoTotal = reparacion.get('costoMano') + reparacion.get('costoReparacion')
     });
   }
 
@@ -134,22 +134,22 @@ export class NuevoReparacionComponent {
     this.dialogService
       .open(NuevoRepuestoUnidadModalComponent, {
         context: {
-          addedRepuestoUnidades: this.unidades,
+          addedRepuestoreparaciones: this.reparaciones,
         },
       })
       .onClose.pipe(take(1))
       .toPromise()
       .then((res) => {
         if (res) {
-          this.unidades.push(res);
-          this.calcularCostoTotalRepuesto();
-          this.source.load(this.unidades);
+          this.reparaciones.push(res);
+          this.calcularCostoTotalReparaciones();
+          this.source.load(this.reparaciones);
         }
       });
   }
 
   goBack() {
-    this.router.navigateByUrl(`pages/tipo-reparaciones`);
+    this.router.navigateByUrl(`pages/ordenes`);
   }
 
   confirm() {
@@ -159,27 +159,25 @@ export class NuevoReparacionComponent {
 
     if (!this.modoEdicion) {
       this.service
-        .agregarTipoReparacion(
+        .agregarOrden(
           this.nuevoForm.get('nombre').value,
           this.descripcion,
           tiempoEstimado,
-          this.unidades,
+          this.reparaciones,
           this.nuevoForm.get('costoMano').value || 0,
-          this.costoTotalRepuestos,
         )
-        .then((res) => this.router.navigateByUrl(`pages/tipo-reparaciones`));
+        .then((res) => this.router.navigateByUrl(`pages/ordenes`));
     } else {
       this.service
-        .editarTipoReparacion(
+        .editarOrden(
           this.nuevoForm.get('nombre').value,
           this.descripcion,
           tiempoEstimado,
-          this.unidades,
+          this.reparaciones,
           this.nuevoForm.get('costoMano').value || 0,
-          this.tipoReparacionAEditar,
-          this.costoTotalRepuestos
+          this.ordenAEditar
         )
-        .then((res) => this.router.navigateByUrl(`pages/tipo-reparaciones`));
+        .then((res) => this.router.navigateByUrl(`pages/ordenes`));
     }
   }
 
@@ -193,7 +191,7 @@ export class NuevoReparacionComponent {
     } else {
       const config = {
         title: 'Eliminar Repuesto',
-        body: `¿Seguro que quieres quitar la unidad ${event.data.nombre} para este tipo de reparacion?`,
+        body: `¿Seguro que quieres quitar la unidad ${event.data.nombre} para este  de Orden?`,
         icon: 'exclamation',
       };
       this.modalService.showConfirmationModal(config).then((res) => {

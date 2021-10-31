@@ -4,13 +4,7 @@
   <nb-card-body>
     <div class="row">
       <div class="col col-md-2">
-        <button
-          nbButton
-          matRipple
-          hero
-          status="primary"
-          class="mb-3"
-        >
+        <button nbButton matRipple hero status="primary" class="mb-3">
           Nueva Orden
         </button>
       </div>
@@ -28,58 +22,67 @@
       </div>
     </div>
 
-    <div
-      *ngFor="let orden of ordenes | filterOrden: searchText"
-      class="col-md-3"
-    >
-      <nb-card size="medium">
-        <div
-          class="picture"
-          style.background-image="url('{{ orden.imagen }}')"
-        ></div>
+    <div class="row">
+      <div
+        *ngFor="let orden of ordenes | filterOrden: searchText"
+        class="col-md-4 col-6 col-xs-4 col-lg-3"
+      >
+        <nb-card size="medium">
+          <div
+            class="picture"
+            style.background-image="url('{{ orden.imagen }}')"
+          ></div>
 
-        <div class="row m-2">
-          <div class="col">
-            <div class="h6">Orden #{{ orden.numero }}</div>
+          <div class="row m-2">
+            <div class="col">
+              <div class="h6">Orden #{{ orden.numero }}</div>
+            </div>
+            <div class="col">
+              <nb-icon icon="calendar-outline" pack="eva"></nb-icon
+              >{{ orden.fecha | date: 'dd/MM/yyyy' }}
+            </div>
           </div>
-          <div class="col">
-            <nb-icon icon="calendar-outline" pack="eva"></nb-icon>{{ orden.fecha | date:'dd/MM/yyyy' }}
+          <div class="row ml-1 mr-1">
+            <div class="col">
+              <nb-icon icon="person-outline" pack="eva"></nb-icon>
+              {{ orden.cliente.get('nombre') }}
+            </div>
           </div>
-        </div>
-        <div class="row ml-1 mr-1">
-          <div class="col">
-            <nb-icon icon="person-outline" pack="eva"></nb-icon> {{ orden.cliente.get('nombre') }}
+          <div class="row ml-1 mr-1">
+            <div class="col">
+              <nb-icon icon="phone-outline" pack="eva"></nb-icon>
+              {{ orden.cliente.get('telefono') }}
+            </div>
           </div>
-        </div>
-         <div class="row ml-1 mr-1">
-          <div class="col">
-            <nb-icon icon="phone-outline" pack="eva"></nb-icon> {{ orden.cliente.get('telefono') }}
+          <div class="row ml-1 mr-1">
+            <div class="col">
+              <nb-icon icon="brush-outline" pack="eva"></nb-icon>
+              {{ orden.rodado }}
+            </div>
           </div>
-        </div>
-        <div class="row ml-1 mr-1">
-          <div class="col">
-            <nb-icon icon="brush-outline" pack="eva"></nb-icon> {{ orden.rodado }}
+          <div class="row ml-1 mr-1 mt-2">
+            <ul>
+              <li *ngFor="let rep of orden.reparaciones">
+                {{ rep.get('nombre') }}
+              </li>
+            </ul>
           </div>
-        </div>
-        <div class="row ml-1 mr-1 mt-2">
-          <ul>
-            <li *ngFor="let rep of orden.reparaciones">{{ rep.get('nombre') }}</li>
-          </ul>
-        </div>
-        <div class="row ml-1 mr-1 mt-1">
-          <div class="col">
-            <nb-icon icon="paper-plane-outline" pack="eva"></nb-icon> {{ orden.fechaEntrega | date:'dd/MM/yyyy' }}
+          <div class="row ml-1 mr-1 mt-1">
+            <div class="col">
+              <nb-icon icon="paper-plane-outline" pack="eva"></nb-icon>
+              {{ orden.fechaEntrega | date: 'dd/MM/yyyy' }}
+            </div>
+            <div class="col">
+              <ngx-orden-status [status]="orden.estado"></ngx-orden-status>
+            </div>
           </div>
-          <div class="col">
-            <span class="badge badge-pill badge-warning">{{ orden.estado }}</span>
-          </div>
-        </div>
 
-        <nb-card-footer>
-          <nb-icon icon="edit-outline" pack="eva"></nb-icon>
-          <nb-icon icon="trash-outline" pack="eva"></nb-icon>
-        </nb-card-footer>
-      </nb-card>
+          <nb-card-footer>
+            <nb-icon icon="edit-outline" pack="eva"></nb-icon>
+            <nb-icon icon="trash-outline" pack="eva"></nb-icon>
+          </nb-card-footer>
+        </nb-card>
+      </div>
     </div>
   </nb-card-body>
 </nb-card>

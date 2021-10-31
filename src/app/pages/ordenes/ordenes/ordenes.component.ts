@@ -32,4 +32,8 @@ export class OrdenesComponent implements OnInit, OnDestroy {
       this.ordenes = ordenes;
     });
   }
+
+  nuevoOrden() {
+    this.router.navigateByUrl(`pages/ordenes/nueva-orden`);
+  }
 }
