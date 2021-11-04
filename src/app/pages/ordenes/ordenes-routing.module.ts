@@ -14,7 +14,7 @@ const routes: Routes = [
         component: OrdenesComponent,
       },
       {
-        path: 'nueva-reparacion',
+        path: 'nueva-orden',
         component: NuevoOrdenComponent,
       },
       // {
