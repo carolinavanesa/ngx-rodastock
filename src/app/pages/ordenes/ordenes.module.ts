@@ -22,7 +22,9 @@ import { OrdenesMainComponent } from './ordenes-main.component';
 import { OrdenesComponent } from './ordenes/ordenes.component';
 import { FilterOrdenPipe } from './filter-orden.pipe';
 import { OrdenStatusComponent } from './orden-status/orden-status.component';
-
+import { NuevoOrdenComponent } from './nuevo-orden/nuevo-orden.component';
+import { ClientesService } from '../clientes/clientes.service';
+import { InventarioService } from '../inventario/inventario.service';
 
 @NgModule({
   imports: [
@@ -43,7 +45,13 @@ import { OrdenStatusComponent } from './orden-status/orden-status.component';
     SharedAngularMaterialModule,
     OrdenesRoutingModule,
   ],
-  declarations: [OrdenesMainComponent, OrdenesComponent, OrdenStatusComponent,FilterOrdenPipe],
-  providers: [OrdenesService, TipoReparacionService],
+  declarations: [
+    OrdenesMainComponent,
+    OrdenesComponent,
+    OrdenStatusComponent,
+    NuevoOrdenComponent,
+    FilterOrdenPipe,
+  ],
+  providers: [OrdenesService, InventarioService, ClientesService, TipoReparacionService],
 })
 export class OrdenesModule {}

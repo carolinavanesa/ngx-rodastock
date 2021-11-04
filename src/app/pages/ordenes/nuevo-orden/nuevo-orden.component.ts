@@ -6,10 +6,10 @@ import { LocalDataSource } from 'ng2-smart-table';
 import { take } from 'rxjs/operators';
 import { ModalService } from '../../../shared/modal/modal.service';
 import { InventarioService } from '../../inventario/inventario.service';
-import { NuevoRepuestoUnidadModalComponent } from '../nuevo-repuesto-unidad-modal/nuevo-repuesto-unidad-modal.component';
 import { OrdenesService } from '../ordenes.service';
 import { TipoReparacionService } from '../../tipo-reparaciones/tipo-reparaciones.service';
 import { ClientesService } from '../../clientes/clientes.service';
+import { MatSelect } from '@angular/material/select';
 
 @Component({
   selector: 'ngx-nuevo-orden',
@@ -55,6 +55,7 @@ export class NuevoOrdenComponent {
   numeroOrdenSiguiente = 0;
   modoEdicion = false;
   costoTotal = 0;
+  costoTotalReparaciones = 0;
   clienteOptions = [];
   tipoReparacionesOptions = [];
   costoAdicional = 0;
@@ -82,7 +83,14 @@ export class NuevoOrdenComponent {
     // ],
     // tiempoEstimadoMedida: 'horas',
     // tiempoEstimadoUnidad: [0, [Validators.pattern('[0-9]')]],
-    // costoMano: ['0', [Validators.required, Validators.maxLength(5), Validators.pattern('([0-9]+\.?[0-9]*|\.[0-9]+)')]],
+    // costoMano: ['0', [Validators.reqcostoTotalReparacionuired, Validators.maxLength(5), Validators.pattern('([0-9]+\.?[0-9]*|\.[0-9]+)')]],
+
+    observaciones: '',
+    cliente: '',
+    rodado: '',
+    costoAdicional: 0,
+    fecha: new Date(),
+    telefono: '',
   });
 
   ngOnInit(): void {
@@ -110,7 +118,7 @@ export class NuevoOrdenComponent {
         this.modoEdicion = true;
       });
     } else {
-      this.service.getOrden(id).then((numero) => {
+      this.service.getSiguienteNumeroOrden().then((numero) => {
         this.numeroOrdenSiguiente = numero;
       });
     }
@@ -123,29 +131,34 @@ export class NuevoOrdenComponent {
   ngOnDestroy() {}
 
   calcularCostoTotalReparaciones(){
-    this.costoTotal = 0;
+    this.costoTotalReparaciones = 0;
     this.reparaciones.forEach(reparacion => {
       this.costoTotal = reparacion.get('costoMano') + reparacion.get('costoReparacion')
     });
   }
 
-  // Dispara el modal y luego agrega el repuesto agregado a la lista
-  nuevoRepuesto() {
-    this.dialogService
-      .open(NuevoRepuestoUnidadModalComponent, {
-        context: {
-          addedRepuestoreparaciones: this.reparaciones,
-        },
-      })
-      .onClose.pipe(take(1))
-      .toPromise()
-      .then((res) => {
-        if (res) {
-          this.reparaciones.push(res);
-          this.calcularCostoTotalReparaciones();
-          this.source.load(this.reparaciones);
-        }
-      });
+  onClienteChange(event: MatSelect){
+    const telefono = this.clienteOptions.find(c => c.id === event.value)?.telefono || '-';
+    this.nuevoForm.get('telefono').setValue(telefono)
+  }
+
+  // Dispara el modal y luego agrega la reparacion a la lista
+  nuevoReparacion() {
+    // this.dialogService
+    //   .open(NuevoRepuestoUnidadModalComponent, {
+    //     context: {
+    //       addedRepuestoreparaciones: this.reparaciones,
+    //     },
+    //   })
+    //   .onClose.pipe(take(1))
+    //   .toPromise()
+    //   .then((res) => {
+    //     if (res) {
+    //       this.reparaciones.push(res);
+    //       this.calcularCostoTotalReparaciones();
+    //       this.source.load(this.reparaciones);
+    //     }
+    //   });
   }
 
   goBack() {
@@ -158,31 +171,27 @@ export class NuevoOrdenComponent {
     }  ${this.nuevoForm.get('tiempoEstimadoMedida').value}`;
 
     if (!this.modoEdicion) {
-      this.service
-        .agregarOrden(
-          this.nuevoForm.get('nombre').value,
-          this.descripcion,
-          tiempoEstimado,
-          this.reparaciones,
-          this.nuevoForm.get('costoMano').value || 0,
-        )
-        .then((res) => this.router.navigateByUrl(`pages/ordenes`));
+      // this.service
+      //   .agregarOrden(
+      //     this.nuevoForm.get('nombre').value,
+      //     this.descripcion,
+      //     tiempoEstimado,
+      //     this.reparaciones,
+      //     this.nuevoForm.get('costoMano').value || 0,
+      //   )
+      //   .then((res) => this.router.navigateByUrl(`pages/ordenes`));
     } else {
-      this.service
-        .editarOrden(
-          this.nuevoForm.get('nombre').value,
-          this.descripcion,
-          tiempoEstimado,
-          this.reparaciones,
-          this.nuevoForm.get('costoMano').value || 0,
-          this.ordenAEditar
-        )
-        .then((res) => this.router.navigateByUrl(`pages/ordenes`));
+      // this.service
+      //   .editarOrden(
+      //     this.nuevoForm.get('nombre').value,
+      //     this.descripcion,
+      //     tiempoEstimado,
+      //     this.reparaciones,
+      //     this.nuevoForm.get('costoMano').value || 0,
+      //     this.ordenAEditar
+      //   )
+      //   .then((res) => this.router.navigateByUrl(`pages/ordenes`));
     }
-  }
-
-  updateDescripcion(event) {
-    this.descripcion = event;
   }
 
   onDeleteConfirm(event: any) {
