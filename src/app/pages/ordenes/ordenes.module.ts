@@ -25,6 +25,7 @@ import { OrdenStatusComponent } from './orden-status/orden-status.component';
 import { NuevoOrdenComponent } from './nuevo-orden/nuevo-orden.component';
 import { ClientesService } from '../clientes/clientes.service';
 import { InventarioService } from '../inventario/inventario.service';
+import { AgregarReparacionModalComponent } from './agregar-reparacion-modal/agregar-reparacion-modal.component';
 
 @NgModule({
   imports: [
@@ -50,6 +51,7 @@ import { InventarioService } from '../inventario/inventario.service';
     OrdenesComponent,
     OrdenStatusComponent,
     NuevoOrdenComponent,
+    AgregarReparacionModalComponent,
     FilterOrdenPipe,
   ],
   providers: [OrdenesService, InventarioService, ClientesService, TipoReparacionService],

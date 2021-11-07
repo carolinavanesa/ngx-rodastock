@@ -164,7 +164,7 @@ export class NuevoReparacionComponent {
           this.descripcion,
           tiempoEstimado,
           this.unidades,
-          this.nuevoForm.get('costoMano').value || 0,
+          Number(this.nuevoForm.get('costoMano').value) || 0,
           this.costoTotalRepuestos,
         )
         .then((res) => this.router.navigateByUrl(`pages/tipo-reparaciones`));
@@ -175,7 +175,7 @@ export class NuevoReparacionComponent {
           this.descripcion,
           tiempoEstimado,
           this.unidades,
-          this.nuevoForm.get('costoMano').value || 0,
+          Number(this.nuevoForm.get('costoMano').value) || 0,
           this.tipoReparacionAEditar,
           this.costoTotalRepuestos
         )

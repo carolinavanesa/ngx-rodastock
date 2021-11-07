@@ -5,6 +5,7 @@ import { Parse } from 'parse';
 import { AlertService } from '../../shared/alert.service';
 
 const Orden = Parse.Object.extend('Orden');
+const TipoReparacion = Parse.Object.extend('TipoReparacion');
 
 @Injectable()
 export class OrdenesService {
@@ -87,5 +88,64 @@ export class OrdenesService {
 
     return resultStr;
   }
+
+  async agregarOrden(
+    numero: number,
+    fecha: Date,
+    cliente: any,
+    telefono: string,
+    rodado: string,
+    observaciones: string,
+    costoAdicional: number,
+    tiempoEstimado: string,
+    reparaciones: any[],
+    costoMano: number,
+    costoTotalRepuestos: number,
+  ): Promise<boolean> {
+    const nuevaOrden = new Orden();
+    nuevaOrden.set('numero', numero);
+    nuevaOrden.set('fecha', fecha);
+    nuevaOrden.set('cliente', cliente);
+    nuevaOrden.set('telefono', telefono);
+    nuevaOrden.set('rodado', rodado);
+    nuevaOrden.set('observaciones', observaciones);
+    nuevaOrden.set('costoAdicional', costoAdicional);
+
+    nuevaOrden.relation('reparaciones').add(reparaciones);
+
+
+    // Repuesta de todas los RepuestoUnidad que se guardaron
+    let reparacionesSavedPromises = [];
+    // if(reparaciones.length > 0) {
+    //   reparaciones.forEach(unidad => {
+    //     const nuevaReparacion = new TipoReparacion();
+    //     nuevaReparacion.set('cantidad', unidad.cantidad);
+    //     nuevaReparacion.set('repuesto', unidad.repuesto);
+
+    //     try {
+    //       reparacionesSavedPromises.push(nuevaReparacion.save());
+    //     } catch (e) {
+    //       this.alertService.showErrorToast('Error', 'No se pudo agregar la Unidad ' + unidad.nombre);
+    //     }
+    //   })
+    // }
+
+    try {
+      // Una vez todos terminados agregar la relation
+      if (reparacionesSavedPromises.length > 0) {
+        const repuestoUnidades = await Promise.all(reparacionesSavedPromises);
+        nuevaOrden.relation('repuestos').add(repuestoUnidades);
+      }
+
+      nuevaOrden.save();
+      this.alertService.showSuccessToast('Exito', 'Se ha agregado un nuevo Tipo de Reparacion');
+      return true;
+    } catch (e) {
+      this.alertService.showErrorToast('Error', 'No se pudo agregar el Tipo de Reparacion');
+      return false;
+    }
+  }
+
+
 
 }

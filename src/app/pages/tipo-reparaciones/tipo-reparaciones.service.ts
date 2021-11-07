@@ -36,6 +36,20 @@ export class TipoReparacionService {
     return result;
   }
 
+  async cargarTipoReparacionForModal() {
+    let result = [];
+    const query = new Parse.Query(TipoReparacion);
+    query.limit(1000);
+    query.equalTo('deleted', false);
+    try {
+      result = await query.find();
+    } catch (e) {
+      this.alertService.showPrimaryToast('Error', 'No se pudo cargar el inventario');
+    }
+
+    return result;
+  }
+
   async getTipoReparacion(id: string) {
     const query = new Parse.Query(TipoReparacion);
     query.equalTo('deleted', false);

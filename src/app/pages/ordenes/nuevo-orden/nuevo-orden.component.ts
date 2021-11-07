@@ -11,6 +11,7 @@ import { TipoReparacionService } from '../../tipo-reparaciones/tipo-reparaciones
 import { ClientesService } from '../../clientes/clientes.service';
 import { MatSelect } from '@angular/material/select';
 import { AlertService } from '../../../shared/alert.service';
+import { AgregarReparacionModalComponent } from '../agregar-reparacion-modal/agregar-reparacion-modal.component';
 
 @Component({
   selector: 'ngx-nuevo-orden',
@@ -47,6 +48,16 @@ export class NuevoOrdenComponent {
         type: 'text',
         filter: false,
       },
+      costoMano: {
+        title: 'Costo de Mano',
+        type: 'text',
+        filter: false,
+      },
+      costoRepuestos: {
+        title: 'Costo de Repuestos',
+        type: 'text',
+        filter: false,
+      },
     },
   };
 
@@ -55,8 +66,9 @@ export class NuevoOrdenComponent {
   ordenAEditar;
   numeroOrdenSiguiente = '0';
   modoEdicion = false;
-  costoTotal = 0;
-  costoTotalReparaciones = 0;
+  // costoTotal = 0;
+  costoTotalRepuestos = 0;
+  costoTotalMano = 0;
   clienteOptions = [];
   tipoReparacionesOptions = [];
   costoAdicional = 0;
@@ -77,24 +89,14 @@ export class NuevoOrdenComponent {
   ) {}
 
   nuevoForm: FormGroup = this.formBuilder.group({
-    // nombre: [
-    //   '',
-    //   [
-    //     Validators.required,
-    //     Validators.maxLength(30),
-    //     Validators.pattern("[a-zA-Z0-9 ,']*"),
-    //   ],
-    // ],
-    // tiempoEstimadoMedida: 'horas',
-    // tiempoEstimadoUnidad: [0, [Validators.pattern('[0-9]')]],
-    // costoMano: ['0', [Validators.reqcostoTotalReparacionuired, Validators.maxLength(5), Validators.pattern('([0-9]+\.?[0-9]*|\.[0-9]+)')]],
-
     observaciones: '',
     cliente: '',
     rodado: '',
     costoAdicional: 0,
     fecha: new Date(),
+    fechaEntrega: new Date(),
     telefono: '',
+    entregaInicial: 0,
   });
 
   ngOnInit(): void {
@@ -128,49 +130,91 @@ export class NuevoOrdenComponent {
     }
 
     // Necesarias para cargar la orden
-    this.clienteService.cargarClientes().then(clientes => this.clienteOptions = clientes);
-    this.tipoReparacionService.cargarTipoReparacion().then(tipoReparaciones => this.tipoReparacionesOptions = tipoReparaciones);
+    this.clienteService
+      .cargarClientes()
+      .then((clientes) => (this.clienteOptions = clientes));
+    this.tipoReparacionService
+      .cargarTipoReparacion()
+      .then(
+        (tipoReparaciones) => (this.tipoReparacionesOptions = tipoReparaciones)
+      );
   }
 
   ngOnDestroy() {}
 
-  calcularCostoTotalReparaciones(){
-    this.costoTotalReparaciones = 0;
-    this.reparaciones.forEach(reparacion => {
-      this.costoTotal = reparacion.get('costoMano') + reparacion.get('costoReparacion')
+  calcularCostoTotalReparaciones() {
+    this.costoTotalRepuestos = 0;
+    this.costoTotalMano = 0;
+    this.reparaciones.forEach((reparacion) => {
+      this.costoTotalRepuestos += reparacion.costoRepuestos;
+      this.costoTotalMano += reparacion.costoMano;
     });
   }
 
-  onClienteChange(event: MatSelect){
-    const telefono = this.clienteOptions.find(c => c.id === event.value)?.telefono || '-';
-    this.nuevoForm.get('telefono').setValue(telefono)
+  calcularTiempoEstimadoTarea() {
+    let cantidadHoras = 0;
+    let cantidadDias = 0
+    this.reparaciones.forEach((reparacion) => {
+      const medida = reparacion.get('tiempoEstimado').split(' ')[1];
+      const cantidad = reparacion.get('tiempoEstimado').split(' ')[0];
+      if (medida === 'horas') {
+        cantidadHoras += Number(cantidad);
+      } else {
+        cantidadDias += Number(cantidadDias);
+      }
+    });
+
+    if (cantidadHoras > 8) {
+      cantidadDias++;
+    }
+
+    if (cantidadDias > 0) {
+      return new Date()
+    } else {
+
+    }
+
+  }
+
+  calcularCostoTotalOrden(){
+    return this.costoTotalRepuestos + this.costoTotalMano + Number(this.nuevoForm.get('costoAdicional').value);
+  }
+
+  onClienteChange(event: MatSelect) {
+    const telefono =
+      this.clienteOptions.find((c) => c.id === event.value)?.telefono || '-';
+    this.nuevoForm.get('telefono').setValue(telefono);
   }
 
   handleFileInput(files: FileList) {
     if (files.item(0).type.substr(0,5) != 'image') {
-      this.alertService.showErrorToast('Error', 'Solo puede subir archivos de tipo imagen');
+      this.alertService.showErrorToast(
+        'Error',
+        'Solo puede subir archivos de tipo imagen'
+      );
+      // TODO: vaciar files cuando hay error
     } else {
       this.fileToUpload = files.item(0);
     }
   }
 
   // Dispara el modal y luego agrega la reparacion a la lista
-  nuevoReparacion() {
-    // this.dialogService
-    //   .open(NuevoRepuestoUnidadModalComponent, {
-    //     context: {
-    //       addedRepuestoreparaciones: this.reparaciones,
-    //     },
-    //   })
-    //   .onClose.pipe(take(1))
-    //   .toPromise()
-    //   .then((res) => {
-    //     if (res) {
-    //       this.reparaciones.push(res);
-    //       this.calcularCostoTotalReparaciones();
-    //       this.source.load(this.reparaciones);
-    //     }
-    //   });
+  agregarReparacion() {
+    this.dialogService
+      .open(AgregarReparacionModalComponent, {
+        context: {
+          addedReparaciones: this.reparaciones,
+        },
+      })
+      .onClose.pipe(take(1))
+      .toPromise()
+      .then((res) => {
+        if (res) {
+          this.reparaciones.push(res);
+          this.calcularCostoTotalReparaciones();
+          this.source.load(this.reparaciones);
+        }
+      });
   }
 
   goBack() {
@@ -178,10 +222,6 @@ export class NuevoOrdenComponent {
   }
 
   confirm() {
-    const tiempoEstimado = `${
-      this.nuevoForm.get('tiempoEstimadoUnidad').value
-    }  ${this.nuevoForm.get('tiempoEstimadoMedida').value}`;
-
     if (!this.modoEdicion) {
       // this.service
       //   .agregarOrden(

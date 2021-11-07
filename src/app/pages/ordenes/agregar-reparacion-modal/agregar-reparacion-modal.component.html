@@ -1,0 +1,61 @@
+<nb-card status="primary" class="nueva-card">
+  <nb-card-header>Agregar Reparacion</nb-card-header>
+  <nb-card-body class="m-2">
+    <form [formGroup]="nuevoForm" class="min-width:500px">
+      <div class="row m-3">
+
+        <!-- <mat-form-field appearance="fill">
+          <mat-label>reparacion</mat-label>
+          <mat-select formControlName="reparacion">
+            <mat-option
+              *ngFor="let reparacion of reparacionOptions"
+              [value]="reparacion.id"
+            >
+              {{ reparacion.get('nombre') + " - $" + reparacion.get('costo')}}
+            </mat-option>
+          </mat-select>
+        </mat-form-field> -->
+
+
+        <mat-form-field class="w-100" appearance="fill" *ngIf="options.length > 0" >
+          <mat-label>Reparacion</mat-label>
+          <input type="text"
+                 placeholder="Reparacion"
+                 matInput
+                 formControlName="reparacion"
+                 [matAutocomplete]="auto">
+          <mat-autocomplete #auto="matAutocomplete">
+            <mat-option *ngFor="let option of filteredOptions | async" [value]="option.get('nombre')">
+              {{ option.get('nombre') + " - $" + (option.get('costoMano') + option.get('costoRepuestos')) }}
+            </mat-option>
+          </mat-autocomplete>
+        </mat-form-field>
+
+
+      </div>
+
+    </form>
+  </nb-card-body>
+  <nb-card-footer>
+    <div class="row">
+      <div class="col">
+        <button nbButton matRipple ghost status="primary" (click)="dismiss()">
+          Cancelar
+        </button>
+      </div>
+      <div class="col">
+        <button
+          [disabled]="!nuevoForm.valid || nuevoForm.pristine"
+          nbButton
+          matRipple
+          hero
+          status="primary"
+          (click)="confirm()"
+          class="float-right"
+        >
+          Agregar
+        </button>
+      </div>
+    </div>
+  </nb-card-footer>
+</nb-card>
