@@ -10,6 +10,7 @@ import { OrdenesService } from '../ordenes.service';
 import { TipoReparacionService } from '../../tipo-reparaciones/tipo-reparaciones.service';
 import { ClientesService } from '../../clientes/clientes.service';
 import { MatSelect } from '@angular/material/select';
+import { AlertService } from '../../../shared/alert.service';
 
 @Component({
   selector: 'ngx-nuevo-orden',
@@ -52,13 +53,15 @@ export class NuevoOrdenComponent {
   source: LocalDataSource = new LocalDataSource();
   reparaciones = [];
   ordenAEditar;
-  numeroOrdenSiguiente = 0;
+  numeroOrdenSiguiente = '0';
   modoEdicion = false;
   costoTotal = 0;
   costoTotalReparaciones = 0;
   clienteOptions = [];
   tipoReparacionesOptions = [];
   costoAdicional = 0;
+
+  fileToUpload: File | null = null;
 
   constructor(
     private formBuilder: FormBuilder,
@@ -69,6 +72,7 @@ export class NuevoOrdenComponent {
     private router: Router,
     private inventarioService: InventarioService,
     private modalService: ModalService,
+    private alertService: AlertService,
     private dialogService: NbDialogService
   ) {}
 
@@ -140,6 +144,14 @@ export class NuevoOrdenComponent {
   onClienteChange(event: MatSelect){
     const telefono = this.clienteOptions.find(c => c.id === event.value)?.telefono || '-';
     this.nuevoForm.get('telefono').setValue(telefono)
+  }
+
+  handleFileInput(files: FileList) {
+    if (files.item(0).type.substr(0,5) != 'image') {
+      this.alertService.showErrorToast('Error', 'Solo puede subir archivos de tipo imagen');
+    } else {
+      this.fileToUpload = files.item(0);
+    }
   }
 
   // Dispara el modal y luego agrega la reparacion a la lista

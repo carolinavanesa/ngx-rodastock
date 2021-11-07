@@ -80,7 +80,12 @@ export class OrdenesService {
       this.alertService.showPrimaryToast('Error', 'No se pudo cargar la orden');
     }
 
-    return result;
+    let resultStr = result.toString();
+    for (let index = 0; index < (8 - result.toString().length ); index++) {
+      resultStr = '0' + resultStr;
+    }
+
+    return resultStr;
   }
 
 }
