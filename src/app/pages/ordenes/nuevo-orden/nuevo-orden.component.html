@@ -60,6 +60,13 @@
             <mat-label>Telefono</mat-label>
             <input formControlName="telefono" matInput />
           </mat-form-field>
+          <mat-error *ngIf="nuevoForm.get('telefono')?.hasError('pattern')">
+            Por favor ingrese un telefono válido.
+          </mat-error>
+          <mat-error *ngIf="nuevoForm.get('telefono')?.hasError('required')">
+            Este campo es requerido
+          </mat-error>
+          <mat-hint>Solo se permiten numero</mat-hint>
         </div>
       </div>
 
@@ -204,17 +211,18 @@
               formControlName="fechaEntrega"
               autocomplete="off"
               matInput
-              [matDatepicker]="picker"
+              [matDatepicker]="picker2"
             />
             <mat-datepicker-toggle
               matSuffix
-              [for]="picker"
+              [for]="picker2"
             ></mat-datepicker-toggle>
-            <mat-datepicker #picker></mat-datepicker>
-            <mat-error *ngIf="nuevoForm.get('fecha')?.hasError('required')">
+            <mat-datepicker #picker2></mat-datepicker>
+            <mat-error *ngIf="nuevoForm.get('fechaEntrega')?.hasError('required')">
               Este campo es requerido
             </mat-error>
           </mat-form-field>
+          <mat-hint class="fecha-entrega-hint" *ngIf="nuevoForm.get('fechaEntrega').pristine">Se establecio automaticamente en base a la duracion de las reparaciones</mat-hint>
         </div>
         <div class="col-12 col-md-6 col-xs-12 w-100">
           <mat-form-field>

@@ -48,6 +48,11 @@ export class NuevoOrdenComponent {
         type: 'text',
         filter: false,
       },
+      tiempoEstimado: {
+        title: 'Duracion',
+        type: 'text',
+        filter: false,
+      },
       costoMano: {
         title: 'Costo de Mano',
         type: 'text',
@@ -64,15 +69,12 @@ export class NuevoOrdenComponent {
   source: LocalDataSource = new LocalDataSource();
   reparaciones = [];
   ordenAEditar;
-  numeroOrdenSiguiente = '0';
+  numeroOrdenSiguiente = 0;
   modoEdicion = false;
-  // costoTotal = 0;
   costoTotalRepuestos = 0;
   costoTotalMano = 0;
   clienteOptions = [];
   tipoReparacionesOptions = [];
-  costoAdicional = 0;
-
   fileToUpload: File | null = null;
 
   constructor(
@@ -82,50 +84,51 @@ export class NuevoOrdenComponent {
     private clienteService: ClientesService,
     private route: ActivatedRoute,
     private router: Router,
-    private inventarioService: InventarioService,
     private modalService: ModalService,
     private alertService: AlertService,
     private dialogService: NbDialogService
   ) {}
 
   nuevoForm: FormGroup = this.formBuilder.group({
-    observaciones: '',
-    cliente: '',
-    rodado: '',
-    costoAdicional: 0,
+    observaciones: ['', [
+      Validators.maxLength(100),
+    ]],
+    cliente: ['', [Validators.required]],
+    rodado: ['', [Validators.required, Validators.maxLength(5)]],
     fecha: new Date(),
     fechaEntrega: new Date(),
-    telefono: '',
-    entregaInicial: 0,
+    telefono: ['', [Validators.required, Validators.pattern('[0-9 ()-]*')]],
+    costoAdicional: [0, [Validators.maxLength(5), Validators.pattern('([0-9]+\.?[0-9]*|\.[0-9]+)')]],
+    entregaInicial: [0, [Validators.maxLength(5), Validators.pattern('([0-9]+\.?[0-9]*|\.[0-9]+)')]],
   });
 
   ngOnInit(): void {
     const id = this.route.snapshot.paramMap.get('id');
     if (id) {
-      // traer el objeto con ese id y patchear el form
-      this.service.getOrden(id).then((orden) => {
-        this.ordenAEditar = orden;
-        this.nuevoForm.patchValue({
-          nombre: orden.get('nombre'),
-        });
+      // // traer el objeto con ese id y patchear el form
+      // this.service.getOrden(id).then((orden) => {
+      //   this.ordenAEditar = orden;
+      //   this.nuevoForm.patchValue({
+      //     nombre: orden.get('nombre'),
+      //   });
 
-        this.reparaciones = orden.repuestosFetched.map((reparacion) => {
-          return {
-            id: reparacion.id,
-            nombre: reparacion.get('nombre'),
-            descripcion: reparacion.get('descripcion'),
-            tiempoEstimado: reparacion.get('tiempoEstimado'),
-            costoMano: reparacion.get('costoMano'),
-          };
-        });
+      //   this.reparaciones = orden.repuestosFetched.map((reparacion) => {
+      //     return {
+      //       id: reparacion.id,
+      //       nombre: reparacion.get('nombre'),
+      //       descripcion: reparacion.get('descripcion'),
+      //       tiempoEstimado: reparacion.get('tiempoEstimado'),
+      //       costoMano: reparacion.get('costoMano'),
+      //     };
+      //   });
 
-        this.calcularCostoTotalReparaciones();
-        this.source.load(this.reparaciones);
-        this.modoEdicion = true;
-      });
+      //   this.calcularCostoTotalReparaciones();
+      //   this.source.load(this.reparaciones);
+      //   this.modoEdicion = true;
+      // });
     } else {
       this.service.getSiguienteNumeroOrden().then((numero) => {
-        this.numeroOrdenSiguiente = numero;
+        this.numeroOrdenSiguiente = Number(numero);
       });
     }
 
@@ -153,14 +156,14 @@ export class NuevoOrdenComponent {
 
   calcularTiempoEstimadoTarea() {
     let cantidadHoras = 0;
-    let cantidadDias = 0
+    let cantidadDias = 0;
     this.reparaciones.forEach((reparacion) => {
-      const medida = reparacion.get('tiempoEstimado').split(' ')[1];
-      const cantidad = reparacion.get('tiempoEstimado').split(' ')[0];
+      const medida = reparacion.tiempoEstimado.split(' ')[2];
+      const cantidad = reparacion.tiempoEstimado.split(' ')[0];
       if (medida === 'horas') {
         cantidadHoras += Number(cantidad);
       } else {
-        cantidadDias += Number(cantidadDias);
+        cantidadDias += Number(cantidad);
       }
     });
 
@@ -168,26 +171,30 @@ export class NuevoOrdenComponent {
       cantidadDias++;
     }
 
+    let today = new Date();
     if (cantidadDias > 0) {
-      return new Date()
-    } else {
-
+      today.setDate(today.getDate() + cantidadDias);
     }
 
+    return today;
   }
 
-  calcularCostoTotalOrden(){
-    return this.costoTotalRepuestos + this.costoTotalMano + Number(this.nuevoForm.get('costoAdicional').value);
+  calcularCostoTotalOrden() {
+    return (
+      this.costoTotalRepuestos +
+      this.costoTotalMano +
+      Number(this.nuevoForm.get('costoAdicional').value)
+    );
   }
 
   onClienteChange(event: MatSelect) {
     const telefono =
-      this.clienteOptions.find((c) => c.id === event.value)?.telefono || '-';
+      this.clienteOptions.find((c) => c.id === event.value)?.telefono || '';
     this.nuevoForm.get('telefono').setValue(telefono);
   }
 
   handleFileInput(files: FileList) {
-    if (files.item(0).type.substr(0,5) != 'image') {
+    if (files.item(0).type.substr(0, 5) != 'image') {
       this.alertService.showErrorToast(
         'Error',
         'Solo puede subir archivos de tipo imagen'
@@ -213,6 +220,13 @@ export class NuevoOrdenComponent {
           this.reparaciones.push(res);
           this.calcularCostoTotalReparaciones();
           this.source.load(this.reparaciones);
+
+          // Si no se establecio fecha de entrega cargar una fecha estimada por las reparaciones
+          if (this.nuevoForm.get('fechaEntrega').pristine) {
+            this.nuevoForm
+              .get('fechaEntrega')
+              .setValue(this.calcularTiempoEstimadoTarea());
+          }
         }
       });
   }
@@ -222,27 +236,26 @@ export class NuevoOrdenComponent {
   }
 
   confirm() {
+    const cliente = this.clienteOptions.find(c => c.id === this.nuevoForm.get('cliente').value);
+
     if (!this.modoEdicion) {
-      // this.service
-      //   .agregarOrden(
-      //     this.nuevoForm.get('nombre').value,
-      //     this.descripcion,
-      //     tiempoEstimado,
-      //     this.reparaciones,
-      //     this.nuevoForm.get('costoMano').value || 0,
-      //   )
-      //   .then((res) => this.router.navigateByUrl(`pages/ordenes`));
+      this.service
+        .agregarOrden(
+          this.numeroOrdenSiguiente,
+          this.nuevoForm.get('fecha').value,
+          cliente.cliente,
+          this.nuevoForm.get('telefono').value,
+          this.nuevoForm.get('rodado').value,
+          this.nuevoForm.get('observaciones').value,
+          Number(this.nuevoForm.get('costoAdicional').value) || 0,
+          this.nuevoForm.get('fechaEntrega').value,
+          this.reparaciones.map(rep => rep.reparacion),
+          this.calcularCostoTotalOrden(),
+          this.fileToUpload,
+        )
+        .then((res) => this.router.navigateByUrl(`pages/ordenes`));
     } else {
-      // this.service
-      //   .editarOrden(
-      //     this.nuevoForm.get('nombre').value,
-      //     this.descripcion,
-      //     tiempoEstimado,
-      //     this.reparaciones,
-      //     this.nuevoForm.get('costoMano').value || 0,
-      //     this.ordenAEditar
-      //   )
-      //   .then((res) => this.router.navigateByUrl(`pages/ordenes`));
+      // TODO: Se puede editar una orden?
     }
   }
 
@@ -250,20 +263,8 @@ export class NuevoOrdenComponent {
     if (!event.data.id) {
       event.confirm.resolve();
     } else {
-      const config = {
-        title: 'Eliminar Repuesto',
-        body: `¿Seguro que quieres quitar la unidad ${event.data.nombre} para este  de Orden?`,
-        icon: 'exclamation',
-      };
-      this.modalService.showConfirmationModal(config).then((res) => {
-        if (res) {
-          this.inventarioService
-            .eliminarRepuestoUnidad(event.data.id)
-            .then((res) =>
-              res ? event.confirm.resolve() : event.confirm.reject()
-            );
-        }
-      });
+     // TODO: Se puede editar una orden?
     }
+    this.calcularCostoTotalReparaciones
   }
 }

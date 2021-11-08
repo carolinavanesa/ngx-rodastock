@@ -1,15 +1,14 @@
 import { Injectable } from '@angular/core';
-import { Router } from '@angular/router';
 
 import { Parse } from 'parse';
 import { AlertService } from '../../shared/alert.service';
 
 const Orden = Parse.Object.extend('Orden');
-const TipoReparacion = Parse.Object.extend('TipoReparacion');
+// const TipoReparacion = Parse.Object.extend('TipoReparacion');
 
 @Injectable()
 export class OrdenesService {
-  constructor(private router: Router, private alertService: AlertService) {}
+  constructor(private alertService: AlertService) {}
 
   async cargarOrdenes() {
     let result = [];
@@ -97,11 +96,12 @@ export class OrdenesService {
     rodado: string,
     observaciones: string,
     costoAdicional: number,
-    tiempoEstimado: string,
+    fechaEntrega: Date,
     reparaciones: any[],
-    costoMano: number,
-    costoTotalRepuestos: number,
+    importe: number,
+    file?: any,
   ): Promise<boolean> {
+    debugger
     const nuevaOrden = new Orden();
     nuevaOrden.set('numero', numero);
     nuevaOrden.set('fecha', fecha);
@@ -110,38 +110,22 @@ export class OrdenesService {
     nuevaOrden.set('rodado', rodado);
     nuevaOrden.set('observaciones', observaciones);
     nuevaOrden.set('costoAdicional', costoAdicional);
-
+    nuevaOrden.set('fechaEntrega', fechaEntrega);
     nuevaOrden.relation('reparaciones').add(reparaciones);
+    nuevaOrden.set('importe', importe);
 
-
-    // Repuesta de todas los RepuestoUnidad que se guardaron
-    let reparacionesSavedPromises = [];
-    // if(reparaciones.length > 0) {
-    //   reparaciones.forEach(unidad => {
-    //     const nuevaReparacion = new TipoReparacion();
-    //     nuevaReparacion.set('cantidad', unidad.cantidad);
-    //     nuevaReparacion.set('repuesto', unidad.repuesto);
-
-    //     try {
-    //       reparacionesSavedPromises.push(nuevaReparacion.save());
-    //     } catch (e) {
-    //       this.alertService.showErrorToast('Error', 'No se pudo agregar la Unidad ' + unidad.nombre);
-    //     }
-    //   })
-    // }
+    const fileData = new Parse.File("orden-" + numero + ".png", file);
 
     try {
-      // Una vez todos terminados agregar la relation
-      if (reparacionesSavedPromises.length > 0) {
-        const repuestoUnidades = await Promise.all(reparacionesSavedPromises);
-        nuevaOrden.relation('repuestos').add(repuestoUnidades);
+      if(file) {
+        const savedFile = await fileData.save();
+        nuevaOrden.set('imagen', savedFile);
       }
-
-      nuevaOrden.save();
-      this.alertService.showSuccessToast('Exito', 'Se ha agregado un nuevo Tipo de Reparacion');
+      const res = await nuevaOrden.save();
+      this.alertService.showSuccessToast('Exito', 'Se ha generado una nueva Orden');
       return true;
     } catch (e) {
-      this.alertService.showErrorToast('Error', 'No se pudo agregar el Tipo de Reparacion');
+      this.alertService.showErrorToast('Error', 'No se pudo generar la orden');
       return false;
     }
   }

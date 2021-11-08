@@ -105,7 +105,7 @@ export class TipoReparacionService {
         nuevoTipoReparacion.relation('repuestos').add(repuestoUnidades);
       }
 
-      nuevoTipoReparacion.save();
+      const res = await nuevoTipoReparacion.save();
       this.alertService.showSuccessToast('Exito', 'Se ha agregado un nuevo Tipo de Reparacion');
       return true;
     } catch (e) {
@@ -156,7 +156,7 @@ export class TipoReparacionService {
         parseObject.relation('repuestos').add(repuestoUnidades);
       }
 
-      parseObject.save();
+      const res = await parseObject.save();
       this.alertService.showSuccessToast('Exito', 'Se ha editado el Tipo de Reparacion');
       return true;
     } catch (e) {
@@ -171,7 +171,7 @@ export class TipoReparacionService {
     try {
       const tipoReparacionAEliminar = await query.get(id);
       tipoReparacionAEliminar.set('deleted', true);
-      tipoReparacionAEliminar.save();
+      const res = await tipoReparacionAEliminar.save();
       this.alertService.showSuccessToast('Exito', 'Se ha eliminado un Tipo de Reparacion');
       return true;
     } catch (e) {

@@ -206,5 +206,6 @@ export class NuevoReparacionComponent {
         }
       });
     }
+    this.calcularCostoTotalRepuesto();
   }
 }

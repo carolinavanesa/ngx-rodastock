@@ -63,6 +63,7 @@ export class AgregarReparacionModalComponent {
         id: reparacion.id,
         costoMano: reparacion.get('costoMano'),
         costoRepuestos: reparacion.get('costoRepuestos'),
+        tiempoEstimado: reparacion.get('tiempoEstimado'),
         reparacion: reparacion,
       })
     }
