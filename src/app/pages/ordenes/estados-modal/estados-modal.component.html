@@ -15,47 +15,82 @@
         <ng-template #labelOne>
           <ngx-orden-status status="En Curso"></ngx-orden-status>
         </ng-template>
-        <h5>Estado actual: <ngx-orden-status status="Pendiente"></ngx-orden-status></h5>
-        <p class="lorem">
-          Esta orden esta en la lista de pendientes. Continue con el siguiente
-          paso si va a comenzar con la reparacion
-        </p>
-        <button nbButton matRipple disabled nbStepperNext>Cancelar</button>
-        <button
-          nbButton
-          matRipple
-          nbStepperNext
-          (click)="cambiarEstado('En Curso')"
-        >
-          Comenzar
-        </button>
+        <h5>
+          Estado actual:
+          <ngx-orden-status status="Pendiente"></ngx-orden-status>
+        </h5>
+        <p class="lorem">Este pedido esta en espera</p>
+
+        <div class="row">
+          <button
+            nbButton
+            matRipple
+            nbStepperNext
+            status="primary"
+            class="mx-auto"
+            (click)="cambiarEstado('En Curso')"
+          >
+            Comenzar
+          </button>
+        </div>
       </nb-step>
-      <nb-step [label]="labelTwo" [completed]="estado !== 'Pendiente' && estado !== 'En Curso'">
+      <nb-step
+        [label]="labelTwo"
+        [completed]="estado !== 'Pendiente' && estado !== 'En Curso'"
+      >
         <!-- <ng-template #labelTwo>Terminado</ng-template> -->
         <ng-template #labelTwo>
           <ngx-orden-status status="Terminado"></ngx-orden-status>
         </ng-template>
-        <h5>Estado actual: <ngx-orden-status status="En Curso"></ngx-orden-status></h5>
+        <h5>
+          Estado actual: <ngx-orden-status status="En Curso"></ngx-orden-status>
+        </h5>
         <p class="lorem">
           La orden esta en curso. Una vez finalizada presione Terminar
         </p>
-        <button
-          nbButton
-          matRipple
-          nbStepperNext
-          (click)="cambiarEstado('Terminado')"
-        >
-          Terminar
-        </button>
+        <div class="row">
+          <button
+            class="mx-auto"
+            nbButton
+            matRipple
+            nbStepperNext
+            status="primary"
+            (click)="cambiarEstado('Terminado')"
+          >
+            Terminar
+          </button>
+        </div>
       </nb-step>
-      <nb-step [label]="labelThree" [completed]="estado !== 'Pendiente' && estado !== 'En Curso' && estado !== 'Terminado'">
+      <nb-step
+        [label]="labelThree"
+        [completed]="
+          estado !== 'Pendiente' &&
+          estado !== 'En Curso' &&
+          estado !== 'Terminado'
+        "
+      >
         <!-- <ng-template #labelThree>Entregada</ng-template> -->
         <ng-template #labelThree>
           <ngx-orden-status status="Entregado"></ngx-orden-status>
         </ng-template>
-        <h5>Estado actual: <ngx-orden-status status="Terminado"></ngx-orden-status></h5>
-        <p class="lorem">La orden esta terminada y lista para ser retirada por el cliente</p>
-        <button nbButton matRipple (click)="cambiarEstado('Entregado')">Ya se retiro!</button>
+        <h5>
+          Estado actual:
+          <ngx-orden-status status="Terminado"></ngx-orden-status>
+        </h5>
+        <p class="lorem">
+          La orden esta terminada y lista para ser retirada por el cliente
+        </p>
+        <div class="row">
+          <button
+            class="mx-auto"
+            nbButton
+            matRipple
+            status="primary"
+            (click)="cambiarEstado('Entregado')"
+          >
+            Ya se retiro!
+          </button>
+        </div>
       </nb-step>
       <!-- <nb-step [label]="labelFour" [completed]="estado == 'Entregado'">
         <ng-template #labelFour>Entregada</ng-template>
@@ -64,7 +99,6 @@
       </nb-step> -->
     </nb-stepper>
 
-
     <nb-stepper
       orientation="horizontal"
       [disableStepNavigation]="true"
@@ -72,13 +106,19 @@
       *ngIf="completo"
     >
       <nb-step [label]="labelOne" [completed]="true">
-        <ng-template #labelOne><ngx-orden-status status="En Curso"></ngx-orden-status></ng-template>
+        <ng-template #labelOne
+          ><ngx-orden-status status="En Curso"></ngx-orden-status
+        ></ng-template>
       </nb-step>
       <nb-step [label]="labelTwo" [completed]="true">
-        <ng-template #labelTwo><ngx-orden-status status="Terminado"></ngx-orden-status></ng-template>
+        <ng-template #labelTwo
+          ><ngx-orden-status status="Terminado"></ngx-orden-status
+        ></ng-template>
       </nb-step>
       <nb-step [label]="labelThree" [completed]="true">
-        <ng-template #labelThree><ngx-orden-status status="Entregado"></ngx-orden-status></ng-template>
+        <ng-template #labelThree
+          ><ngx-orden-status status="Entregado"></ngx-orden-status
+        ></ng-template>
       </nb-step>
       <!-- <nb-step [label]="labelThree" [hidden]="true">
         <ng-template #labelThree></ng-template>
@@ -87,21 +127,16 @@
 
     <ng-container *ngIf="completo">
       <div class="row">
-        <h5>Pedido Finalizada</h5>
+        <h5>Pedido Finalizado</h5>
       </div>
       <div class="row">
         <p class="lorem">Aun no te han calificado por este trabajo...</p>
       </div>
     </ng-container>
-
   </nb-card-body>
   <nb-card-footer>
-    <div class="row">
-      <div class="col">
-        <button nbButton matRipple ghost status="primary" (click)="dismiss()">
-          Volver a Pedidos
-        </button>
-      </div>
-    </div>
+    <button nbButton matRipple ghost status="primary" (click)="dismiss()">
+      Volver a Pedidos
+    </button>
   </nb-card-footer>
 </nb-card>
