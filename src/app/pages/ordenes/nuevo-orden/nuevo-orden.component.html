@@ -1,6 +1,6 @@
 <nb-card class="main">
   <nb-card-header
-    >{{ modoEdicion ? 'Editar' : 'Nuevo' }} Orden de Reparacion</nb-card-header
+    >{{ modoEdicion ? 'Editar' : 'Nuevo' }} Pedido de Reparacion</nb-card-header
   >
   <nb-card-body class="m-2">
     <form [formGroup]="nuevoForm">
@@ -256,7 +256,7 @@
     <div class="row">
       <div class="col">
         <button nbButton matRipple ghost status="primary" (click)="goBack()">
-          Volver a Ordenes
+          Volver a Pedidos
         </button>
       </div>
       <div class="col">

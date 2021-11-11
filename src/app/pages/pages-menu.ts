@@ -23,7 +23,7 @@ export const MENU_ITEMS: NbMenuItem[] = [
     link: '/pages/tipo-reparaciones',
   },
   {
-    title: 'Ordenes',
+    title: 'Pedidos',
     icon: 'paper-plane-outline',
     link: '/pages/ordenes',
   }

@@ -37,11 +37,15 @@ nb-card-footer {
   font-size: 1.75rem;
 }
 
-nb-icon {
+nb-card-footer nb-icon {
   font-size: 1.55rem;
 
   ::ng-deep svg {
     vertical-align: top;
   }
+}
+
+.card-bottom {
+
 }
 

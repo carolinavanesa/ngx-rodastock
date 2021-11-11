@@ -1,6 +1,6 @@
-<nb-card status="primary" class="nueva-card">
+<nb-card status="primary" class="estado-card">
   <nb-card-header
-    >Actualizar estado de Orden N {{ orden.get('numero') }}</nb-card-header
+    >Actualizar estado de Pedido N {{ orden.get('numero') }}</nb-card-header
   >
   <nb-card-body class="m-2">
     <nb-stepper
@@ -87,7 +87,7 @@
 
     <ng-container *ngIf="completo">
       <div class="row">
-        <h5>Orden Finalizada</h5>
+        <h5>Pedido Finalizada</h5>
       </div>
       <div class="row">
         <p class="lorem">Aun no te han calificado por este trabajo...</p>
@@ -99,7 +99,7 @@
     <div class="row">
       <div class="col">
         <button nbButton matRipple ghost status="primary" (click)="dismiss()">
-          Volver a Ordenes
+          Volver a Pedidos
         </button>
       </div>
     </div>
