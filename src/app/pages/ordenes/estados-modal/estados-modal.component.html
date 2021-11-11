@@ -1,0 +1,107 @@
+<nb-card status="primary" class="nueva-card">
+  <nb-card-header
+    >Actualizar estado de Orden N {{ orden.get('numero') }}</nb-card-header
+  >
+  <nb-card-body class="m-2">
+    <nb-stepper
+      orientation="horizontal"
+      [linear]="true"
+      [disableStepNavigation]="true"
+      [selectedIndex]="selectedIndex"
+      *ngIf="!completo"
+    >
+      <nb-step [label]="labelOne" [completed]="estado !== 'Pendiente'">
+        <!-- <ng-template #labelOne>En Curso</ng-template> -->
+        <ng-template #labelOne>
+          <ngx-orden-status status="En Curso"></ngx-orden-status>
+        </ng-template>
+        <h5>Estado actual: <ngx-orden-status status="Pendiente"></ngx-orden-status></h5>
+        <p class="lorem">
+          Esta orden esta en la lista de pendientes. Continue con el siguiente
+          paso si va a comenzar con la reparacion
+        </p>
+        <button nbButton matRipple disabled nbStepperNext>Cancelar</button>
+        <button
+          nbButton
+          matRipple
+          nbStepperNext
+          (click)="cambiarEstado('En Curso')"
+        >
+          Comenzar
+        </button>
+      </nb-step>
+      <nb-step [label]="labelTwo" [completed]="estado !== 'Pendiente' && estado !== 'En Curso'">
+        <!-- <ng-template #labelTwo>Terminado</ng-template> -->
+        <ng-template #labelTwo>
+          <ngx-orden-status status="Terminado"></ngx-orden-status>
+        </ng-template>
+        <h5>Estado actual: <ngx-orden-status status="En Curso"></ngx-orden-status></h5>
+        <p class="lorem">
+          La orden esta en curso. Una vez finalizada presione Terminar
+        </p>
+        <button
+          nbButton
+          matRipple
+          nbStepperNext
+          (click)="cambiarEstado('Terminado')"
+        >
+          Terminar
+        </button>
+      </nb-step>
+      <nb-step [label]="labelThree" [completed]="estado !== 'Pendiente' && estado !== 'En Curso' && estado !== 'Terminado'">
+        <!-- <ng-template #labelThree>Entregada</ng-template> -->
+        <ng-template #labelThree>
+          <ngx-orden-status status="Entregado"></ngx-orden-status>
+        </ng-template>
+        <h5>Estado actual: <ngx-orden-status status="Terminado"></ngx-orden-status></h5>
+        <p class="lorem">La orden esta terminada y lista para ser retirada por el cliente</p>
+        <button nbButton matRipple (click)="cambiarEstado('Entregado')">Ya se retiro!</button>
+      </nb-step>
+      <!-- <nb-step [label]="labelFour" [completed]="estado == 'Entregado'">
+        <ng-template #labelFour>Entregada</ng-template>
+        <h5>Esta orden esta completa</h5>
+        <p class="lorem">Aun no te han calificado</p>
+      </nb-step> -->
+    </nb-stepper>
+
+
+    <nb-stepper
+      orientation="horizontal"
+      [disableStepNavigation]="true"
+      selectedIndex="3"
+      *ngIf="completo"
+    >
+      <nb-step [label]="labelOne" [completed]="true">
+        <ng-template #labelOne><ngx-orden-status status="En Curso"></ngx-orden-status></ng-template>
+      </nb-step>
+      <nb-step [label]="labelTwo" [completed]="true">
+        <ng-template #labelTwo><ngx-orden-status status="Terminado"></ngx-orden-status></ng-template>
+      </nb-step>
+      <nb-step [label]="labelThree" [completed]="true">
+        <ng-template #labelThree><ngx-orden-status status="Entregado"></ngx-orden-status></ng-template>
+      </nb-step>
+      <!-- <nb-step [label]="labelThree" [hidden]="true">
+        <ng-template #labelThree></ng-template>
+      </nb-step> -->
+    </nb-stepper>
+
+    <ng-container *ngIf="completo">
+      <div class="row">
+        <h5>Orden Finalizada</h5>
+      </div>
+      <div class="row">
+        <p class="lorem">Aun no te han calificado por este trabajo...</p>
+      </div>
+    </ng-container>
+
+  </nb-card-body>
+  <nb-card-footer>
+    <div class="row">
+      <div class="col">
+        <button nbButton matRipple ghost status="primary" (click)="dismiss()">
+          Volver a Ordenes
+        </button>
+      </div>
+    </div>
+  </nb-card-footer>
+</nb-card>

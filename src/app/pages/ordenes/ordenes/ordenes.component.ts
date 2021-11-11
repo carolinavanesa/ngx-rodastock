@@ -13,6 +13,8 @@ import { OrdenesService } from '../ordenes.service';
 export class OrdenesComponent implements OnInit, OnDestroy {
   searchText = '';
   ordenes = [];
+  ordenesEntrega = [];
+  ordenesLista = [];
 
   constructor(
     private service: OrdenesService,
@@ -27,13 +29,26 @@ export class OrdenesComponent implements OnInit, OnDestroy {
 
   ngOnDestroy() {}
 
+  clearSearch() {
+    this.searchText = '';
+  }
+
   cargarOrdenes() {
     this.service.cargarOrdenes().then((ordenes) => {
       this.ordenes = ordenes;
+      this.ordenesEntrega = this.ordenes.filter(o => isToday(o.fechaEntrega));
+      this.ordenesLista = this.ordenes.filter(o => o.estado === 'Terminado');
     });
   }
 
   nuevaOrden() {
     this.router.navigateByUrl(`pages/ordenes/nueva-orden`);
   }
+}
+
+const isToday = (someDate) => {
+  const today = new Date()
+  return someDate.getDate() == today.getDate() &&
+    someDate.getMonth() == today.getMonth() &&
+    someDate.getFullYear() == today.getFullYear()
 }

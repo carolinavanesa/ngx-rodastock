@@ -8,6 +8,7 @@ import {
   NbSelectModule,
   NbListModule,
   NbIconModule,
+  NbStepperModule,
 } from '@nebular/theme';
 
 import { ThemeModule } from '../../@theme/theme.module';
@@ -26,6 +27,8 @@ import { NuevoOrdenComponent } from './nuevo-orden/nuevo-orden.component';
 import { ClientesService } from '../clientes/clientes.service';
 import { InventarioService } from '../inventario/inventario.service';
 import { AgregarReparacionModalComponent } from './agregar-reparacion-modal/agregar-reparacion-modal.component';
+import { OrdenCardComponent } from './orden-card/orden-card.component';
+import { EstadosModalComponent } from './estados-modal/estados-modal.component';
 
 @NgModule({
   imports: [
@@ -41,6 +44,7 @@ import { AgregarReparacionModalComponent } from './agregar-reparacion-modal/agre
     NbListModule,
     NbIconModule,
     NbButtonModule,
+    NbStepperModule,
     Ng2SmartTableModule,
     SharedModalModule,
     SharedAngularMaterialModule,
@@ -53,6 +57,8 @@ import { AgregarReparacionModalComponent } from './agregar-reparacion-modal/agre
     NuevoOrdenComponent,
     AgregarReparacionModalComponent,
     FilterOrdenPipe,
+    OrdenCardComponent,
+    EstadosModalComponent,
   ],
   providers: [OrdenesService, InventarioService, ClientesService, TipoReparacionService],
 })

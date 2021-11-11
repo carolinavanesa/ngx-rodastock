@@ -94,12 +94,12 @@ export class NuevoOrdenComponent {
       Validators.maxLength(100),
     ]],
     cliente: ['', [Validators.required]],
-    rodado: ['', [Validators.required, Validators.maxLength(5)]],
-    fecha: new Date(),
-    fechaEntrega: new Date(),
+    rodado: ['', [Validators.required, Validators.maxLength(50)]],
+    fecha: [new Date(), [Validators.required]],
+    fechaEntrega: [new Date(), [Validators.required]],
     telefono: ['', [Validators.required, Validators.pattern('[0-9 ()-]*')]],
-    costoAdicional: [0, [Validators.maxLength(5), Validators.pattern('([0-9]+\.?[0-9]*|\.[0-9]+)')]],
-    entregaInicial: [0, [Validators.maxLength(5), Validators.pattern('([0-9]+\.?[0-9]*|\.[0-9]+)')]],
+    costoAdicional: [0, [Validators.maxLength(10), Validators.pattern('([0-9]+\.?[0-9]*|\.[0-9]+)')]],
+    entregaInicial: [0, [Validators.maxLength(10), Validators.pattern('([0-9]+\.?[0-9]*|\.[0-9]+)')]],
   });
 
   ngOnInit(): void {

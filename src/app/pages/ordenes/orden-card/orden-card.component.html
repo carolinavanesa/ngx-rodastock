@@ -1,0 +1,72 @@
+<nb-card size="large">
+  <div
+    class="picture"
+    style.background-image="url('{{ orden.imagen }}')"
+  ></div>
+
+  <div class="row m-2">
+    <div class="col">
+      <div class="h6">Orden #{{ orden.numero }}</div>
+    </div>
+    <div class="col">
+      <nb-icon icon="calendar-outline" pack="eva"></nb-icon
+      >{{ orden.fecha | date: 'dd/MM/yyyy' }}
+    </div>
+  </div>
+  <div class="row ml-1 mr-1">
+    <div class="col">
+      <nb-icon icon="person-outline" pack="eva"></nb-icon>
+      {{ orden.cliente.get('nombre') }}
+    </div>
+  </div>
+  <div class="row ml-1 mr-1">
+    <div class="col">
+      <nb-icon icon="phone-outline" pack="eva"></nb-icon>
+      {{ orden.cliente.get('telefono') }}
+    </div>
+  </div>
+  <div class="row ml-1 mr-1">
+    <div class="col">
+      <nb-icon icon="brush-outline" pack="eva"></nb-icon>
+      {{ orden.rodado }}
+    </div>
+  </div>
+  <div class="row ml-1 mr-1 mt-2" style="min-height: 200px">
+    <ul>
+      <li *ngFor="let rep of orden.reparaciones">
+        {{ rep.get('nombre') }}
+      </li>
+    </ul>
+  </div>
+  <div class="row ml-1 mr-1 mt-1">
+    <div class="col">
+      <nb-icon icon="paper-plane-outline" pack="eva"></nb-icon>
+      {{ orden.fechaEntrega | date: 'dd/MM/yyyy' }}
+    </div>
+    <div class="col">
+      <ngx-orden-status [status]="orden.estado"></ngx-orden-status>
+    </div>
+  </div>
+
+  <nb-card-footer>
+    <nb-icon icon="external-link-outline" pack="eva"></nb-icon>
+    <nb-icon icon="edit-outline" pack="eva" (click)="openEstadoModal()"></nb-icon>
+    <!-- <button mat-icon-button [matMenuTriggerFor]="menu" aria-label="Example icon-button with a menu">
+      <mat-icon>more_vert</mat-icon>
+    </button>
+    <mat-menu #menu="matMenu">
+      <button mat-menu-item>
+        <mat-icon>dialpad</mat-icon>
+        <span>Redial</span>
+      </button>
+      <button mat-menu-item disabled>
+        <mat-icon>voicemail</mat-icon>
+        <span>Check voice mail</span>
+      </button>
+      <button mat-menu-item>
+        <mat-icon>notifications_off</mat-icon>
+        <span>Disable alerts</span>
+      </button>
+    </mat-menu> -->
+  </nb-card-footer>
+</nb-card>

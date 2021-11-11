@@ -114,10 +114,11 @@ export class OrdenesService {
     nuevaOrden.relation('reparaciones').add(reparaciones);
     nuevaOrden.set('importe', importe);
 
-    const fileData = new Parse.File("orden-" + numero + ".png", file);
+
 
     try {
       if(file) {
+        const fileData = new Parse.File("orden-" + numero + ".png", file);
         const savedFile = await fileData.save();
         nuevaOrden.set('imagen', savedFile);
       }
@@ -126,6 +127,18 @@ export class OrdenesService {
       return true;
     } catch (e) {
       this.alertService.showErrorToast('Error', 'No se pudo generar la orden');
+      return false;
+    }
+  }
+
+  async cambiarEstado(estado: string, parseObject: any) {
+    try {
+      parseObject.set('estado', estado);
+      const res = await parseObject.save();
+      this.alertService.showSuccessToast('Exito', 'Orden en estado ' + estado  );
+      return true;
+    } catch (e) {
+      this.alertService.showErrorToast('Error', 'No se pudo cambiar el estado de la orden');
       return false;
     }
   }
