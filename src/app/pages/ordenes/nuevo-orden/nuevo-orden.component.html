@@ -162,6 +162,13 @@
         </div>
       </div>
 
+      <div>
+        <nb-alert *ngFor="let msg of erroresDeStock" outline="warning">
+          <p>Reparacion <b>{{ msg.reparacion }}</b> No hay suficiente stock para <b>{{ msg.repuesto }}</b>. Requerido: <b>{{ msg.cantidad }}</b>, Actual: <b>{{ msg.stock }}</b></p>
+        </nb-alert>
+      </div>
+
+
       <!-- COSTO TOTAL REPUESTOS -->
       <div class="row mt-2">
         <div class="col-6 col-md-9">

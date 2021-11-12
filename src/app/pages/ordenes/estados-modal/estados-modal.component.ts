@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { NbDialogRef } from '@nebular/theme';
 import { OrdenesService } from '../ordenes.service';
+import { ModalService } from '../../../shared/modal/modal.service';
 
 @Component({
   selector: 'ngx-estados-modal',
@@ -10,13 +11,14 @@ import { OrdenesService } from '../ordenes.service';
 export class EstadosModalComponent implements OnInit {
   constructor(
     protected ref: NbDialogRef<EstadosModalComponent>,
-    private service: OrdenesService
+    private service: OrdenesService,
+    private modalService: ModalService
   ) {}
 
   estado: string;
   orden: any;
   selectedIndex: number = 0;
-  cancelada: boolean;
+  cancelado: boolean;
   completo: boolean;
   nuevoEstado: string;
 
@@ -43,7 +45,7 @@ export class EstadosModalComponent implements OnInit {
         break;
 
       case 'Cancelado':
-        this.cancelada = true;
+        this.cancelado = true;
         break;
 
       default:
@@ -60,6 +62,24 @@ export class EstadosModalComponent implements OnInit {
           this.completo = true;
         }
       })
+  }
+
+  cancelar() {
+    const config = {
+      title: 'Cancelar Pedido',
+      body: `Estas seguro que quieres cancelar el pedido Nº ${this.orden.numero}`,
+      icon: 'exclamation',
+    };
+    this.modalService.showConfirmationModal(config).then(success =>
+      this.service
+      .cambiarEstado('Cancelado', this.orden)
+      .then((res) => {
+        this.nuevoEstado = 'Cancelado';
+        this.cancelado = true;
+      }));
+  }
+
+  eliminar() {
 
   }
 

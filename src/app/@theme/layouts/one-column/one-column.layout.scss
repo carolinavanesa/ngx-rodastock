@@ -7,3 +7,11 @@
     padding-top: nb-theme(layout-padding-top);
   }
 }
+
+@media print {
+  nb-layout-header,
+  nb-sidebar,
+  nb-layout-footer {
+    display: none !important;
+  }
+}

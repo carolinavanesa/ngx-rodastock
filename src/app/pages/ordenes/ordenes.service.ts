@@ -4,7 +4,6 @@ import { Parse } from 'parse';
 import { AlertService } from '../../shared/alert.service';
 
 const Orden = Parse.Object.extend('Orden');
-// const TipoReparacion = Parse.Object.extend('TipoReparacion');
 
 @Injectable()
 export class OrdenesService {
@@ -45,7 +44,7 @@ export class OrdenesService {
     } catch (e) {
       this.alertService.showPrimaryToast(
         'Error',
-        'No se pudo cargar el tipoReparacion'
+        'No se pudo cargar los pedidos'
       );
     }
 
@@ -56,6 +55,7 @@ export class OrdenesService {
     const query = new Parse.Query(Orden);
     query.equalTo('deleted', false);
     query.equalTo('objectId', id);
+    query.include('cliente');
     let result;
 
     try {
@@ -63,7 +63,7 @@ export class OrdenesService {
       const reparaciones = await result.get('reparaciones').query().find();
       result.reparacionesFetched = reparaciones;
     } catch (e) {
-      this.alertService.showPrimaryToast('Error', 'No se pudo cargar la orden');
+      this.alertService.showPrimaryToast('Error', 'No se pudo cargar el pedido');
     }
 
     return result;
@@ -77,7 +77,7 @@ export class OrdenesService {
     try {
       result = await query.count();
     } catch (e) {
-      this.alertService.showPrimaryToast('Error', 'No se pudo cargar la orden');
+      this.alertService.showPrimaryToast('Error', 'No se pudo cargar el pedido');
     }
 
     let resultStr = result.toString();
@@ -123,10 +123,10 @@ export class OrdenesService {
         nuevaOrden.set('imagen', savedFile);
       }
       const res = await nuevaOrden.save();
-      this.alertService.showSuccessToast('Exito', 'Se ha generado una nueva Orden');
+      this.alertService.showSuccessToast('Exito', 'Se ha generado un nuevo Pedido Nº ' + numero);
       return true;
     } catch (e) {
-      this.alertService.showErrorToast('Error', 'No se pudo generar la orden');
+      this.alertService.showErrorToast('Error', 'No se pudo generar el pedido');
       return false;
     }
   }
@@ -135,10 +135,22 @@ export class OrdenesService {
     try {
       parseObject.set('estado', estado);
       const res = await parseObject.save();
-      this.alertService.showSuccessToast('Exito', 'Orden en estado ' + estado  );
+      this.alertService.showSuccessToast('Exito', 'Pedido en estado ' + estado  );
       return true;
     } catch (e) {
-      this.alertService.showErrorToast('Error', 'No se pudo cambiar el estado de la orden');
+      this.alertService.showErrorToast('Error', 'No se pudo cambiar el estado del pedido');
+      return false;
+    }
+  }
+
+  async eliminar(parseObject: any) {
+    try {
+      parseObject.set('deleted', true);
+      const res = await parseObject.save();
+      this.alertService.showSuccessToast('Exito', 'Se elimino el Pedido Nº' + parseObject.get('numero')  );
+      return true;
+    } catch (e) {
+      this.alertService.showErrorToast('Error', 'No se pudo eliminar el pedido');
       return false;
     }
   }

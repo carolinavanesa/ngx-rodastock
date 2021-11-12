@@ -3,6 +3,7 @@ import { RouterModule, Routes } from '@angular/router';
 import { OrdenesMainComponent } from './ordenes-main.component';
 import { OrdenesComponent } from './ordenes/ordenes.component';
 import { NuevoOrdenComponent } from './nuevo-orden/nuevo-orden.component';
+import { DetalleOrdenComponent } from './detalle-orden/detalle-orden.component';
 
 const routes: Routes = [
   {
@@ -17,10 +18,10 @@ const routes: Routes = [
         path: 'nueva-orden',
         component: NuevoOrdenComponent,
       },
-      // {
-      //   path: 'editar-reparacion/:id',
-      //   component: NuevoReparacionComponent,
-      // },
+      {
+        path: 'detalle-orden/:id',
+        component: DetalleOrdenComponent,
+      },
     ]
   }
 ];

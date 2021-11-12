@@ -26,7 +26,6 @@ export class AgregarReparacionModalComponent {
 
   nuevoForm: FormGroup = this.formBuilder.group({
     reparacion: ['' , [Validators.required]],
-    // cantidad: ['', [Validators.required, Validators.maxLength(3), Validators.pattern('[0-9]*')]],
   });
 
   ngOnInit() {
@@ -54,6 +53,8 @@ export class AgregarReparacionModalComponent {
   confirm() {
     // Objeto completo de unidad para ser guardado en la pantalla de reparacion
     const reparacion = this.options.find(r => r.get('nombre') === this.nuevoForm.get('reparacion').value)
+
+    reparacion
 
     if (!reparacion) {
       this.alertService.showErrorToast('Error', 'Seleccione una reaparacion existente')

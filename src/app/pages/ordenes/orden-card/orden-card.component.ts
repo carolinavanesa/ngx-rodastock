@@ -2,6 +2,7 @@ import { Component, OnInit, Input } from '@angular/core';
 import { NbDialogService } from '@nebular/theme';
 import { EstadosModalComponent } from '../estados-modal/estados-modal.component';
 import { take } from 'rxjs/operators';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'ngx-orden-card',
@@ -11,7 +12,7 @@ import { take } from 'rxjs/operators';
 export class OrdenCardComponent {
   @Input() orden: any;
 
-  constructor(private dialogService: NbDialogService) {}
+  constructor(private dialogService: NbDialogService, private router: Router) {}
 
   openEstadoModal(){
     this.dialogService
@@ -29,6 +30,12 @@ export class OrdenCardComponent {
           this.orden.estado = res;
         }
       });
+  }
+
+  openDetalle(){
+    this.router.navigateByUrl(
+      `pages/ordenes/detalle-orden/${this.orden.id}`
+    );
   }
 
 }

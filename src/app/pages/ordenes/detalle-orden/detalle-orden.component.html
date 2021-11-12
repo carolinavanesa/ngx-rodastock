@@ -1,0 +1,141 @@
+<nb-card class="main">
+  <nb-card-header>Detalle del Pedido</nb-card-header>
+  <nb-card-body class="m-2" *ngIf="orden">
+    <div class="row">
+      <!-- ORDEN N -->
+      <div class="col-6 col-md-6 col-xs-6 mt-2">
+        <h5>ORDEN DE REPARACION Nº: {{ orden.get('numero') }}</h5>
+      </div>
+
+      <!-- FECHA PEDIDO -->
+      <div class="col-6 col-md-6 col-xs-6 mt-2">
+        <div class="row">
+          <div class="text-hint">Fecha:</div>
+          <div class="ml-3">
+            {{ orden.get('fecha') | date: 'dd/MM/yyyy' }}
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- CLIENTE -->
+    <div class="row mt-4">
+      <div class="col-xs-6 col-6 col-md-2 col-lg-2 text-hint">Cliente:</div>
+      <div class="col-xs-6 col-6 col-md-9 col-lg-9">
+        {{ orden.get('cliente').get('nombre') }}
+      </div>
+    </div>
+
+    <!-- TELEFONO -->
+    <div class="row mt-2">
+      <div class="col-xs-6 col-6 col-md-2 col-lg-2 text-hint">Telefono:</div>
+      <div class="col-xs-6 col-6 col-md-9 col-lg-9">
+        {{ orden.get('telefono') }}
+      </div>
+    </div>
+
+    <!-- RODADO -->
+    <div class="row mt-2">
+      <div class="col-xs-6 col-6 col-md-2 col-lg-2 text-hint">Rodado:</div>
+      <div class="col-xs-6 col-6 col-md-9 col-lg-9">
+        {{ orden.get('rodado') }}
+      </div>
+    </div>
+
+    <div class="row mt-2">
+      <!-- OBSERVACIONES -->
+      <div class="col-xs-6 col-6 col-md-2 col-lg-2 text-hint">Observaciones:</div>
+      <div class="col-xs-6 col-6 col-md-9 col-lg-9">
+        {{ orden.get('observaciones') }}
+      </div>
+    </div>
+
+    <!-- Reparaciones a realizar -->
+    <div class="row m-5 w-100">
+      <table class="table">
+        <thead>
+          <tr>
+            <th scope="col" style="width: 60%">Reparacion</th>
+            <th scope="col">Costo Mano de Obra</th>
+            <th scope="col">Costo Repuestos</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let item of reparaciones">
+            <td>{{ item.nombre }}</td>
+            <td>{{ item.costoMano | currency }}</td>
+            <td>{{ item.costoRepuestos | currency }}</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <!-- COSTO TOTAL REPUESTOS -->
+    <div class="row mt-2">
+      <div class="col-6 col-md-9">
+        <p class="float-right">Costo total de repuestos:</p>
+      </div>
+
+      <div class="col-6 col-md-3">
+        <p>{{ costoTotalRepuestos | currency }}</p>
+      </div>
+    </div>
+
+    <!-- COSTO TOTAL MANO -->
+    <div class="row mt-2">
+      <div class="col-6 col-md-9">
+        <p class="float-right">Costo total de mano de obra:</p>
+      </div>
+
+      <div class="col-6 col-md-3">
+        <p>{{ costoTotalMano | currency }}</p>
+      </div>
+    </div>
+
+    <!-- COSTO ADICIONAL -->
+    <div class="row mt-2" *ngIf="orden.get('costoAdicional') > 0">
+      <div class="col-6 col-md-9">
+        <p class="float-right">Costo adicional:</p>
+      </div>
+
+      <div class="col-6 col-md-3">
+        <p>{{ orden.get('costoAdicional') | currency }}</p>
+      </div>
+    </div>
+
+    <!-- COSTO TOTAL -->
+    <div class="row mt-2">
+      <div class="col-6 col-md-9">
+        <h5 class="float-right">TOTAL:</h5>
+      </div>
+      <div class="col-6 col-md-3">
+        <h5>
+          {{ calcularCostoTotalOrden() | currency }}
+        </h5>
+      </div>
+    </div>
+
+    <div class="row mt-4">
+      <div class="col-12 col-md-6 col-xs-12">
+        Fecha de Entrega: {{ orden.get('fechaEntrega') | date: 'dd/MM/yyyy' }}
+      </div>
+      <div class="col-12 col-md-6 col-xs-12 w-100">
+        Entrega inicial: {{ orden.get('entregaInicial') | currency }}
+      </div>
+    </div>
+  </nb-card-body>
+  <nb-card-footer>
+    <div class="row">
+      <div class="col">
+        <button nbButton matRipple ghost status="primary" (click)="goBack()">
+          Volver a Pedidos
+        </button>
+      </div>
+      <div class="col">
+        <button nbButton matRipple hero status="primary" (click)="print()" class="float-right">
+          Imprimir
+        </button>
+      </div>
+    </div>
+  </nb-card-footer>
+</nb-card>

@@ -1,0 +1,13 @@
+@media print {
+  nb-card.main {
+    nb-card-footer,
+    nb-card-header {
+      display: none !important;
+    }
+  }
+}
+
+@page {
+  size: auto;
+  margin: 0mm;
+}

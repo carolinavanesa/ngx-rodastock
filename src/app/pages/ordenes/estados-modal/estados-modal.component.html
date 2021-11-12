@@ -8,7 +8,7 @@
       [linear]="true"
       [disableStepNavigation]="true"
       [selectedIndex]="selectedIndex"
-      *ngIf="!completo"
+      *ngIf="!completo && !cancelado"
     >
       <nb-step [label]="labelOne" [completed]="estado !== 'Pendiente'">
         <!-- <ng-template #labelOne>En Curso</ng-template> -->
@@ -22,6 +22,15 @@
         <p class="lorem">Este pedido esta en espera</p>
 
         <div class="row">
+          <button
+            nbButton
+            matRipple
+            status="danger"
+            class="mx-auto"
+            (click)="cancelar()"
+          >
+            Cancelar
+          </button>
           <button
             nbButton
             matRipple
@@ -131,6 +140,24 @@
       </div>
       <div class="row">
         <p class="lorem">Aun no te han calificado por este trabajo...</p>
+      </div>
+    </ng-container>
+
+    <ng-container *ngIf="cancelado">
+      <div class="row">
+        <h5>Pedido Cancelado</h5>
+      </div>
+      <div class="row">
+        <p class="lorem">Puede eliminar este pedido de la lista de pedidos. Esta seguro? </p>
+        <button
+          nbButton
+          matRipple
+          status="danger"
+          class="mx-auto"
+          (click)="eliminar()"
+        >
+          Eliminar
+        </button>
       </div>
     </ng-container>
   </nb-card-body>

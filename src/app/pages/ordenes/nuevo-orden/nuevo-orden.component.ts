@@ -53,6 +53,11 @@ export class NuevoOrdenComponent {
         type: 'text',
         filter: false,
       },
+      detalle: {
+        title: 'Detalle Repuestos',
+        type: 'text',
+        filter: false,
+      },
       costoMano: {
         title: 'Costo de Mano',
         type: 'text',
@@ -75,6 +80,8 @@ export class NuevoOrdenComponent {
   costoTotalMano = 0;
   clienteOptions = [];
   tipoReparacionesOptions = [];
+  repuestoInventario = [];
+  erroresDeStock = [];
   fileToUpload: File | null = null;
 
   constructor(
@@ -82,6 +89,7 @@ export class NuevoOrdenComponent {
     private service: OrdenesService,
     private tipoReparacionService: TipoReparacionService,
     private clienteService: ClientesService,
+    private inventarioService: InventarioService,
     private route: ActivatedRoute,
     private router: Router,
     private modalService: ModalService,
@@ -90,16 +98,26 @@ export class NuevoOrdenComponent {
   ) {}
 
   nuevoForm: FormGroup = this.formBuilder.group({
-    observaciones: ['', [
-      Validators.maxLength(100),
-    ]],
+    observaciones: ['', [Validators.maxLength(100)]],
     cliente: ['', [Validators.required]],
     rodado: ['', [Validators.required, Validators.maxLength(50)]],
     fecha: [new Date(), [Validators.required]],
     fechaEntrega: [new Date(), [Validators.required]],
     telefono: ['', [Validators.required, Validators.pattern('[0-9 ()-]*')]],
-    costoAdicional: [0, [Validators.maxLength(10), Validators.pattern('([0-9]+\.?[0-9]*|\.[0-9]+)')]],
-    entregaInicial: [0, [Validators.maxLength(10), Validators.pattern('([0-9]+\.?[0-9]*|\.[0-9]+)')]],
+    costoAdicional: [
+      0,
+      [
+        Validators.maxLength(10),
+        Validators.pattern('([0-9]+.?[0-9]*|.[0-9]+)'),
+      ],
+    ],
+    entregaInicial: [
+      0,
+      [
+        Validators.maxLength(10),
+        Validators.pattern('([0-9]+.?[0-9]*|.[0-9]+)'),
+      ],
+    ],
   });
 
   ngOnInit(): void {
@@ -111,7 +129,6 @@ export class NuevoOrdenComponent {
       //   this.nuevoForm.patchValue({
       //     nombre: orden.get('nombre'),
       //   });
-
       //   this.reparaciones = orden.repuestosFetched.map((reparacion) => {
       //     return {
       //       id: reparacion.id,
@@ -121,7 +138,6 @@ export class NuevoOrdenComponent {
       //       costoMano: reparacion.get('costoMano'),
       //     };
       //   });
-
       //   this.calcularCostoTotalReparaciones();
       //   this.source.load(this.reparaciones);
       //   this.modoEdicion = true;
@@ -141,6 +157,9 @@ export class NuevoOrdenComponent {
       .then(
         (tipoReparaciones) => (this.tipoReparacionesOptions = tipoReparaciones)
       );
+    this.inventarioService
+      .cargarInventario()
+      .then((repuestos) => (this.repuestoInventario = repuestos));
   }
 
   ngOnDestroy() {}
@@ -227,7 +246,36 @@ export class NuevoOrdenComponent {
               .get('fechaEntrega')
               .setValue(this.calcularTiempoEstimadoTarea());
           }
+
+          // Comprobar si hay stock de las unidades necesarias para la reparacion
+          this.comprobarStockReparacion(res);
         }
+      });
+  }
+
+  comprobarStockReparacion(result: any) {
+    debugger;
+    this.tipoReparacionService
+      .getTipoReparacion(result.id)
+      .then((reparacion) => {
+        let detalleRepuesto = ''
+        reparacion.repuestosFetched.forEach((rep) => {
+          const nombre = rep.get('repuesto')?.get('nombre');
+          const stock = rep.get('repuesto')?.get('stock');
+          const cantidad = rep.get('cantidad');
+          if (stock < rep.get('cantidad')) {
+            this.erroresDeStock.push({
+              reparacion: reparacion.get('nombre'),
+              repuesto: nombre,
+              stock: stock,
+              cantidad: cantidad
+            });
+          }
+
+          detalleRepuesto += nombre + ': ' + cantidad + ' , '
+        });
+        result.detalle = detalleRepuesto;
+        this.source.load(this.reparaciones);
       });
   }
 
@@ -236,7 +284,9 @@ export class NuevoOrdenComponent {
   }
 
   confirm() {
-    const cliente = this.clienteOptions.find(c => c.id === this.nuevoForm.get('cliente').value);
+    const cliente = this.clienteOptions.find(
+      (c) => c.id === this.nuevoForm.get('cliente').value
+    );
 
     if (!this.modoEdicion) {
       this.service
@@ -249,9 +299,9 @@ export class NuevoOrdenComponent {
           this.nuevoForm.get('observaciones').value,
           Number(this.nuevoForm.get('costoAdicional').value) || 0,
           this.nuevoForm.get('fechaEntrega').value,
-          this.reparaciones.map(rep => rep.reparacion),
+          this.reparaciones.map((rep) => rep.reparacion),
           this.calcularCostoTotalOrden(),
-          this.fileToUpload,
+          this.fileToUpload
         )
         .then((res) => this.router.navigateByUrl(`pages/ordenes`));
     } else {
@@ -263,8 +313,8 @@ export class NuevoOrdenComponent {
     if (!event.data.id) {
       event.confirm.resolve();
     } else {
-     // TODO: Se puede editar una orden?
+      // TODO: Se puede editar una orden?
     }
-    this.calcularCostoTotalReparaciones
+    this.calcularCostoTotalReparaciones;
   }
 }
