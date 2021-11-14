@@ -6,6 +6,7 @@ export const MENU_ITEMS: NbMenuItem[] = [
     icon: 'shopping-cart-outline',
     link: '/pages/dashboard',
     home: true,
+    // data: { role: 'admin'}
   },
   {
     title: 'Clientes',
@@ -28,3 +29,19 @@ export const MENU_ITEMS: NbMenuItem[] = [
     link: '/pages/ordenes',
   }
 ];
+
+export const MENU_ITEMS_CLIENTE: NbMenuItem[] = [
+  {
+    title: 'Dashboard',
+    icon: 'shopping-cart-outline',
+    link: '/pages/dashboard-cliente',
+    home: true,
+    // data: { role: 'admin'}
+  },
+  {
+    title: 'Mis Pedidos',
+    icon: 'paper-plane-outline',
+    link: '/pages/mis-pedidos',
+  }
+];
+

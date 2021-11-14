@@ -1,6 +1,8 @@
 import { Component } from '@angular/core';
 
-import { MENU_ITEMS } from './pages-menu';
+import { MENU_ITEMS, MENU_ITEMS_CLIENTE } from './pages-menu';
+import { LoginService } from '../auth/login/login.service';
+import { NbMenuItem } from '@nebular/theme';
 
 @Component({
   selector: 'ngx-pages',
@@ -13,6 +15,15 @@ import { MENU_ITEMS } from './pages-menu';
   `,
 })
 export class PagesComponent {
+  menu: NbMenuItem[];
 
-  menu = MENU_ITEMS;
+  constructor(private loginService: LoginService) {
+    const currentUser = this.loginService.getCurrentUser();
+    if (currentUser.get('role') === 'admin') {
+      this.menu = MENU_ITEMS;
+    } else {
+      this.menu = MENU_ITEMS_CLIENTE;
+    }
+  }
+
 }

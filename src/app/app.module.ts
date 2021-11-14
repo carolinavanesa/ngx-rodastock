@@ -21,6 +21,7 @@ import { ReactiveFormsModule } from '@angular/forms';
 import { LoginGuard } from './auth/login/login.guard';
 import { AlertService } from './shared/alert.service';
 import { LoginService } from './auth/login/login.service';
+import { AdminGuard } from './pages/admin.guard';
 
 @NgModule({
   declarations: [AppComponent],
@@ -43,7 +44,7 @@ import { LoginService } from './auth/login/login.service';
     ThemeModule.forRoot(),
   ],
   bootstrap: [AppComponent],
-  providers: [LoginGuard, AlertService, LoginService]
+  providers: [LoginGuard, AlertService, LoginService, AdminGuard]
 })
 export class AppModule {
 }

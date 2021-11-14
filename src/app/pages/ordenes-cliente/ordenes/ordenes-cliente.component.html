@@ -1,0 +1,63 @@
+<nb-card>
+  <nb-card-header>Pedidos</nb-card-header>
+
+  <nb-card-body>
+    <div class="row">
+
+      <div class="col col-md-10 col-lg-10">
+        <nb-icon icon="search-outline" pack="eva" class="mr-4"></nb-icon>
+        <mat-form-field floatLabel="never">
+          <input
+            matInput
+            [(ngModel)]="searchText"
+            placeholder="Buscar"
+            autocomplete="off"
+          />
+        </mat-form-field>
+        <nb-icon
+          style="cursor: pointer"
+          (click)="clearSearch()"
+          icon="close-outline"
+          pack="eva"
+          class="ml-4"
+        ></nb-icon>
+      </div>
+    </div>
+
+    <nb-tabset fullWidth class="w-100">
+      <nb-tab tabTitle="Todas" class="w-100">
+        <div class="row">
+          <div
+            *ngFor="let orden of ordenes | filterOrden: searchText"
+            class="col-md-4 col-12 col-xs-12 col-lg-3"
+          >
+            <ngx-orden-cliente-card [orden]="orden" (estadoChanged)="cargarOrdenes()"></ngx-orden-cliente-card>
+          </div>
+          <!-- <h4 class="mt-4 mx-auto" *ngIf="ordenes.length === 0">Aun no tenes pedidos!</h4> -->
+        </div>
+      </nb-tab>
+      <nb-tab tabTitle="Entrega hoy" class="w-100">
+        <div class="row">
+          <div
+            *ngFor="let orden of ordenesEntrega | filterOrden: searchText"
+            class="col-md-4 col-12 col-xs-12 col-lg-3"
+          >
+            <ngx-orden-cliente-card [orden]="orden" (estadoChanged)="cargarOrdenes()"></ngx-orden-cliente-card>
+          </div>
+          <h4 class="mt-4 mx-auto" *ngIf="ordenesEntrega.length === 0">No hay pedidos para entregar hoy!</h4>
+        </div>
+      </nb-tab>
+      <nb-tab tabTitle="Para retiro" class="w-100">
+        <div class="row">
+          <div
+            *ngFor="let orden of ordenesLista | filterOrden: searchText"
+            class="col-md-4 col-12 col-xs-12 col-lg-3"
+          >
+            <ngx-orden-cliente-card [orden]="orden" (estadoChanged)="cargarOrdenes()"></ngx-orden-cliente-card>
+          </div>
+          <h4 class="mt-4 mx-auto" *ngIf="ordenesLista.length === 0">No hay pedidos listos para su retiro!</h4>
+        </div>
+      </nb-tab>
+    </nb-tabset>
+  </nb-card-body>
+</nb-card>
