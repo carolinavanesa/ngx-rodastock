@@ -1,4 +1,4 @@
-import { Component, OnInit, Input } from '@angular/core';
+import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
 import { NbDialogService } from '@nebular/theme';
 import { EstadosModalComponent } from '../estados-modal/estados-modal.component';
 import { take } from 'rxjs/operators';
@@ -11,6 +11,7 @@ import { Router } from '@angular/router';
 })
 export class OrdenCardComponent {
   @Input() orden: any;
+  @Output() estadoChanged = new EventEmitter<boolean>();
 
   constructor(private dialogService: NbDialogService, private router: Router) {}
 
@@ -26,8 +27,15 @@ export class OrdenCardComponent {
       .toPromise()
       .then((res) => {
         if (res) {
-          this.orden.orden.set('estado', res);
-          this.orden.estado = res;
+          // if (res === 'Eliminado') {
+          //   this.router.navigateByUrl(
+          //     `pages/ordenes`
+          //   );
+          // } else {
+            this.orden.orden.set('estado', res);
+            this.orden.estado = res;
+            this.estadoChanged.emit(true);
+          // }
         }
       });
   }

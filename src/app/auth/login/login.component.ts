@@ -12,8 +12,13 @@ export class LoginComponent implements OnInit {
     constructor(private formBuilder: FormBuilder, private loginService: LoginService) {}
 
     loginForm: FormGroup = this.formBuilder.group({
-      username: ['', Validators.required],
-      password: ['', Validators.required],
+      email: ['', [
+        Validators.required,
+        Validators.pattern(
+          "^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:.[a-zA-Z0-9-]+)*$"
+        ),
+      ]],
+      password: ['', [Validators.required]],
     })
 
     ngOnInit(){
@@ -25,7 +30,7 @@ export class LoginComponent implements OnInit {
         return;
       }
 
-      this.loginService.login(this.loginForm.get('username').value, this.loginForm.get('password').value);
+      this.loginService.login(this.loginForm.get('email').value, this.loginForm.get('password').value);
     }
 
     getConfigValue(key: string): any {}

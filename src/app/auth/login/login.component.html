@@ -9,8 +9,14 @@
 
               <div class="row">
                 <mat-form-field class="mx-auto">
-                  <mat-label>Usuario</mat-label>
-                  <input formControlName="username" matInput autocomplete="off" />
+                  <mat-label>Email</mat-label>
+                  <input
+                    formControlName="email"
+                    type="email"
+                    matInput
+                    autocomplete="off"
+                    maxLength="50"
+                  />
                   <!-- <mat-hint>hint</mat-hint> -->
                 </mat-form-field>
               </div>
@@ -30,12 +36,24 @@
                 [disabled]="!loginForm.valid"
                 nbButton
                 matRipple
+                maxLength="50"
                 status="primary"
               >
                 Login
               </button>
             </div>
             </form>
+
+            <div class="row mt-4">
+              <button
+                [routerLink]="['/auth/register']"
+                class="mx-auto"
+                nbButton
+                matRipple
+                ghost
+                status="primary"
+              >Registrarse</button>
+            </div>
           </nb-card-body>
         </nb-card>
       </div>

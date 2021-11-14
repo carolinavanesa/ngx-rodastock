@@ -28,6 +28,7 @@ export class NuevoClienteModalComponent {
     nombre: ['', [Validators.required, Validators.maxLength(30), Validators.pattern("[a-zA-Z ,']*")]],
     barrio: ['', [Validators.required, Validators.maxLength(30), Validators.pattern("[a-zA-Z0-9 ,']*")]],
     telefono: ['', [Validators.required, Validators.pattern('[0-9 ()-]*')]],
+    email: ['', [Validators.required, Validators.pattern("^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:\.[a-zA-Z0-9-]+)*$")]],
   });
 
   // matcher = new MyErrorStateMatcher();
@@ -41,7 +42,8 @@ export class NuevoClienteModalComponent {
       .agregarCliente(
         this.nuevoForm.get('nombre').value,
         this.nuevoForm.get('barrio').value,
-        Number(this.nuevoForm.get('telefono').value)
+        Number(this.nuevoForm.get('telefono').value),
+        this.nuevoForm.get('email').value,
       )
       .then((res) => this.ref.close(true))
       .catch((e) => this.ref.close(false));

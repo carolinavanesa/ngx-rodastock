@@ -90,9 +90,7 @@ export class NuevoOrdenComponent {
     private tipoReparacionService: TipoReparacionService,
     private clienteService: ClientesService,
     private inventarioService: InventarioService,
-    private route: ActivatedRoute,
     private router: Router,
-    private modalService: ModalService,
     private alertService: AlertService,
     private dialogService: NbDialogService
   ) {}
@@ -121,32 +119,9 @@ export class NuevoOrdenComponent {
   });
 
   ngOnInit(): void {
-    const id = this.route.snapshot.paramMap.get('id');
-    if (id) {
-      // // traer el objeto con ese id y patchear el form
-      // this.service.getOrden(id).then((orden) => {
-      //   this.ordenAEditar = orden;
-      //   this.nuevoForm.patchValue({
-      //     nombre: orden.get('nombre'),
-      //   });
-      //   this.reparaciones = orden.repuestosFetched.map((reparacion) => {
-      //     return {
-      //       id: reparacion.id,
-      //       nombre: reparacion.get('nombre'),
-      //       descripcion: reparacion.get('descripcion'),
-      //       tiempoEstimado: reparacion.get('tiempoEstimado'),
-      //       costoMano: reparacion.get('costoMano'),
-      //     };
-      //   });
-      //   this.calcularCostoTotalReparaciones();
-      //   this.source.load(this.reparaciones);
-      //   this.modoEdicion = true;
-      // });
-    } else {
-      this.service.getSiguienteNumeroOrden().then((numero) => {
-        this.numeroOrdenSiguiente = Number(numero);
-      });
-    }
+    this.service.getSiguienteNumeroOrden().then((numero) => {
+      this.numeroOrdenSiguiente = Number(numero);
+    });
 
     // Necesarias para cargar la orden
     this.clienteService
@@ -254,11 +229,10 @@ export class NuevoOrdenComponent {
   }
 
   comprobarStockReparacion(result: any) {
-    debugger;
     this.tipoReparacionService
       .getTipoReparacion(result.id)
       .then((reparacion) => {
-        let detalleRepuesto = ''
+        let detalleRepuesto = '';
         reparacion.repuestosFetched.forEach((rep) => {
           const nombre = rep.get('repuesto')?.get('nombre');
           const stock = rep.get('repuesto')?.get('stock');
@@ -268,11 +242,11 @@ export class NuevoOrdenComponent {
               reparacion: reparacion.get('nombre'),
               repuesto: nombre,
               stock: stock,
-              cantidad: cantidad
+              cantidad: cantidad,
             });
           }
 
-          detalleRepuesto += nombre + ': ' + cantidad + ' , '
+          detalleRepuesto += nombre + ': ' + cantidad + ' , ';
         });
         result.detalle = detalleRepuesto;
         this.source.load(this.reparaciones);

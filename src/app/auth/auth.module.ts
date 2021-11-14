@@ -5,6 +5,7 @@ import { AuthComponent } from './auth.component';
 
 import { AuthRoutingModule } from './auth-routing.module';
 import { LoginComponent } from './login/login.component';
+import { RegistroComponent } from './registro/registro.component';
 import { ReactiveFormsModule } from '@angular/forms';
 import { NbButtonModule, NbCardModule, NbLayoutModule } from '@nebular/theme';
 import { SharedAngularMaterialModule } from '../shared/shared-angular-material.module';
@@ -22,7 +23,8 @@ import { SharedAngularMaterialModule } from '../shared/shared-angular-material.m
   ],
   declarations: [
     AuthComponent,
-    LoginComponent
+    LoginComponent,
+    RegistroComponent,
   ],
 })
 export class AuthModule {

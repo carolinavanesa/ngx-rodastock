@@ -1,7 +1,5 @@
 import { Component, OnDestroy, OnInit, ViewEncapsulation } from '@angular/core';
 import { Router } from '@angular/router';
-import { NbDialogService } from '@nebular/theme';
-import { ModalService } from '../../../shared/modal/modal.service';
 import { OrdenesService } from '../ordenes.service';
 
 @Component({
@@ -10,7 +8,7 @@ import { OrdenesService } from '../ordenes.service';
   templateUrl: './ordenes.component.html',
   encapsulation: ViewEncapsulation.None,
 })
-export class OrdenesComponent implements OnInit, OnDestroy {
+export class OrdenesComponent implements OnInit {
   searchText = '';
   ordenes = [];
   ordenesEntrega = [];
@@ -18,16 +16,12 @@ export class OrdenesComponent implements OnInit, OnDestroy {
 
   constructor(
     private service: OrdenesService,
-    private modalService: ModalService,
-    private dialogService: NbDialogService,
     private router: Router
   ) {}
 
   ngOnInit() {
     this.cargarOrdenes();
   }
-
-  ngOnDestroy() {}
 
   clearSearch() {
     this.searchText = '';
@@ -36,7 +30,7 @@ export class OrdenesComponent implements OnInit, OnDestroy {
   cargarOrdenes() {
     this.service.cargarOrdenes().then((ordenes) => {
       this.ordenes = ordenes;
-      this.ordenesEntrega = this.ordenes.filter(o => isToday(o.fechaEntrega));
+      this.ordenesEntrega = this.ordenes.filter(o => isToday(o.fechaEntrega) && o.estado !== 'Cancelado' && o.estado !== 'Entregado');
       this.ordenesLista = this.ordenes.filter(o => o.estado === 'Terminado');
     });
   }

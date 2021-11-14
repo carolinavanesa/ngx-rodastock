@@ -51,6 +51,10 @@ export class ClientesComponent implements OnInit, OnDestroy {
         title: 'Telefono',
         type: 'number',
       },
+      email: {
+        title: 'Email',
+        type: 'number',
+      },
     },
   };
 
@@ -96,7 +100,8 @@ export class ClientesComponent implements OnInit, OnDestroy {
       .agregarCliente(
         event.newData.nombre,
         event.newData.barrio,
-        Number(event.newData.telefono)
+        Number(event.newData.telefono),
+        event.newData.email,
       )
       .then((res) => {
         if (res) {

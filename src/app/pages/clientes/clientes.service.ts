@@ -37,12 +37,14 @@ export class ClientesService {
   async agregarCliente(
     nombre: string,
     barrio: string,
-    telefono: number
+    telefono: number,
+    email: string,
   ): Promise<boolean> {
     const nuevoCliente = new Cliente();
     nuevoCliente.set('nombre', nombre);
     nuevoCliente.set('barrio', barrio);
     nuevoCliente.set('telefono', telefono);
+    nuevoCliente.set('email', email);
 
     try {
       nuevoCliente.save();

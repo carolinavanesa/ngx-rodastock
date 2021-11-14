@@ -24,7 +24,7 @@
 
       <div class="row m-3">
         <mat-form-field class="mx-auto w-100">
-          <mat-label>Barrio</mat-label>
+          <mat-label>Barrio y Direccion</mat-label>
           <input
             formControlName="barrio"
             type="text"
@@ -70,6 +70,30 @@
           </mat-error>
           <mat-hint>Solo se permiten numero</mat-hint>
           <!-- <mat-hint>hint</mat-hint> -->
+        </mat-form-field>
+      </div>
+
+      <div class="row m-3">
+        <mat-form-field class="mx-auto w-100">
+          <mat-label>Email</mat-label>
+          <input
+            formControlName="email"
+            matInput
+            autocomplete="off"
+            maxlength="30"
+          />
+          <mat-error
+            *ngIf="
+              nuevoForm.get('email').hasError('pattern') &&
+              !nuevoForm.get('email').hasError('required')
+            "
+          >
+            Por favor ingrese un email válido.
+          </mat-error>
+          <mat-error *ngIf="nuevoForm.get('email').hasError('required')">
+            Este campo es requerido
+          </mat-error>
+          <mat-hint>ejemplo@ejemplo.com</mat-hint>
         </mat-form-field>
       </div>
     </form>

@@ -27,6 +27,24 @@ export class LoginService {
     }
   }
 
+  async register(email: string, password: string) {
+    // Create a new instance of the user class
+    var user = new Parse.User();
+    const username = email.split('@')[0];
+    user.set("username", username);
+    user.set("password", password);
+    user.set("email", email);
+
+    try {
+      const res = await user.signUp();
+      this.alertService.showSuccessToast("Exito","Se ha registrado correctamente");
+      return true;
+    } catch (error) {
+      this.alertService.showErrorToast("Error", "No se ha podido registrar");
+      return false;
+    }
+}
+
   getCurrentUser() {
     return Parse.User.current();
   }

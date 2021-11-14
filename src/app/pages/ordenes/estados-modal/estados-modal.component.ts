@@ -80,7 +80,9 @@ export class EstadosModalComponent implements OnInit {
   }
 
   eliminar() {
-
+    this.service.eliminar(this.orden).then((res) => {
+      this.ref.close('Eliminado');
+    });
   }
 
   dismiss() {
