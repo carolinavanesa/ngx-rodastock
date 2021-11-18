@@ -29,7 +29,7 @@ export class OrdenesService {
           return {
             id: o.id,
             orden: o,
-            numero: o.get('numero'),
+            numero: this.getStringNumeroPedido(o.get('numero')),
             fecha: o.get('fecha'),
             fechaEntrega: o.get('fechaEntrega'),
             cliente: o.get('cliente'),
@@ -62,8 +62,12 @@ export class OrdenesService {
       result = await query.first();
       const reparaciones = await result.get('reparaciones').query().find();
       result.reparacionesFetched = reparaciones;
+      result.numeroStr = this.getStringNumeroPedido(result.get('numero'));
     } catch (e) {
-      this.alertService.showPrimaryToast('Error', 'No se pudo cargar el pedido');
+      this.alertService.showPrimaryToast(
+        'Error',
+        'No se pudo cargar el pedido'
+      );
     }
 
     return result;
@@ -77,11 +81,23 @@ export class OrdenesService {
     try {
       result = await query.count();
     } catch (e) {
-      this.alertService.showPrimaryToast('Error', 'No se pudo cargar el pedido');
+      this.alertService.showPrimaryToast(
+        'Error',
+        'No se pudo cargar el pedido'
+      );
     }
 
-    let resultStr = result.toString();
-    for (let index = 0; index < (8 - result.toString().length ); index++) {
+    // let resultStr = result.toString();
+    // for (let index = 0; index < 8 - result.toString().length; index++) {
+    //   resultStr = '0' + resultStr;
+    // }
+
+    return this.getStringNumeroPedido(result);
+  }
+
+  private getStringNumeroPedido(numero: number){
+    let resultStr = numero.toString();
+    for (let index = 0; index < 8 - numero.toString().length; index++) {
       resultStr = '0' + resultStr;
     }
 
@@ -99,9 +115,9 @@ export class OrdenesService {
     fechaEntrega: Date,
     reparaciones: any[],
     importe: number,
-    file?: any,
+    file?: any
   ): Promise<boolean> {
-    debugger
+    debugger;
     const nuevaOrden = new Orden();
     nuevaOrden.set('numero', numero);
     nuevaOrden.set('fecha', fecha);
@@ -114,16 +130,17 @@ export class OrdenesService {
     nuevaOrden.relation('reparaciones').add(reparaciones);
     nuevaOrden.set('importe', importe);
 
-
-
     try {
-      if(file) {
-        const fileData = new Parse.File("orden-" + numero + ".png", file);
+      if (file) {
+        const fileData = new Parse.File('orden-' + numero + '.png', file);
         const savedFile = await fileData.save();
         nuevaOrden.set('imagen', savedFile);
       }
       const res = await nuevaOrden.save();
-      this.alertService.showSuccessToast('Exito', 'Se ha generado un nuevo Pedido Nº ' + numero);
+      this.alertService.showSuccessToast(
+        'Exito',
+        'Se ha generado un nuevo Pedido Nº ' + numero
+      );
       return true;
     } catch (e) {
       this.alertService.showErrorToast('Error', 'No se pudo generar el pedido');
@@ -135,22 +152,89 @@ export class OrdenesService {
     try {
       parseObject.set('estado', estado);
       const res = await parseObject.save();
-      this.alertService.showSuccessToast('Exito', 'Pedido en estado ' + estado  );
+      this.alertService.showSuccessToast('Exito', 'Pedido en estado ' + estado);
+      switch (estado) {
+        case 'En Curso':
+          this.sendEmail({
+            toEmail: parseObject.get('cliente').get('email'),
+            subject: 'Pedido de Reparacion En Curso!',
+            body:
+              'Tu Pedido de Reparacion Nº' +
+              this.getStringNumeroPedido(parseObject.get('numero'))+
+              ' de ' +
+              parseObject.get('rodado') +
+              ' se encuentra en curso. Pronto te notificaremos cuando este listo para ser retirado!',
+          });
+          break;
+        case 'Terminado':
+          this.sendEmail({
+            toEmail: parseObject.get('cliente').get('email'),
+            subject: 'Pedido de Reparacion Listo!',
+            body:
+              'Tu Pedido de Reparacion Nº' +
+              this.getStringNumeroPedido(parseObject.get('numero'))+
+              ' de ' +
+              parseObject.get('rodado') +
+              ' se encuentra listo para ser retirado!',
+          });
+          break;
+        case 'Entregado':
+          this.sendEmail({
+            toEmail: parseObject.get('cliente').get('email'),
+            subject: 'Pedido Entregado! Contanos que te parecio!',
+            body:
+              'Tu Pedido de Reparacion Nº' +
+              this.getStringNumeroPedido(parseObject.get('numero'))+
+              ' de ' +
+              parseObject.get('rodado') +
+              ' ha sido entregado. Por favor tomate unos minutos para evaluar el servicio brindado en: <LINK>',
+          });
+          break;
+        case 'Cancelado':
+          this.sendEmail({
+            toEmail: parseObject.get('cliente').get('email'),
+            subject: 'Pedido de Reparacion Cancelado!',
+            body:
+              'Tu Pedido de Reparacion Nº' +
+              this.getStringNumeroPedido(parseObject.get('numero'))+
+              ' de ' +
+              parseObject.get('rodado') +
+              'se ha cancelado. Por favor contactese con el Proveedor',
+          });
+          break;
+
+        default:
+          break;
+      }
+
       return true;
     } catch (e) {
-      this.alertService.showErrorToast('Error', 'No se pudo cambiar el estado del pedido');
+      this.alertService.showErrorToast(
+        'Error',
+        'No se pudo cambiar el estado del pedido'
+      );
       return false;
     }
+  }
+
+  sendEmail(body: any) {
+    Parse.Cloud.run('sendgridEmail', body);
   }
 
   async eliminar(parseObject: any) {
     try {
       parseObject.set('deleted', true);
       const res = await parseObject.save();
-      this.alertService.showSuccessToast('Exito', 'Se elimino el Pedido Nº' + parseObject.get('numero')  );
+      this.alertService.showSuccessToast(
+        'Exito',
+        'Se elimino el Pedido Nº' + this.getStringNumeroPedido(parseObject.get('numero'))
+      );
       return true;
     } catch (e) {
-      this.alertService.showErrorToast('Error', 'No se pudo eliminar el pedido');
+      this.alertService.showErrorToast(
+        'Error',
+        'No se pudo eliminar el pedido'
+      );
       return false;
     }
   }
