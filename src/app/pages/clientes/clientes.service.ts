@@ -23,6 +23,7 @@ export class ClientesService {
           nombre: c.get('nombre'),
           barrio: c.get('barrio'),
           telefono: c.get('telefono'),
+          email: c.get('email'),
           cliente: c,
         };
       });
