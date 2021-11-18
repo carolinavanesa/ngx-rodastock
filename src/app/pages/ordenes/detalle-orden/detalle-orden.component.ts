@@ -1,16 +1,8 @@
 import { Component, OnInit } from '@angular/core';
-import { FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { ActivatedRoute, ParamMap, Router } from '@angular/router';
-import { NbDialogRef, NbDialogService } from '@nebular/theme';
-import { LocalDataSource } from 'ng2-smart-table';
-import { take } from 'rxjs/operators';
-import { ModalService } from '../../../shared/modal/modal.service';
-import { InventarioService } from '../../inventario/inventario.service';
+import { ActivatedRoute } from '@angular/router';
 import { OrdenesService } from '../ordenes.service';
-import { TipoReparacionService } from '../../tipo-reparaciones/tipo-reparaciones.service';
-import { ClientesService } from '../../clientes/clientes.service';
-import { MatSelect } from '@angular/material/select';
-import { AlertService } from '../../../shared/alert.service';
+import { Location } from '@angular/common'
+
 
 @Component({
   selector: 'ngx-detalle-orden',
@@ -24,15 +16,9 @@ export class DetalleOrdenComponent implements OnInit {
   costoTotalMano = 0;
 
   constructor(
-    private formBuilder: FormBuilder,
     private service: OrdenesService,
-    private tipoReparacionService: TipoReparacionService,
-    private clienteService: ClientesService,
     private route: ActivatedRoute,
-    private router: Router,
-    private modalService: ModalService,
-    private alertService: AlertService,
-    private dialogService: NbDialogService
+    private location: Location,
   ) {}
 
   ngOnInit(): void {
@@ -56,8 +42,6 @@ export class DetalleOrdenComponent implements OnInit {
     }
   }
 
-  ngOnDestroy() {}
-
   calcularCostoTotalReparaciones() {
     this.costoTotalRepuestos = 0;
     this.costoTotalMano = 0;
@@ -75,7 +59,7 @@ export class DetalleOrdenComponent implements OnInit {
   }
 
   goBack() {
-    this.router.navigateByUrl(`pages/ordenes`);
+    this.location.back();
   }
 
   print(){

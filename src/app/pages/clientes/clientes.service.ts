@@ -37,7 +37,7 @@ export class ClientesService {
   async agregarCliente(
     nombre: string,
     barrio: string,
-    telefono: number,
+    telefono: string,
     email: string,
   ): Promise<boolean> {
     const nuevoCliente = new Cliente();
@@ -47,7 +47,7 @@ export class ClientesService {
     nuevoCliente.set('email', email);
 
     try {
-      nuevoCliente.save();
+      const res = await nuevoCliente.save();
       this.alertService.showSuccessToast('Exito', 'Se ha agregado un cliente');
       return true;
     } catch (e) {
@@ -69,7 +69,7 @@ export class ClientesService {
       clienteAEditar.set('nombre', nombre);
       clienteAEditar.set('barrio', barrio);
       clienteAEditar.set('telefono', telefono);
-      clienteAEditar.save();
+      const res = await clienteAEditar.save();
       this.alertService.showSuccessToast(
         'Exito',
         'Se ha modificado un cliente'

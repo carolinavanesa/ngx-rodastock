@@ -22,8 +22,7 @@ import { SharedAngularMaterialModule } from '../../shared/shared-angular-materia
 import { TipoReparacionService } from '../tipo-reparaciones/tipo-reparaciones.service';
 import { OrdenesMainComponent } from './ordenes-main.component';
 import { OrdenesComponent } from './ordenes/ordenes.component';
-import { FilterOrdenPipe } from './filter-orden.pipe';
-import { OrdenStatusComponent } from './orden-status/orden-status.component';
+
 import { NuevoOrdenComponent } from './nuevo-orden/nuevo-orden.component';
 import { ClientesService } from '../clientes/clientes.service';
 import { InventarioService } from '../inventario/inventario.service';
@@ -31,6 +30,7 @@ import { AgregarReparacionModalComponent } from './agregar-reparacion-modal/agre
 import { OrdenCardComponent } from './orden-card/orden-card.component';
 import { EstadosModalComponent } from './estados-modal/estados-modal.component';
 import { DetalleOrdenComponent } from './detalle-orden/detalle-orden.component';
+import { SharedPipesModule } from '../../shared/shared-pipes.module';
 
 @NgModule({
   imports: [
@@ -52,14 +52,13 @@ import { DetalleOrdenComponent } from './detalle-orden/detalle-orden.component';
     SharedModalModule,
     SharedAngularMaterialModule,
     OrdenesRoutingModule,
+    SharedPipesModule
   ],
   declarations: [
     OrdenesMainComponent,
     OrdenesComponent,
-    OrdenStatusComponent,
     NuevoOrdenComponent,
     AgregarReparacionModalComponent,
-    FilterOrdenPipe,
     OrdenCardComponent,
     EstadosModalComponent,
     DetalleOrdenComponent,

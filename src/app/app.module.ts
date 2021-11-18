@@ -22,6 +22,7 @@ import { LoginGuard } from './auth/login/login.guard';
 import { AlertService } from './shared/alert.service';
 import { LoginService } from './auth/login/login.service';
 import { AdminGuard } from './pages/admin.guard';
+import { ClientGuard } from './pages/client.guard';
 
 @NgModule({
   declarations: [AppComponent],
@@ -44,7 +45,7 @@ import { AdminGuard } from './pages/admin.guard';
     ThemeModule.forRoot(),
   ],
   bootstrap: [AppComponent],
-  providers: [LoginGuard, AlertService, LoginService, AdminGuard]
+  providers: [LoginGuard, AlertService, LoginService, AdminGuard, ClientGuard]
 })
 export class AppModule {
 }

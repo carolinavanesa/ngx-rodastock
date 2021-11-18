@@ -1,6 +1,6 @@
 import { Component, OnInit, ViewEncapsulation } from '@angular/core';
-import { Router } from '@angular/router';
 import { OrdenesService } from '../../ordenes/ordenes.service';
+import { LoginService } from '../../../auth/login/login.service';
 
 
 @Component({
@@ -17,7 +17,7 @@ export class OrdenesClienteComponent implements OnInit {
 
   constructor(
     private service: OrdenesService,
-    private router: Router
+    private loginService: LoginService,
   ) {}
 
   ngOnInit() {
@@ -30,16 +30,9 @@ export class OrdenesClienteComponent implements OnInit {
 
   cargarOrdenes() {
     this.service.cargarOrdenes().then((ordenes) => {
-      this.ordenes = ordenes;
-      this.ordenesEntrega = this.ordenes.filter(o => isToday(o.fechaEntrega) && o.estado !== 'Cancelado' && o.estado !== 'Entregado');
+      const email = this.loginService.getCurrentUser().get('email');
+      this.ordenes = ordenes.filter(o => o.cliente.get('email') === email);
       this.ordenesLista = this.ordenes.filter(o => o.estado === 'Terminado');
     });
   }
-}
-
-const isToday = (someDate) => {
-  const today = new Date()
-  return someDate.getDate() == today.getDate() &&
-    someDate.getMonth() == today.getMonth() &&
-    someDate.getFullYear() == today.getFullYear()
 }

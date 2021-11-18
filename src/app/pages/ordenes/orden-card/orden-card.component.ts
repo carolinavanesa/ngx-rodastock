@@ -27,15 +27,9 @@ export class OrdenCardComponent {
       .toPromise()
       .then((res) => {
         if (res) {
-          // if (res === 'Eliminado') {
-          //   this.router.navigateByUrl(
-          //     `pages/ordenes`
-          //   );
-          // } else {
-            this.orden.orden.set('estado', res);
-            this.orden.estado = res;
-            this.estadoChanged.emit(true);
-          // }
+          this.orden.orden.set('estado', res);
+          this.orden.estado = res;
+          this.estadoChanged.emit(true);
         }
       });
   }

@@ -42,7 +42,7 @@ export class NuevoClienteModalComponent {
       .agregarCliente(
         this.nuevoForm.get('nombre').value,
         this.nuevoForm.get('barrio').value,
-        Number(this.nuevoForm.get('telefono').value),
+        this.nuevoForm.get('telefono').value,
         this.nuevoForm.get('email').value,
       )
       .then((res) => this.ref.close(true))

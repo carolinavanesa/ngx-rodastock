@@ -15,7 +15,7 @@ export class OrdenClienteCardComponent {
 
   openDetalle(){
     this.router.navigateByUrl(
-      `pages/ordenes/detalle-orden/${this.orden.id}`
+      `pages/mis-pedidos/detalle-orden/${this.orden.id}`
     );
   }
 

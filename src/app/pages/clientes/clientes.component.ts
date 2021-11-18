@@ -100,7 +100,7 @@ export class ClientesComponent implements OnInit, OnDestroy {
       .agregarCliente(
         event.newData.nombre,
         event.newData.barrio,
-        Number(event.newData.telefono),
+        event.newData.telefono,
         event.newData.email,
       )
       .then((res) => {
