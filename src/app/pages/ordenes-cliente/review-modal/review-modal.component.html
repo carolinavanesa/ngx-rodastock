@@ -1,0 +1,27 @@
+<nb-card status="primary" class="estado-card">
+  <nb-card-header
+    >Calificar el Pedido N {{ orden.get('numero') }}</nb-card-header
+  >
+  <nb-card-body class="m-2">
+    <form [formGroup]="nuevoForm">
+      <p class="dialog-hint">Ingrese la información referida al cliente que desea registrar</p>
+      <div class="row m-3">
+        <mat-form-field class="w-100">
+          <mat-label>Comentario</mat-label>
+          <textarea
+            row="5"
+            formControlName="comentario"
+            matInput
+            autocomplete="off"
+            maxlength="100"
+          ></textarea>
+        </mat-form-field>
+      </div>
+    </form>
+  </nb-card-body>
+  <nb-card-footer>
+    <button nbButton matRipple ghost status="primary" (click)="dismiss()">
+      Volver a Pedidos
+    </button>
+  </nb-card-footer>
+</nb-card>

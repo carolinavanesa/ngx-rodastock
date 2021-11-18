@@ -50,5 +50,6 @@
 
   <nb-card-footer>
     <nb-icon icon="printer-outline" pack="eva" (click)="openDetalle()"></nb-icon>
+    <nb-icon *ngIf="orden.estado === 'Entregado'" icon="star-outline" pack="eva" (click)="openReview()"></nb-icon>
   </nb-card-footer>
 </nb-card>

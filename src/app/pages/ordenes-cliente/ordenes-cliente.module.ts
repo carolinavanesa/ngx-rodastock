@@ -24,6 +24,7 @@ import { OrdenesClienteRoutingModule } from './ordenes-cliente-routing.module';
 import { OrdenesClienteMainComponent } from './ordenes-cliente-main.component';
 import { TipoReparacionService } from '../tipo-reparaciones/tipo-reparaciones.service';
 import { ClientesService } from '../clientes/clientes.service';
+import { ReviewModalComponent } from './review-modal/review-modal.component';
 
 @NgModule({
   imports: [
@@ -49,6 +50,7 @@ import { ClientesService } from '../clientes/clientes.service';
     OrdenesClienteMainComponent,
     OrdenesClienteComponent,
     OrdenClienteCardComponent,
+    ReviewModalComponent
   ],
   providers: [OrdenesService, TipoReparacionService, ClientesService],
 })
