@@ -5,6 +5,7 @@ import { take } from 'rxjs/operators';
 import { ModalService } from '../../shared/modal/modal.service';
 import { ClientesService } from './clientes.service';
 import { NuevoClienteModalComponent } from './nuevo-cliente-modal/nuevo-cliente-modal.component';
+import { AlertService } from '../../shared/alert.service';
 
 @Component({
   selector: 'ngx-dashboard',
@@ -54,6 +55,7 @@ export class ClientesComponent implements OnInit, OnDestroy {
       email: {
         title: 'Email',
         type: 'number',
+        editable: false,
       },
     },
   };
@@ -63,7 +65,8 @@ export class ClientesComponent implements OnInit, OnDestroy {
   constructor(
     private service: ClientesService,
     private modalService: ModalService,
-    private dialogService: NbDialogService
+    private dialogService: NbDialogService,
+    private alertService: AlertService
   ) {}
 
   ngOnInit() {
@@ -101,7 +104,7 @@ export class ClientesComponent implements OnInit, OnDestroy {
         event.newData.nombre,
         event.newData.barrio,
         event.newData.telefono,
-        event.newData.email,
+        event.newData.email
       )
       .then((res) => {
         if (res) {
@@ -114,21 +117,42 @@ export class ClientesComponent implements OnInit, OnDestroy {
   }
 
   onEditConfirm(event: any) {
-    this.service
-      .editarCliente(
-        event.newData.id,
-        event.newData.nombre,
-        event.newData.barrio,
-        Number(event.newData.telefono)
-      )
-      .then((res) => {
-        if (res) {
-          event.confirm.resolve();
-          this.cargarCliente();
-        } else {
-          event.confirm.reject();
-        }
-      });
+    const nombreRegex = new RegExp("^[A-Za-z ']+$");
+    const barrioRegex = new RegExp("^[A-Za-z0-9 ']+$");
+    const telefonoRegex = new RegExp('[0-9 ()-]+$');
+
+    if (!event.newData.nombre || !nombreRegex.test(event.newData.nombre) || event.newData.nombre.length > 50) {
+      this.alertService.showErrorToast(
+        'Error',
+        'El campo nombre es requerido, solo puede contener letras y un maximo de 50 caracteres'
+      );
+    } else if (!event.newData.barrio || !barrioRegex.test(event.newData.barrio) || event.newData.barrio.length > 50) {
+      this.alertService.showErrorToast(
+        'Error',
+        'El campo barrio es requerido, solo puede contener letras y un maximo de 50 caracteres'
+      );
+    } else if (!event.newData.telefono || !telefonoRegex.test(event.newData.telefono) || event.newData.barrio.length > 13) {
+      this.alertService.showErrorToast(
+        'Error',
+        'El campo telefono es requerido, solo puede contener numeros y longitud de maxima de 13'
+      );
+    } else {
+      this.service
+        .editarCliente(
+          event.newData.id,
+          event.newData.nombre,
+          event.newData.barrio,
+          event.newData.telefono
+        )
+        .then((res) => {
+          if (res) {
+            event.confirm.resolve();
+            this.cargarCliente();
+          } else {
+            event.confirm.reject();
+          }
+        });
+    }
   }
 
   nuevoCliente() {

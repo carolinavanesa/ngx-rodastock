@@ -5,6 +5,7 @@ import { take } from 'rxjs/operators';
 import { ModalService } from '../../shared/modal/modal.service';
 import { InventarioService } from './inventario.service';
 import { NuevoRepuestoModalComponent } from './nuevo-repuesto-modal/nuevo-repuesto-modal.component';
+import { AlertService } from '../../shared/alert.service';
 
 @Component({
   selector: 'ngx-dashboard',
@@ -52,6 +53,7 @@ export class InventarioComponent implements OnInit, OnDestroy {
       stock: {
         title: 'Stock',
         type: 'text',
+        editable: false,
       },
     },
   };
@@ -61,7 +63,8 @@ export class InventarioComponent implements OnInit, OnDestroy {
   constructor(
     private service: InventarioService,
     private modalService: ModalService,
-    private dialogService: NbDialogService
+    private dialogService: NbDialogService,
+    private alertService: AlertService,
   ) {}
 
   ngOnInit() {
@@ -111,21 +114,26 @@ export class InventarioComponent implements OnInit, OnDestroy {
   }
 
   onEditConfirm(event: any) {
-    this.service
-      .editarRepuestoInventario(
-        event.newData.id,
-        event.newData.nombre,
-        Number(event.newData.costo),
-        Number(event.newData.stock)
-      )
-      .then((res) => {
-        if (res) {
-          event.confirm.resolve();
-          this.cargarInventario();
-        } else {
-          event.confirm.reject();
-        }
-      });
+    const costo = Number(event.newData.costo);
+    if (isNaN(costo) || costo < 0 || costo > 99999) {
+      this.alertService.showErrorToast("Error", "El campo costo debe ser un numero entre 0 y 99999")
+    } else {
+      this.service
+        .editarRepuestoInventario(
+          event.newData.id,
+          event.newData.nombre,
+          Number(event.newData.costo),
+          Number(event.newData.stock)
+        )
+        .then((res) => {
+          if (res) {
+            event.confirm.resolve();
+            this.cargarInventario();
+          } else {
+            event.confirm.reject();
+          }
+        });
+    }
   }
 
   onUserRowSelect(event: any) {

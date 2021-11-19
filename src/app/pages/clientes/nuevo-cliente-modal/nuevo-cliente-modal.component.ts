@@ -1,5 +1,12 @@
 import { Component } from '@angular/core';
-import { FormBuilder, FormControl, FormGroup, FormGroupDirective, NgForm, Validators } from '@angular/forms';
+import {
+  FormBuilder,
+  FormControl,
+  FormGroup,
+  FormGroupDirective,
+  NgForm,
+  Validators,
+} from '@angular/forms';
 import { ErrorStateMatcher } from '@angular/material/core';
 import { NbDialogRef } from '@nebular/theme';
 import { ClientesService } from '../clientes.service';
@@ -27,33 +34,53 @@ export class NuevoClienteModalComponent {
   loading = false;
 
   nuevoForm: FormGroup = this.formBuilder.group({
-    nombre: ['', [Validators.required, Validators.maxLength(30), Validators.pattern("[a-zA-Z ,']*")]],
-    barrio: ['', [Validators.required, Validators.maxLength(30), Validators.pattern("[a-zA-Z0-9 ,']*")]],
+    nombre: [
+      '',
+      [
+        Validators.required,
+        Validators.maxLength(30),
+        Validators.pattern("[a-zA-Z ,']*"),
+      ],
+    ],
+    barrio: [
+      '',
+      [
+        Validators.required,
+        Validators.maxLength(30),
+        Validators.pattern("[a-zA-Z0-9 ,']*"),
+      ],
+    ],
     telefono: ['', [Validators.required, Validators.pattern('[0-9 ()-]*')]],
-    email: ['', [Validators.required, Validators.pattern("^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:\.[a-zA-Z0-9-]+)*$")]],
+    email: [
+      '',
+      [
+        Validators.required,
+        Validators.pattern(
+          "^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:.[a-zA-Z0-9-]+)*$"
+        ),
+      ],
+    ],
   });
-
-  // matcher = new MyErrorStateMatcher();
 
   dismiss() {
     this.ref.close(false);
   }
 
   confirm() {
-    if(!this.loading) {
+    if (!this.loading) {
       this.loading = true;
-    this.service
-      .agregarCliente(
-        this.nuevoForm.get('nombre').value,
-        this.nuevoForm.get('barrio').value,
-        this.nuevoForm.get('telefono').value,
-        this.nuevoForm.get('email').value,
-      )
-      .then((res) => this.ref.close(true))
-      .catch((e) => this.ref.close(false))
-      .finally(() => {
-        this.loading = false;
-      });
+      this.service
+        .agregarCliente(
+          this.nuevoForm.get('nombre').value,
+          this.nuevoForm.get('barrio').value,
+          this.nuevoForm.get('telefono').value,
+          this.nuevoForm.get('email').value
+        )
+        .then((res) => this.ref.close(true))
+        .catch((e) => this.ref.close(false))
+        .finally(() => {
+          this.loading = false;
+        });
     }
   }
 }

@@ -61,7 +61,7 @@ export class ClientesService {
     id: string,
     nombre: string,
     barrio: string,
-    telefono: number
+    telefono: string
   ): Promise<boolean> {
     const query = new Parse.Query(Cliente);
 

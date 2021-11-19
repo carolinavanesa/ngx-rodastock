@@ -84,9 +84,19 @@
           <mat-form-field class="w-100">
             <mat-label>Rodado</mat-label>
             <input formControlName="rodado" matInput />
+
             <mat-error *ngIf="nuevoForm.get('rodado')?.hasError('required')">
               Este campo es requerido
             </mat-error>
+            <mat-error
+              *ngIf="
+                nuevoForm.get('rodado')?.hasError('pattern') &&
+                !nuevoForm.get('rodado').hasError('required')
+              "
+            >
+              Por favor ingrese un rodado válido.
+            </mat-error>
+            <mat-hint>Solo se permiten letras y números</mat-hint>
           </mat-form-field>
         </div>
 
@@ -115,6 +125,10 @@
               autocomplete="off"
               maxlength="100"
             ></textarea>
+            <mat-error *ngIf="nuevoForm.get('observaciones')?.hasError('pattern')">
+              Por favor ingrese una observacion valida
+            </mat-error>
+            <mat-hint>Solo se permiten letras y números</mat-hint>
           </mat-form-field>
         </div>
 
@@ -130,6 +144,7 @@
               maxLength="10"
               currency-mask
             />
+
             <mat-hint>Solo se permiten numeros</mat-hint>
           </mat-form-field>
         </div>
@@ -164,10 +179,14 @@
 
       <div>
         <nb-alert *ngFor="let msg of erroresDeStock" outline="warning">
-          <p>Reparacion <b>{{ msg.reparacion }}</b> No hay suficiente stock para <b>{{ msg.repuesto }}</b>. Requerido: <b>{{ msg.cantidad }}</b>, Actual: <b>{{ msg.stock }}</b></p>
+          <p>
+            Reparacion <b>{{ msg.reparacion }}</b> No hay suficiente stock para
+            <b>{{ msg.repuesto }}</b
+            >. Requerido: <b>{{ msg.cantidad }}</b
+            >, Actual: <b>{{ msg.stock }}</b>
+          </p>
         </nb-alert>
       </div>
-
 
       <!-- COSTO TOTAL REPUESTOS -->
       <div class="row mt-2">
@@ -268,7 +287,10 @@
       </div>
       <div class="col">
         <button
-          [disabled]="loading || (!modoEdicion && (!nuevoForm.valid || nuevoForm.pristine))"
+          [disabled]="
+            loading ||
+            (!modoEdicion && (!nuevoForm.valid || nuevoForm.pristine))
+          "
           nbButton
           matRipple
           hero
