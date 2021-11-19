@@ -15,6 +15,7 @@ export class NuevoRepuestoModalComponent {
     private service: InventarioService
   ) {}
 
+  loading = false;
   nuevoForm: FormGroup = this.formBuilder.group({
     nombre: ['', [Validators.required, Validators.maxLength(30), Validators.pattern("[a-zA-Z0-9 ,']*")]],
     costo: ['', [Validators.required, Validators.maxLength(5), Validators.pattern('([0-9]+\.?[0-9]*|\.[0-9]+)')]], // TODO checkear estaa
@@ -28,6 +29,8 @@ export class NuevoRepuestoModalComponent {
   }
 
   confirm() {
+    if (!this.loading) {
+      this.loading = true;
     this.service
       .agregarRepuestoInventario(
         this.nuevoForm.get('nombre').value,
@@ -35,6 +38,10 @@ export class NuevoRepuestoModalComponent {
         Number(this.nuevoForm.get('stock').value)
       )
       .then((res) => this.ref.close(true))
-      .catch((e) => this.ref.close(false));
+      .catch((e) => this.ref.close(false))
+      .finally(() => {
+        this.loading = false;
+      });
+    }
   }
 }

@@ -68,7 +68,7 @@
       </div>
       <div class="col">
         <button
-          [disabled]="!nuevoForm.valid || nuevoForm.pristine"
+          [disabled]="loading || !nuevoForm.valid || nuevoForm.pristine"
           nbButton
           matRipple
           hero

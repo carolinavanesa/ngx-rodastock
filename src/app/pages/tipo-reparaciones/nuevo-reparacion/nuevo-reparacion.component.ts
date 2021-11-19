@@ -52,6 +52,7 @@ export class NuevoReparacionComponent {
     },
   };
 
+  loading = false;
   source: LocalDataSource = new LocalDataSource();
   unidades = [];
   tipoReparacionAEditar;
@@ -81,7 +82,14 @@ export class NuevoReparacionComponent {
     ],
     tiempoEstimadoMedida: 'horas',
     tiempoEstimadoUnidad: [0, [Validators.pattern('[0-9]')]],
-    costoMano: ['0', [Validators.required, Validators.maxLength(5), Validators.pattern('([0-9]+\.?[0-9]*|\.[0-9]+)')]],
+    costoMano: [
+      '0',
+      [
+        Validators.required,
+        Validators.maxLength(5),
+        Validators.pattern('([0-9]+.?[0-9]*|.[0-9]+)'),
+      ],
+    ],
   });
 
   ngOnInit(): void {
@@ -122,10 +130,10 @@ export class NuevoReparacionComponent {
 
   ngOnDestroy() {}
 
-  calcularCostoTotalRepuesto(){
+  calcularCostoTotalRepuesto() {
     this.costoTotalRepuestos = 0;
-    this.unidades.forEach(unidad => {
-      this.costoTotalRepuestos = unidad.repuesto.get('costo') * unidad.cantidad
+    this.unidades.forEach((unidad) => {
+      this.costoTotalRepuestos = unidad.repuesto.get('costo') * unidad.cantidad;
     });
   }
 
@@ -153,33 +161,43 @@ export class NuevoReparacionComponent {
   }
 
   confirm() {
-    const tiempoEstimado = `${
-      this.nuevoForm.get('tiempoEstimadoUnidad').value
-    }  ${this.nuevoForm.get('tiempoEstimadoMedida').value}`;
+    if (!this.loading) {
+      this.loading = true;
 
-    if (!this.modoEdicion) {
-      this.service
-        .agregarTipoReparacion(
-          this.nuevoForm.get('nombre').value,
-          this.descripcion,
-          tiempoEstimado,
-          this.unidades,
-          Number(this.nuevoForm.get('costoMano').value) || 0,
-          this.costoTotalRepuestos,
-        )
-        .then((res) => this.router.navigateByUrl(`pages/tipo-reparaciones`));
-    } else {
-      this.service
-        .editarTipoReparacion(
-          this.nuevoForm.get('nombre').value,
-          this.descripcion,
-          tiempoEstimado,
-          this.unidades,
-          Number(this.nuevoForm.get('costoMano').value) || 0,
-          this.tipoReparacionAEditar,
-          this.costoTotalRepuestos
-        )
-        .then((res) => this.router.navigateByUrl(`pages/tipo-reparaciones`));
+      const tiempoEstimado = `${
+        this.nuevoForm.get('tiempoEstimadoUnidad').value
+      }  ${this.nuevoForm.get('tiempoEstimadoMedida').value}`;
+
+      if (!this.modoEdicion) {
+        this.service
+          .agregarTipoReparacion(
+            this.nuevoForm.get('nombre').value,
+            this.descripcion,
+            tiempoEstimado,
+            this.unidades,
+            Number(this.nuevoForm.get('costoMano').value) || 0,
+            this.costoTotalRepuestos
+          )
+          .then((res) => this.router.navigateByUrl(`pages/tipo-reparaciones`))
+          .finally(() => {
+            this.loading = false;
+          });
+      } else {
+        this.service
+          .editarTipoReparacion(
+            this.nuevoForm.get('nombre').value,
+            this.descripcion,
+            tiempoEstimado,
+            this.unidades,
+            Number(this.nuevoForm.get('costoMano').value) || 0,
+            this.tipoReparacionAEditar,
+            this.costoTotalRepuestos
+          )
+          .then((res) => this.router.navigateByUrl(`pages/tipo-reparaciones`))
+          .finally(() => {
+            this.loading = false;
+          });
+      }
     }
   }
 

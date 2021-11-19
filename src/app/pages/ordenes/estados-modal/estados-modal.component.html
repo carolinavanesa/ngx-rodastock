@@ -23,6 +23,7 @@
 
         <div class="row">
           <button
+            [disabled]="loading"
             nbButton
             matRipple
             status="danger"
@@ -32,6 +33,7 @@
             Cancelar
           </button>
           <button
+            [disabled]="loading"
             nbButton
             matRipple
             nbStepperNext
@@ -59,6 +61,7 @@
         </p>
         <div class="row">
           <button
+            [disabled]="loading"
             class="mx-auto"
             nbButton
             matRipple
@@ -91,6 +94,7 @@
         </p>
         <div class="row">
           <button
+            [disabled]="loading"
             class="mx-auto"
             nbButton
             matRipple

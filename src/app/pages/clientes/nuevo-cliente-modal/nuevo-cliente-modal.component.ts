@@ -24,6 +24,8 @@ export class NuevoClienteModalComponent {
     private service: ClientesService
   ) {}
 
+  loading = false;
+
   nuevoForm: FormGroup = this.formBuilder.group({
     nombre: ['', [Validators.required, Validators.maxLength(30), Validators.pattern("[a-zA-Z ,']*")]],
     barrio: ['', [Validators.required, Validators.maxLength(30), Validators.pattern("[a-zA-Z0-9 ,']*")]],
@@ -38,6 +40,8 @@ export class NuevoClienteModalComponent {
   }
 
   confirm() {
+    if(!this.loading) {
+      this.loading = true;
     this.service
       .agregarCliente(
         this.nuevoForm.get('nombre').value,
@@ -46,6 +50,10 @@ export class NuevoClienteModalComponent {
         this.nuevoForm.get('email').value,
       )
       .then((res) => this.ref.close(true))
-      .catch((e) => this.ref.close(false));
+      .catch((e) => this.ref.close(false))
+      .finally(() => {
+        this.loading = false;
+      });
+    }
   }
 }

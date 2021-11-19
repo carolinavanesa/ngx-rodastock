@@ -15,6 +15,7 @@ export class EstadosModalComponent implements OnInit {
     private modalService: ModalService
   ) {}
 
+  loading = false;
   estado: string;
   orden: any;
   selectedIndex: number = 0;
@@ -26,7 +27,7 @@ export class EstadosModalComponent implements OnInit {
     this.mapEstados();
   }
 
-  mapEstados(){
+  mapEstados() {
     switch (this.estado) {
       case 'Pendiente':
         this.selectedIndex = 0;
@@ -54,14 +55,21 @@ export class EstadosModalComponent implements OnInit {
   }
 
   cambiarEstado(estado: string) {
-    this.service
-      .cambiarEstado(estado, this.orden)
-      .then((res) => {
-        this.nuevoEstado = estado;
-        if(estado === 'Entregado') {
-          this.completo = true;
-        }
-      })
+    if (!this.loading) {
+      this.loading = true;
+
+      this.service
+        .cambiarEstado(estado, this.orden)
+        .then((res) => {
+          this.nuevoEstado = estado;
+          if (estado === 'Entregado') {
+            this.completo = true;
+          }
+        })
+        .finally(() => {
+          this.loading = false;
+        });
+    }
   }
 
   cancelar() {
@@ -70,13 +78,12 @@ export class EstadosModalComponent implements OnInit {
       body: `Estas seguro que quieres cancelar el pedido Nº ${this.orden.numero}`,
       icon: 'exclamation',
     };
-    this.modalService.showConfirmationModal(config).then(success =>
-      this.service
-      .cambiarEstado('Cancelado', this.orden)
-      .then((res) => {
+    this.modalService.showConfirmationModal(config).then((success) =>
+      this.service.cambiarEstado('Cancelado', this.orden).then((res) => {
         this.nuevoEstado = 'Cancelado';
         this.cancelado = true;
-      }));
+      })
+    );
   }
 
   eliminar() {

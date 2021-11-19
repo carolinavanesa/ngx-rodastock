@@ -71,6 +71,7 @@ export class NuevoOrdenComponent {
     },
   };
 
+  loading = false;
   source: LocalDataSource = new LocalDataSource();
   reparaciones = [];
   ordenAEditar;
@@ -258,28 +259,35 @@ export class NuevoOrdenComponent {
   }
 
   confirm() {
-    const cliente = this.clienteOptions.find(
-      (c) => c.id === this.nuevoForm.get('cliente').value
-    );
+    if(!this.loading) {
+      this.loading = true;
 
-    if (!this.modoEdicion) {
-      this.service
-        .agregarOrden(
-          this.numeroOrdenSiguiente,
-          this.nuevoForm.get('fecha').value,
-          cliente.cliente,
-          this.nuevoForm.get('telefono').value,
-          this.nuevoForm.get('rodado').value,
-          this.nuevoForm.get('observaciones').value,
-          Number(this.nuevoForm.get('costoAdicional').value) || 0,
-          this.nuevoForm.get('fechaEntrega').value,
-          this.reparaciones.map((rep) => rep.reparacion),
-          this.calcularCostoTotalOrden(),
-          this.fileToUpload
-        )
-        .then((res) => this.router.navigateByUrl(`pages/ordenes`));
-    } else {
-      // TODO: Se puede editar una orden?
+      const cliente = this.clienteOptions.find(
+        (c) => c.id === this.nuevoForm.get('cliente').value
+      );
+
+      if (!this.modoEdicion) {
+        this.service
+          .agregarOrden(
+            this.numeroOrdenSiguiente,
+            this.nuevoForm.get('fecha').value,
+            cliente.cliente,
+            this.nuevoForm.get('telefono').value,
+            this.nuevoForm.get('rodado').value,
+            this.nuevoForm.get('observaciones').value,
+            Number(this.nuevoForm.get('costoAdicional').value) || 0,
+            this.nuevoForm.get('fechaEntrega').value,
+            this.reparaciones.map((rep) => rep.reparacion),
+            this.calcularCostoTotalOrden(),
+            this.fileToUpload
+          )
+          .then((res) => this.router.navigateByUrl(`pages/ordenes`))
+          .finally(() => {
+            this.loading = false;
+          });
+      } else {
+        // TODO: Se puede editar una orden?
+      }
     }
   }
 
