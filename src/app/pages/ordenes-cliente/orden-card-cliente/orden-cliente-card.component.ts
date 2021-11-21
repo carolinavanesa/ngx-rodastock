@@ -26,6 +26,7 @@ export class OrdenClienteCardComponent {
     .open(ReviewModalComponent, {
       context: {
         orden: this.orden.orden,
+        calificacion: this.orden.calificacion,
       },
     })
     .onClose.pipe(take(1))

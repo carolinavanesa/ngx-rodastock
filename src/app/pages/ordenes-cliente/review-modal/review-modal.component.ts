@@ -17,14 +17,28 @@ export class ReviewModalComponent implements OnInit {
     private formBuilder: FormBuilder,
   ) {}
 
+  puntuacion: number;
+  loading = false;
+
   nuevoForm: FormGroup = this.formBuilder.group({
-    puntuacion: ['', [Validators.required, Validators.maxLength(30), Validators.pattern("[a-zA-Z ,']*")]],
-    comentario: ['', [Validators.required, Validators.maxLength(30), Validators.pattern("[a-zA-Z0-9 ,']*")]],
+    // puntuacion: ['', [Validators.required, Validators.maxLength(30), Validators.pattern("[a-zA-Z ,']*")]],
+    comentario: ['', [Validators.maxLength(100), Validators.pattern("[a-zA-Z0-9 ,']*")]],
   });
 
   @Input() orden: any;
+  @Input() calificacion: any;
+
+  modoEdicion = false;
 
   ngOnInit(): void {
+    this.modoEdicion = !this.calificacion;
+  }
+
+  onRatingChanged(rating: number) {
+    this.puntuacion = rating;
+  }
+
+  onConfirm(){
 
   }
 

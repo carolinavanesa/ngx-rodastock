@@ -1,0 +1,13 @@
+<button
+  mat-icon-button
+  color="primary"
+  *ngFor="let ratingId of ratingArr; index as i"
+  [id]="'star_' + i"
+  (click)="onClick(i + 1)"
+>
+  <nb-icon [icon]="showIcon(i)" pack="eva"></nb-icon>
+</button>
+<p class="body-2 mt-2">
+  Tu calificación es <span class="body-2">{{ rating }}</span> /
+  <span class="body-2">{{ starCount }}</span>
+</p>

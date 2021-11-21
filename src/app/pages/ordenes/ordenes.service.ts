@@ -4,6 +4,7 @@ import { Parse } from 'parse';
 import { AlertService } from '../../shared/alert.service';
 
 const Orden = Parse.Object.extend('Orden');
+const Calificacion = Parse.Object.extend('Calificacion');
 
 @Injectable()
 export class OrdenesService {
@@ -15,6 +16,7 @@ export class OrdenesService {
     query.limit(1000);
     query.equalTo('deleted', false);
     query.include('cliente');
+    query.include('calificacion');
     try {
       const response = await query.find();
 
@@ -33,6 +35,7 @@ export class OrdenesService {
             fecha: o.get('fecha'),
             fechaEntrega: o.get('fechaEntrega'),
             cliente: o.get('cliente'),
+            calificacion: o.get('calificacion'),
             reparaciones: reparaciones[i],
             rodado: o.get('rodado'),
             estado: o.get('estado'),
@@ -235,6 +238,32 @@ export class OrdenesService {
         'Error',
         'No se pudo eliminar el pedido'
       );
+      return false;
+    }
+  }
+
+  async agregarCalificacion(
+    puntuacion: number,
+    comentario: string,
+    ordenParse: any,
+  ): Promise<boolean> {
+    debugger;
+    const nuevaCalificacion = new Calificacion();
+    nuevaCalificacion.set('puntuacion', puntuacion);
+    nuevaCalificacion.set('comentario', comentario);
+
+    try {
+      const resSaved = await nuevaCalificacion.save();
+      ordenParse.set('calificacion', resSaved);
+      const res = await ordenParse.save();
+      this.alertService.showSuccessToast(
+        'Exito',
+        'Se ha guardado tu calificación '
+      );
+
+      return true;
+    } catch (e) {
+      this.alertService.showErrorToast('Error', 'No se pudo guardar la calificación');
       return false;
     }
   }

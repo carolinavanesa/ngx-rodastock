@@ -25,6 +25,7 @@ import { OrdenesClienteMainComponent } from './ordenes-cliente-main.component';
 import { TipoReparacionService } from '../tipo-reparaciones/tipo-reparaciones.service';
 import { ClientesService } from '../clientes/clientes.service';
 import { ReviewModalComponent } from './review-modal/review-modal.component';
+import { StarRatingComponent } from './star-rating/star-rating.component';
 
 @NgModule({
   imports: [
@@ -50,7 +51,8 @@ import { ReviewModalComponent } from './review-modal/review-modal.component';
     OrdenesClienteMainComponent,
     OrdenesClienteComponent,
     OrdenClienteCardComponent,
-    ReviewModalComponent
+    ReviewModalComponent,
+    StarRatingComponent
   ],
   providers: [OrdenesService, TipoReparacionService, ClientesService],
 })

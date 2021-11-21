@@ -4,24 +4,72 @@
   >
   <nb-card-body class="m-2">
     <form [formGroup]="nuevoForm">
-      <p class="dialog-hint">Ingrese la información referida al cliente que desea registrar</p>
-      <div class="row m-3">
-        <mat-form-field class="w-100">
+      <p class="dialog-hint">
+        Ingrese la información referida al cliente que desea registrar
+      </p>
+      <div class="row m-3" *ngIf="modoEdicion">
+        <mat-star-rating
+          [rating]="puntuacion"
+          (ratingUpdated)="onRatingChanged($event)"
+        ></mat-star-rating>
+        <mat-form-field class="w-100 mt-3">
           <mat-label>Comentario</mat-label>
           <textarea
             row="5"
             formControlName="comentario"
             matInput
             autocomplete="off"
-            maxlength="100"
+            maxlength="200"
           ></textarea>
+          <mat-error *ngIf="nuevoForm.get('comentario')?.hasError('pattern')">
+            Por favor ingrese una observacion valida
+          </mat-error>
+          <mat-hint>Solo se permiten letras y números</mat-hint>
+        </mat-form-field>
+      </div>
+
+      <div class="row m-3" *ngIf="!modoEdicion">
+        <mat-star-rating
+          [rating]="puntuacion"
+          (ratingUpdated)="onRatingChanged($event)"
+        ></mat-star-rating>
+        <mat-form-field class="w-100 mt-3">
+          <mat-label>Comentario</mat-label>
+          <textarea
+            row="5"
+            formControlName="comentario"
+            matInput
+            autocomplete="off"
+            maxlength="200"
+          ></textarea>
+          <mat-error *ngIf="nuevoForm.get('comentario')?.hasError('pattern')">
+            Por favor ingrese una observacion valida
+          </mat-error>
+          <mat-hint>Solo se permiten letras y números</mat-hint>
         </mat-form-field>
       </div>
     </form>
   </nb-card-body>
   <nb-card-footer>
-    <button nbButton matRipple ghost status="primary" (click)="dismiss()">
-      Volver a Pedidos
-    </button>
+    <div class="row">
+      <div class="col">
+        <button nbButton matRipple ghost status="primary" (click)="dismiss()">
+          Cancelar
+        </button>
+      </div>
+      <div class="col">
+        <button
+          [disabled]="loading || !nuevoForm.valid || nuevoForm.pristine"
+          nbButton
+          matRipple
+          hero
+          status="primary"
+          (click)="onConfirm()"
+          class="float-right"
+        >
+          Calificar
+        </button>
+      </div>
+    </div>
   </nb-card-footer>
 </nb-card>
