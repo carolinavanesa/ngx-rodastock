@@ -3,32 +3,12 @@
     >Calificar el Pedido N {{ orden.get('numero') }}</nb-card-header
   >
   <nb-card-body class="m-2">
-    <form [formGroup]="nuevoForm">
+    <form [formGroup]="nuevoForm" *ngIf="modoEdicion">
       <p class="dialog-hint">
-        Ingrese la información referida al cliente que desea registrar
+        Por favor dejanos una puntuacion y un comentario sobre el servicio
+        recibido!
       </p>
-      <div class="row m-3" *ngIf="modoEdicion">
-        <mat-star-rating
-          [rating]="puntuacion"
-          (ratingUpdated)="onRatingChanged($event)"
-        ></mat-star-rating>
-        <mat-form-field class="w-100 mt-3">
-          <mat-label>Comentario</mat-label>
-          <textarea
-            row="5"
-            formControlName="comentario"
-            matInput
-            autocomplete="off"
-            maxlength="200"
-          ></textarea>
-          <mat-error *ngIf="nuevoForm.get('comentario')?.hasError('pattern')">
-            Por favor ingrese una observacion valida
-          </mat-error>
-          <mat-hint>Solo se permiten letras y números</mat-hint>
-        </mat-form-field>
-      </div>
-
-      <div class="row m-3" *ngIf="!modoEdicion">
+      <div class="row m-3">
         <mat-star-rating
           [rating]="puntuacion"
           (ratingUpdated)="onRatingChanged($event)"
@@ -49,16 +29,40 @@
         </mat-form-field>
       </div>
     </form>
+
+    <div class="row m-3" *ngIf="!modoEdicion">
+      <div class="col-12 col-md-12 col-lg-12 mt-2">
+        <nb-icon icon="brush-outline" pack="eva"></nb-icon>
+        <span>{{ orden.get('rodado') }}</span>
+        <nb-icon class="ml-4" icon="person-outline" pack="eva"></nb-icon>
+        <span>{{ orden.get('cliente').get('nombre') }}</span>
+      </div>
+      <div class="col-12 col-md-12 col-lg-12 mt-4">
+        <mat-star-rating
+          [readonly]="true"
+          [rating]="calificacion.get('puntuacion')"
+        ></mat-star-rating>
+      </div>
+      <div class="font-weight-bold col-12 col-md-12 col-lg-12 mt-2 ">
+        "{{ calificacion.get('comentario') }}"
+      </div>
+      <div class="hint-text col-12 col-md-12 col-lg-12 mt-4">
+        <nb-icon icon="calendar-outline" pack="eva"></nb-icon
+        >{{ calificacion.get('createdAt') | date: 'dd/MM/yyyy' }}
+      </div>
+    </div>
+
   </nb-card-body>
   <nb-card-footer>
     <div class="row">
       <div class="col">
         <button nbButton matRipple ghost status="primary" (click)="dismiss()">
-          Cancelar
+          Cerrar
         </button>
       </div>
       <div class="col">
         <button
+          *ngIf="modoEdicion"
           [disabled]="loading || !nuevoForm.valid || nuevoForm.pristine"
           nbButton
           matRipple

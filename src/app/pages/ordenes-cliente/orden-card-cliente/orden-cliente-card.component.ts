@@ -11,7 +11,7 @@ import { take } from 'rxjs/operators';
 })
 export class OrdenClienteCardComponent {
   @Input() orden: any;
-  // @Output() estadoChanged = new EventEmitter<boolean>();
+  @Output() estadoChanged = new EventEmitter<boolean>();
 
   constructor(private dialogService: NbDialogService, private router: Router) {}
 
@@ -22,6 +22,7 @@ export class OrdenClienteCardComponent {
   }
 
   openReview(){
+    console.log("ORDEN", this.orden)
     this.dialogService
     .open(ReviewModalComponent, {
       context: {
@@ -35,7 +36,7 @@ export class OrdenClienteCardComponent {
       if (res) {
         // this.orden.orden.set('estado', res);
         // this.orden.estado = res;
-        // this.estadoChanged.emit(true);
+        this.estadoChanged.emit(true);
       }
     });
   }

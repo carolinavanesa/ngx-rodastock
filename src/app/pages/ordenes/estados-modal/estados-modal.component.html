@@ -15,7 +15,7 @@
         <ng-template #labelOne>
           <ngx-orden-status status="En Curso"></ngx-orden-status>
         </ng-template>
-        <h5>
+        <h5 class="mx-auto">
           Estado actual:
           <ngx-orden-status status="Pendiente"></ngx-orden-status>
         </h5>
@@ -53,7 +53,7 @@
         <ng-template #labelTwo>
           <ngx-orden-status status="Terminado"></ngx-orden-status>
         </ng-template>
-        <h5>
+        <h5 class="mx-auto">
           Estado actual: <ngx-orden-status status="En Curso"></ngx-orden-status>
         </h5>
         <p class="lorem">
@@ -85,7 +85,7 @@
         <ng-template #labelThree>
           <ngx-orden-status status="Entregado"></ngx-orden-status>
         </ng-template>
-        <h5>
+        <h5 class="mx-auto">
           Estado actual:
           <ngx-orden-status status="Terminado"></ngx-orden-status>
         </h5>
@@ -140,19 +140,44 @@
 
     <ng-container *ngIf="completo">
       <div class="row">
-        <h5>Pedido Finalizado</h5>
+        <h5 class="mx-auto">Pedido Finalizado</h5>
       </div>
-      <div class="row">
+      <div class="row" *ngIf="!calificacion?.id; else calificacionTemplate">
         <p class="lorem">Aun no te han calificado por este trabajo...</p>
       </div>
+      <ng-template #calificacionTemplate>
+        <div class="row m-3">
+          <div class="col-12 col-md-12 col-lg-12 mt-2">
+            <nb-icon icon="brush-outline" pack="eva"></nb-icon>
+            <span>{{ orden.get('rodado') }}</span>
+            <nb-icon class="ml-4" icon="person-outline" pack="eva"></nb-icon>
+            <span>{{ orden.get('cliente').get('nombre') }}</span>
+          </div>
+          <div class="col-12 col-md-12 col-lg-12 mt-4">
+            <mat-star-rating
+              [readonly]="true"
+              [rating]="calificacion.get('puntuacion')"
+            ></mat-star-rating>
+          </div>
+          <div class="font-weight-bold col-12 col-md-12 col-lg-12 mt-2">
+            "{{ calificacion.get('comentario') }}"
+          </div>
+          <div class="hint-text col-12 col-md-12 col-lg-12 mt-4">
+            <nb-icon icon="calendar-outline" pack="eva"></nb-icon
+            >{{ calificacion.get('createdAt') | date: 'dd/MM/yyyy' }}
+          </div>
+        </div>
+      </ng-template>
     </ng-container>
 
     <ng-container *ngIf="cancelado">
       <div class="row">
-        <h5>Pedido Cancelado</h5>
+        <h5 class="mx-auto">Pedido Cancelado</h5>
       </div>
       <div class="row">
-        <p class="lorem">Puede eliminar este pedido de la lista de pedidos. Esta seguro? </p>
+        <p class="lorem">
+          Puede eliminar este pedido de la lista de pedidos. Esta seguro?
+        </p>
         <button
           nbButton
           matRipple

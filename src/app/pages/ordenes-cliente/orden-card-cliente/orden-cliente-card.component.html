@@ -1,8 +1,5 @@
 <nb-card size="medium">
-  <div
-    class="picture"
-    style.background-image="url('{{ orden.imagen }}')"
-  ></div>
+  <div class="picture" style.background-image="url('{{ orden.imagen }}')"></div>
 
   <div class="row m-2">
     <div class="col-xs-12 col-lg-12 col-md-6">
@@ -49,7 +46,16 @@
   </div>
 
   <nb-card-footer>
-    <nb-icon icon="printer-outline" pack="eva" (click)="openDetalle()"></nb-icon>
-    <nb-icon *ngIf="orden.estado === 'Entregado'" [icon]="orden.calificacion ? 'start' : 'star-outline'" pack="eva" (click)="openReview()"></nb-icon>
+    <nb-icon
+      icon="printer-outline"
+      pack="eva"
+      (click)="openDetalle()"
+    ></nb-icon>
+    <nb-icon
+      *ngIf="orden.estado === 'Entregado'"
+      [icon]="orden.calificacion ? 'star' : 'star-outline'"
+      pack="eva"
+      (click)="openReview()"
+    ></nb-icon>
   </nb-card-footer>
 </nb-card>

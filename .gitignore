@@ -35,6 +35,7 @@ testem.log
 # e2e
 /e2e/*.js
 /e2e/*.map
+/Back4AppCloud
 
 # System Files
 .DS_Store

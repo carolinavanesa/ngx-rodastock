@@ -18,12 +18,14 @@ export class EstadosModalComponent implements OnInit {
   loading = false;
   estado: string;
   orden: any;
+  calificacion: any;
   selectedIndex: number = 0;
   cancelado: boolean;
   completo: boolean;
   nuevoEstado: string;
 
   ngOnInit(): void {
+    debugger
     this.mapEstados();
   }
 

@@ -26,7 +26,6 @@ export class InventarioService {
           stock: c.get('stock'),
         };
       });
-      console.log(result);
     } catch (e) {
       this.alertService.showPrimaryToast('Error', 'No se pudo cargar el inventario');
     }

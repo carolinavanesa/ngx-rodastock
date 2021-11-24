@@ -11,27 +11,21 @@ export class StarRatingComponent implements OnInit {
 
   @Input('rating') rating: number = 3;
   @Input('starCount') starCount: number = 5;
-  @Input('color') color: string = 'accent';
+  @Input('readonly') readonly: false;
   @Output() ratingUpdated = new EventEmitter();
 
   ratingArr = [];
 
-  constructor() {
-  }
-
-
   ngOnInit() {
-    console.log("a "+this.starCount)
     for (let index = 0; index < this.starCount; index++) {
       this.ratingArr.push(index);
     }
   }
   onClick(rating:number) {
-    // this.snackBar.open('You rated ' + rating + ' / ' + this.starCount, '', {
-    //   duration: this.snackBarDuration
-    // });
-    this.ratingUpdated.emit(rating);
-    return false;
+    if (!this.readonly) {
+      this.ratingUpdated.emit(rating);
+      return false;
+    }
   }
 
   showIcon(index:number) {
@@ -43,8 +37,4 @@ export class StarRatingComponent implements OnInit {
   }
 
 }
-export enum StarRatingColor {
-  primary = "primary",
-  accent = "accent",
-  warn = "warn"
-}
+

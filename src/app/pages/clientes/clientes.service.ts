@@ -27,7 +27,6 @@ export class ClientesService {
           cliente: c,
         };
       });
-      console.log(result);
     } catch (e) {
       this.alertService.showPrimaryToast('Error', 'No se pudo cargar clientes');
     }

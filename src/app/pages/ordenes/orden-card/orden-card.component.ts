@@ -21,6 +21,7 @@ export class OrdenCardComponent {
         context: {
           estado: this.orden.estado,
           orden: this.orden.orden,
+          calificacion: this.orden.calificacion,
         },
       })
       .onClose.pipe(take(1))

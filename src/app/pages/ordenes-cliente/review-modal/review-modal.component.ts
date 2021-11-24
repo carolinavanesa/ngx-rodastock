@@ -14,7 +14,7 @@ export class ReviewModalComponent implements OnInit {
   constructor(
     protected ref: NbDialogRef<ReviewModalComponent>,
     private service: OrdenesService,
-    private formBuilder: FormBuilder,
+    private formBuilder: FormBuilder
   ) {}
 
   puntuacion: number;
@@ -22,7 +22,10 @@ export class ReviewModalComponent implements OnInit {
 
   nuevoForm: FormGroup = this.formBuilder.group({
     // puntuacion: ['', [Validators.required, Validators.maxLength(30), Validators.pattern("[a-zA-Z ,']*")]],
-    comentario: ['', [Validators.maxLength(100), Validators.pattern("[a-zA-Z0-9 ,']*")]],
+    comentario: [
+      '',
+      [Validators.maxLength(100), Validators.pattern("[a-zA-Z0-9 ,']*")],
+    ],
   });
 
   @Input() orden: any;
@@ -38,8 +41,22 @@ export class ReviewModalComponent implements OnInit {
     this.puntuacion = rating;
   }
 
-  onConfirm(){
-
+  onConfirm() {
+    if (!this.loading) {
+      this.loading = true;
+      this.service
+        .agregarCalificacion(
+          this.puntuacion,
+          this.nuevoForm.get('comentario').value,
+          this.orden
+        )
+        .then((res) => {
+          if (res) {
+            this.ref.close(res);
+          }
+        })
+        .catch();
+    }
   }
 
   dismiss() {
