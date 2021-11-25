@@ -2,10 +2,11 @@ import { Component, OnDestroy, OnInit, ViewEncapsulation } from '@angular/core';
 import { NbDialogService } from '@nebular/theme';
 import { LocalDataSource } from 'ng2-smart-table';
 import { take } from 'rxjs/operators';
-import { ModalService } from '../../shared/modal/modal.service';
-import { InventarioService } from './inventario.service';
-import { NuevoRepuestoModalComponent } from './nuevo-repuesto-modal/nuevo-repuesto-modal.component';
-import { AlertService } from '../../shared/alert.service';
+import { ModalService } from '../../../shared/modal/modal.service';
+import { InventarioService } from '../inventario.service';
+import { NuevoRepuestoModalComponent } from '../nuevo-repuesto-modal/nuevo-repuesto-modal.component';
+import { AlertService } from '../../../shared/alert.service';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'ngx-dashboard',
@@ -65,6 +66,7 @@ export class InventarioComponent implements OnInit, OnDestroy {
     private modalService: ModalService,
     private dialogService: NbDialogService,
     private alertService: AlertService,
+    private router: Router,
   ) {}
 
   ngOnInit() {
@@ -137,15 +139,9 @@ export class InventarioComponent implements OnInit, OnDestroy {
   }
 
   onUserRowSelect(event: any) {
-    // this.dialogService
-    //   .open(NuevoRepuestoModalComponent)
-    //   .onClose.pipe(take(1))
-    //   .toPromise()
-    //   .then((res) => {
-    //     if (res) {
-    //       this.cargarInventario();
-    //     }
-    //   });
+    this.router.navigateByUrl(
+      `pages/inventario/detalle/${event.data.id}`
+    );
   }
 
   nuevoRepuesto() {

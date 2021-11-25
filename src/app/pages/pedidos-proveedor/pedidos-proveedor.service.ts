@@ -6,6 +6,8 @@ import { AlertService } from '../../shared/alert.service';
 
 const PedidoProveedor = Parse.Object.extend('PedidoProveedor');
 const RepuestoUnidad = Parse.Object.extend('RepuestoUnidad');
+const ActualizacionStock = Parse.Object.extend('ActualizacionStock');
+
 
 @Injectable()
 export class PedidosProveedorService {
@@ -19,6 +21,11 @@ export class PedidosProveedorService {
     try {
       const response = await query.find();
 
+      let unidadesPromises = [];
+      response.forEach((o) => {
+        unidadesPromises.push(o.get('repuestos').query().include('repuesto').find());
+      });
+
       result = response.map(o => {
         return {
           id: o.id,
@@ -31,6 +38,22 @@ export class PedidosProveedorService {
           monto: o.get('monto'),
         }
       })
+
+      result = await Promise.all(unidadesPromises).then((unidades) => {
+        return response.map((o, i) => {
+          return {
+            id: o.id,
+            pedido: o,
+            numero: o.get('numero'),
+            nombreProveedor: o.get('nombreProveedor'),
+            fecha: o.get('fecha'),
+            notas: o.get('notas'),
+            estado: o.get('estado'),
+            monto: o.get('monto'),
+            repuestos: unidades[i],
+          };
+        });
+      });
 
     } catch (e) {
       this.alertService.showPrimaryToast('Error', 'No se pudo cargar el PedidoProveedor');
@@ -105,12 +128,16 @@ export class PedidosProveedorService {
 
     try {
       // Una vez todos terminados agregar la relation
+      let repuestoUnidades = [];
       if (repuestoUnidadesSavedPromises.length > 0) {
-        const repuestoUnidades = await Promise.all(repuestoUnidadesSavedPromises);
+        repuestoUnidades = await Promise.all(repuestoUnidadesSavedPromises);
         nuevoPedidoProveedor.relation('repuestos').add(repuestoUnidades);
       }
 
       const res = await nuevoPedidoProveedor.save();
+      if (estado == 'Recibido') {
+        const resultadoInventario = await this.actualizarStock(res, repuestoUnidades)
+      }
       this.alertService.showSuccessToast('Exito', 'Se ha agregado un nuevo Pedido a Proveedor');
       return true;
     } catch (e) {
@@ -137,11 +164,15 @@ export class PedidosProveedorService {
     }
   }
 
-  async cambiarEstado(estado: string, parseObject: any) {
+  async cambiarEstado(estado: string, parseObject: any, repuestos: any[]) {
     try {
       parseObject.set('estado', estado);
       const res = await parseObject.save();
       this.alertService.showSuccessToast('Exito', 'Pedido en estado ' + estado);
+
+      if (estado == 'Recibido') {
+        const resultadoInventario = await this.actualizarStock(parseObject, repuestos)
+      }
       return true;
     } catch (e) {
       this.alertService.showErrorToast(
@@ -149,6 +180,31 @@ export class PedidosProveedorService {
         'No se pudo cambiar el estado del pedido'
       );
       return false;
+    }
+  }
+
+  async actualizarStock(parseObject: any, repuestos: any[]) {
+
+    let repuestoInventarioPromises = [];
+    let actualizacionStockPromises = []
+    repuestos.forEach((o) => {
+      const repuestoInventario = o.get('repuesto');
+      const nuevoStock = repuestoInventario.get('stock') + o.get('cantidad');
+      repuestoInventario.set('stock', nuevoStock)
+      repuestoInventarioPromises.push(repuestoInventario.save());
+
+      const nuevoActualizacionStock = new ActualizacionStock();
+      nuevoActualizacionStock.set('pedidoIngreso', parseObject);
+      nuevoActualizacionStock.set('tipo', 'ingreso');
+      nuevoActualizacionStock.set('repuesto', repuestoInventario);
+      nuevoActualizacionStock.set('cantidad', o.get('cantidad'));
+      nuevoActualizacionStock.set('stockPrevio', repuestoInventario.get('stock'));
+      actualizacionStockPromises.push(nuevoActualizacionStock.save());
+    });
+
+    if (repuestoInventarioPromises.length > 0) {
+      const resultadoInventario = await Promise.all([...repuestoInventarioPromises, ...actualizacionStockPromises]);
+      this.alertService.showPrimaryToast('Exito', 'Se ha actualizado el stock de los repuestos listados');
     }
   }
 }

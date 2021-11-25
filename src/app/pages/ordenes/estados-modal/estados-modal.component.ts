@@ -24,14 +24,38 @@ export class EstadosModalComponent implements OnInit {
   completo: boolean;
   nuevoEstado: string;
 
+  reparaciones = [];
+  repuestos = [];
+  erroresDeStock = [];
+
   ngOnInit(): void {
-    debugger
+
     this.mapEstados();
   }
 
   mapEstados() {
     switch (this.estado) {
       case 'Pendiente':
+        this.service.getRepuestosFromReparaciones(this.reparaciones).then((repuestos) => {
+          // this.reparaciones.forEach((reparacion) => {
+          //   reparacion.repuestosFetched.forEach((rep) => {
+              // this.repuestos.push(rep);
+
+              repuestos.forEach((rep) => {
+                const nombre = rep.get('repuesto')?.get('nombre');
+                const stock = rep.get('repuesto')?.get('stock');
+                const cantidad = rep.get('cantidad');
+                if (stock < rep.get('cantidad')) {
+                  this.erroresDeStock.push({
+                    repuesto: nombre,
+                    stock: stock,
+                    cantidad: cantidad,
+                  });
+                }
+              })
+          //   });
+          // })
+        });
         this.selectedIndex = 0;
         break;
 
@@ -61,7 +85,7 @@ export class EstadosModalComponent implements OnInit {
       this.loading = true;
 
       this.service
-        .cambiarEstado(estado, this.orden)
+        .cambiarEstado(estado, this.orden, this.repuestos)
         .then((res) => {
           this.nuevoEstado = estado;
           if (estado === 'Entregado') {
@@ -81,7 +105,7 @@ export class EstadosModalComponent implements OnInit {
       icon: 'exclamation',
     };
     this.modalService.showConfirmationModal(config).then((success) =>
-      this.service.cambiarEstado('Cancelado', this.orden).then((res) => {
+      this.service.cambiarEstado('Cancelado', this.orden, this.repuestos).then((res) => {
         this.nuevoEstado = 'Cancelado';
         this.cancelado = true;
       })

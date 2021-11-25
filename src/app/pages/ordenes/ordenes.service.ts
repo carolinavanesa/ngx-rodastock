@@ -5,6 +5,7 @@ import { AlertService } from '../../shared/alert.service';
 
 const Orden = Parse.Object.extend('Orden');
 const Calificacion = Parse.Object.extend('Calificacion');
+const ActualizacionStock = Parse.Object.extend('ActualizacionStock');
 
 @Injectable()
 export class OrdenesService {
@@ -51,6 +52,18 @@ export class OrdenesService {
       );
     }
 
+    return result;
+  }
+
+  async getRepuestosFromReparaciones(tipoReparaciones: any[]){
+    let repuestoPromises = [];
+    let result = [];
+
+    tipoReparaciones.forEach((o) => {
+      repuestoPromises.push(o.get('repuestos').query().find());
+    });
+
+    result = await Promise.all(repuestoPromises);
     return result;
   }
 
@@ -120,7 +133,7 @@ export class OrdenesService {
     importe: number,
     file?: any
   ): Promise<boolean> {
-    debugger;
+    ;
     const nuevaOrden = new Orden();
     nuevaOrden.set('numero', numero);
     nuevaOrden.set('fecha', fecha);
@@ -151,7 +164,7 @@ export class OrdenesService {
     }
   }
 
-  async cambiarEstado(estado: string, parseObject: any) {
+  async cambiarEstado(estado: string, parseObject: any, repuestos: any[]) {
     try {
       parseObject.set('estado', estado);
       const res = await parseObject.save();
@@ -168,6 +181,10 @@ export class OrdenesService {
               parseObject.get('rodado') +
               ' se encuentra en curso. Pronto te notificaremos cuando este listo para ser retirado!',
           });
+
+          // Actualizar stock
+          const resultadoInventario = await this.actualizarStock(res, repuestos)
+
           break;
         case 'Terminado':
           this.sendEmail({
@@ -220,6 +237,30 @@ export class OrdenesService {
     }
   }
 
+  async actualizarStock(parseObject: any, repuestos: any[]) {
+    let repuestoInventarioPromises = [];
+    let actualizacionStockPromises = []
+    repuestos.forEach((o) => {
+      const repuestoInventario = o.get('repuesto');
+      const nuevoStock = repuestoInventario.get('stock') + o.get('cantidad');
+      repuestoInventario.set('stock', nuevoStock)
+      repuestoInventarioPromises.push(repuestoInventario.save());
+
+      const nuevoActualizacionStock = new ActualizacionStock();
+      nuevoActualizacionStock.set('pedidoEgreso', parseObject);
+      nuevoActualizacionStock.set('tipo', 'egreso');
+      nuevoActualizacionStock.set('repuesto', repuestoInventario);
+      nuevoActualizacionStock.set('cantidad', o.get('cantidad'));
+      nuevoActualizacionStock.set('stockPrevio', repuestoInventario.get('stock'));
+      actualizacionStockPromises.push(nuevoActualizacionStock.save());
+    });
+
+    if (repuestoInventarioPromises.length > 0) {
+      const resultadoInventario = await Promise.all([...repuestoInventarioPromises, ...actualizacionStockPromises]);
+      this.alertService.showPrimaryToast('Exito', 'Se ha actualizado el stock de los repuestos listados');
+    }
+  }
+
   sendEmail(body: any) {
     Parse.Cloud.run('sendgridEmail', body);
   }
@@ -247,7 +288,7 @@ export class OrdenesService {
     comentario: string,
     ordenParse: any,
   ): Promise<boolean> {
-    debugger;
+    ;
     const nuevaCalificacion = new Calificacion();
     nuevaCalificacion.set('puntuacion', puntuacion);
     nuevaCalificacion.set('comentario', comentario);

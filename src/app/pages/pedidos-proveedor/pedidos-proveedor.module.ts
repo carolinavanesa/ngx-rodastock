@@ -14,6 +14,7 @@ import {
   NbSelectModule,
   NbListModule,
   NbIconModule,
+  NbStepperModule,
 } from '@nebular/theme';
 import { Ng2SmartTableModule } from 'ng2-smart-table';
 import { SharedModalModule } from '../../shared/modal/modal.module';
@@ -46,7 +47,6 @@ import { FilterPedidoPipe } from './filter-pedido.pipe';
     ThemeModule,
     ReactiveFormsModule,
     NbCardModule,
-    NbButtonModule,
     NbTabsetModule,
     NbActionsModule,
     NbRadioModule,
@@ -54,6 +54,7 @@ import { FilterPedidoPipe } from './filter-pedido.pipe';
     NbListModule,
     NbIconModule,
     NbButtonModule,
+    NbStepperModule,
     Ng2SmartTableModule,
     SharedModalModule,
     SharedAngularMaterialModule,

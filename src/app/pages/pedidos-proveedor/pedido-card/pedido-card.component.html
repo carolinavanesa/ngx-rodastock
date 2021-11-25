@@ -1,9 +1,9 @@
-<nb-card size="medium">
+<nb-card size="small">
   <!-- <div
     class="picture"
     style.background-image="url('{{ pedido.imagen }}')"
   ></div> -->
-  <div class="mx-auto">
+  <div class="mx-auto picture-zone">
     <nb-icon icon="car-outline" pack="eva"></nb-icon>
   </div>
 
@@ -24,8 +24,8 @@
   </div>
   <div class="row ml-1 mr-1 mt-2">
     <ul>
-      <li *ngFor="let rep of pedido.unidades">
-        {{ rep.get('nombre') }} x{{ rep.get('cantidad')}}
+      <li *ngFor="let rep of pedido.repuestos">
+        {{ rep.get('repuesto').get('nombre') }} x{{ rep.get('cantidad')}}
       </li>
     </ul>
   </div>

@@ -19,7 +19,16 @@
           Estado actual:
           <ngx-orden-status status="Pendiente"></ngx-orden-status>
         </h5>
-        <p class="lorem">Este pedido esta en espera</p>
+        <p class="lorem">Este pedido esta en espera. Comproba que contas con stock antes de continuar</p>
+
+        <nb-alert *ngFor="let msg of erroresDeStock" outline="warning">
+          <p>
+            No hay stock para
+            <b>{{ msg.repuesto }}</b
+            >. Requerido: <b>{{ msg.cantidad }}</b
+            >, Actual: <b>{{ msg.stock }}</b>
+          </p>
+        </nb-alert>
 
         <div class="row">
           <button

@@ -48,7 +48,18 @@
           <!-- <h4 class="mt-4 mx-auto" *ngIf="pedido.length === 0">Aun no tenes pedidos!</h4> -->
         </div>
       </nb-tab>
-      <nb-tab tabTitle="Entrega hoy" class="w-100">
+      <nb-tab tabTitle="Solicitados" class="w-100">
+        <div class="row">
+          <div
+            *ngFor="let pedido of pedidosSolicitados | filterPedido: searchText"
+            class="col-md-4 col-12 col-xs-12 col-lg-3"
+          >
+            <ngx-pedido-card [pedido]="pedido" (estadoChanged)="cargarPedidoProveedor()"></ngx-pedido-card>
+          </div>
+          <h4 class="mt-4 mx-auto" *ngIf="pedidosEntregados.length === 0">No hay pedidos solicitados!</h4>
+        </div>
+      </nb-tab>
+      <nb-tab tabTitle="Recibidos" class="w-100">
         <div class="row">
           <div
             *ngFor="let pedido of pedidosEntregados | filterPedido: searchText"
@@ -56,7 +67,7 @@
           >
             <ngx-pedido-card [pedido]="pedido" (estadoChanged)="cargarPedidoProveedor()"></ngx-pedido-card>
           </div>
-          <h4 class="mt-4 mx-auto" *ngIf="pedidosEntregados.length === 0">No hay pedidos para entregar hoy!</h4>
+          <h4 class="mt-4 mx-auto" *ngIf="pedidosEntregados.length === 0">No hay pedidos recibidos!</h4>
         </div>
       </nb-tab>
 

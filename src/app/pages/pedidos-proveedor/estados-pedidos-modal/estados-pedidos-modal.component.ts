@@ -19,14 +19,13 @@ export class EstadosPedidosModalComponent implements OnInit {
   loading = false;
   estado: string;
   pedido: any;
-  calificacion: any;
+  repuestos = [];
   selectedIndex: number = 0;
   cancelado: boolean;
   completo: boolean;
   nuevoEstado: string;
 
   ngOnInit(): void {
-    debugger
     this.mapEstados();
   }
 
@@ -39,7 +38,10 @@ export class EstadosPedidosModalComponent implements OnInit {
         this.selectedIndex = 1;
         break;
       case 'Recibido':
-        this.selectedIndex = 2;
+        this.completo = true;
+        break;
+      case 'Cancelado':
+        this.cancelado = true;
         break;
       default:
         break;
@@ -51,7 +53,7 @@ export class EstadosPedidosModalComponent implements OnInit {
       this.loading = true;
 
       this.service
-        .cambiarEstado(estado, this.pedido)
+        .cambiarEstado(estado, this.pedido, this.repuestos)
         .then((res) => {
           this.nuevoEstado = estado;
           if (estado === 'Entregado') {
@@ -71,7 +73,7 @@ export class EstadosPedidosModalComponent implements OnInit {
       icon: 'exclamation',
     };
     this.modalService.showConfirmationModal(config).then((success) =>
-      this.service.cambiarEstado('Cancelado', this.pedido).then((res) => {
+      this.service.cambiarEstado('Cancelado', this.pedido, this.repuestos).then((res) => {
         this.nuevoEstado = 'Cancelado';
         this.cancelado = true;
       })

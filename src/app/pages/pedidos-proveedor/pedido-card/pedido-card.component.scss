@@ -1,12 +1,5 @@
 @import '../../../@theme/styles/themes.scss';
 
-// nb-card div.picture {
-//   height: 100% !important;
-//   width: 100% !important;
-//   max-width: 400px !important;
-//   max-height: 200px !important;
-// }
-
 .picture {
   background-position: center;
   background-size: cover;
@@ -17,6 +10,10 @@
   // width: 100% !important;
   // max-width: 400px !important;
   // max-height: 200px !important;
+}
+
+.picture-zone nb-icon {
+  font-size: 2rem;
 }
 
 .details {
@@ -44,8 +41,3 @@ nb-card-footer nb-icon {
     vertical-align: top;
   }
 }
-
-.card-bottom {
-
-}
-

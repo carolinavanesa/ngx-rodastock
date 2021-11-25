@@ -1,0 +1,73 @@
+<nb-card status="primary" class="nueva-card">
+  <nb-card-header>Detalles de Movimientos de stock del Repuesto</nb-card-header>
+  <nb-card-body class="m-2" *ngIf="repuesto">
+    <p><b>Nombre: </b>{{ repuesto.nombre }}</p>
+    <p><b>Cantidad Actual: </b>{{ repuesto.nombre }}</p>
+    <p><b>Costo: </b>{{ repuesto.nombre | currency }}</p>
+
+    <h6>Ingresos</h6>
+    <table class="table table-striped">
+      <thead>
+        <tr>
+          <th>Fecha</th>
+          <th>Cantidad</th>
+          <th>Stock Previo</th>
+          <th>Stock Siguiente</th>
+          <th>Pedido</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let item of listaIngresos">
+          <td>{{ item.get('createdAt') | date }}</td>
+          <td>{{ item.get('cantidad') }}</td>
+          <td>{{ item.get('stockPrevio') }}</td>
+          <td>{{ (item.get('cantidad') + item.get('stockPrevio')) }}</td>
+          <td>{{ item.get('pedidoIngreso').get('numero') }}</td>
+        </tr>
+
+        <tr *ngIf="inicial">
+          <td>{{ inicial.get('createdAt') | date }}</td>
+          <td>{{ inicial.get('cantidad') }}</td>
+          <td>0</td>
+          <td>{{ inicial.get('cantidad') }}</td>
+          <td>Stock Inicial</td>
+        </tr>
+
+      </tbody>
+    </table>
+
+
+    <h6>Egresos</h6>
+    <table class="table table-striped">
+      <thead>
+        <tr>
+          <th>Fecha</th>
+          <th>Cantidad</th>
+          <th>Stock Previo</th>
+          <th>Stock Siguiente</th>
+          <th>Pedido</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let item of listaEgresos">
+          <td>{{ item.get('createdAt') | date }}</td>
+          <td>{{ item.get('cantidad') }}</td>
+          <td>{{ item.get('stockPrevio') }}</td>
+          <td>{{ (item.get('cantidad') + item.get('stockPrevio')) }}</td>
+          <td>{{ item.get('pedidoEgreso').get('numero') }}</td>
+        </tr>
+      </tbody>
+    </table>
+
+
+  </nb-card-body>
+  <nb-card-footer>
+    <div class="row">
+      <div class="col">
+        <button nbButton matRipple ghost status="primary">
+          Cerrar
+        </button>
+      </div>
+    </div>
+  </nb-card-footer>
+</nb-card>

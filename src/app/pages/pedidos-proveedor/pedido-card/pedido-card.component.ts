@@ -22,6 +22,7 @@ export class PedidoCardComponent {
         context: {
           estado: this.pedido.estado,
           pedido: this.pedido.pedido,
+          repuestos: this.pedido.repuestos
         },
       })
       .onClose.pipe(take(1))
@@ -37,7 +38,7 @@ export class PedidoCardComponent {
 
   openDetalle(){
     this.router.navigateByUrl(
-      `pages/pedidos-proveedor/detalle-pedido/${this.pedido.id}`
+      `pages/pedidos-proveedor/detalle/${this.pedido.id}`
     );
   }
 

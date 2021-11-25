@@ -13,7 +13,7 @@
       <nb-step [label]="labelOne" [completed]="estado !== 'Pendiente'">
         <!-- <ng-template #labelOne>En Curso</ng-template> -->
         <ng-template #labelOne>
-          <ngx-pedido-status status="Pendiente"></ngx-pedido-status>
+          <ngx-pedido-status status="Solicitado"></ngx-pedido-status>
         </ng-template>
         <h5 class="mx-auto">
           Estado actual:
@@ -51,13 +51,13 @@
       >
         <!-- <ng-template #labelTwo>Terminado</ng-template> -->
         <ng-template #labelTwo>
-          <ngx-pedido-status status="Solicitado"></ngx-pedido-status>
+          <ngx-pedido-status status="Recibido"></ngx-pedido-status>
         </ng-template>
         <h5 class="mx-auto">
           Estado actual: <ngx-pedido-status status="Solicitado"></ngx-pedido-status>
         </h5>
         <p class="lorem">
-          Este pedido se ha solicitado. Cuando recibas las unidades del Proveedor podes marcar el pedido como Entregado para así actualizar el stock
+          Este pedido se ha solicitado. Cuando recibas las unidades del Proveedor podes marcar el pedido como Recibido para así actualizar el stock
         </p>
         <div class="row">
           <button
@@ -67,7 +67,7 @@
             matRipple
             nbStepperNext
             status="primary"
-            (click)="cambiarEstado('Entregado')"
+            (click)="cambiarEstado('Recibido')"
           >
             Ya lo tengo!
           </button>
@@ -83,22 +83,14 @@
     >
       <nb-step [label]="labelOne" [completed]="true">
         <ng-template #labelOne
-          ><ngx-pedido-status status="En Curso"></ngx-pedido-status
+          ><ngx-pedido-status status="Solicitado"></ngx-pedido-status
         ></ng-template>
       </nb-step>
       <nb-step [label]="labelTwo" [completed]="true">
         <ng-template #labelTwo
-          ><ngx-pedido-status status="Terminado"></ngx-pedido-status
+          ><ngx-pedido-status status="Recibido"></ngx-pedido-status
         ></ng-template>
       </nb-step>
-      <nb-step [label]="labelThree" [completed]="true">
-        <ng-template #labelThree
-          ><ngx-pedido-status status="Entregado"></ngx-pedido-status
-        ></ng-template>
-      </nb-step>
-      <!-- <nb-step [label]="labelThree" [hidden]="true">
-        <ng-template #labelThree></ng-template>
-      </nb-step> -->
     </nb-stepper>
 
     <ng-container *ngIf="completo">
@@ -106,7 +98,12 @@
         <h5 class="mx-auto">Pedido Finalizado</h5>
       </div>
       <div class="row">
-
+        <p>Veras impactado el stock en el inventario:</p>
+        <ul>
+          <li *ngFor="let rep of repuestos">
+            {{ rep.get('repuesto').get('nombre') }} x{{ rep.get('cantidad')}}
+          </li>
+        </ul>
       </div>
     </ng-container>
 

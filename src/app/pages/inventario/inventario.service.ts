@@ -1,15 +1,14 @@
 import { Injectable } from '@angular/core';
-import { Router } from '@angular/router';
-
 import { Parse } from 'parse';
 import { AlertService } from '../../shared/alert.service';
 
 const RepuestoInventario = Parse.Object.extend('RepuestoInventario');
 const RepuestoUnidad = Parse.Object.extend('RepuestoUnidad');
+const ActualizacionStock = Parse.Object.extend('ActualizacionStock');
 
 @Injectable()
 export class InventarioService {
-  constructor(private router: Router, private alertService: AlertService) {}
+  constructor(private alertService: AlertService) {}
 
   async cargarInventario() {
     let result = [];
@@ -28,6 +27,41 @@ export class InventarioService {
       });
     } catch (e) {
       this.alertService.showPrimaryToast('Error', 'No se pudo cargar el inventario');
+    }
+
+    return result;
+  }
+
+  async getRepuestoInventario(id: string) {
+    const query = new Parse.Query(RepuestoInventario);
+    query.equalTo('deleted', false);
+    query.equalTo('objectId', id);
+    let result;
+
+    try {
+      result = await query.first();
+    } catch (e) {
+      this.alertService.showPrimaryToast(
+        'Error',
+        'No se pudo cargar el Repuesto'
+      );
+    }
+
+    return result;
+  }
+
+  async cargarActualizacionStock() {
+    let result = [];
+    const query = new Parse.Query(ActualizacionStock);
+    query.include('pedidoEgreso');
+    query.include('pedidoIngreso');
+    query.include('repuesto');
+    query.ascending("createdAt");
+    query.limit(5000);
+    try {
+      result = await query.find();
+    } catch (e) {
+      this.alertService.showPrimaryToast('Error', 'No se pudo cargar el detalle del repuesto');
     }
 
     return result;
@@ -58,7 +92,15 @@ export class InventarioService {
     nuevoRepuesto.set('stock', stock);
 
     try {
-      nuevoRepuesto.save();
+      const res = await nuevoRepuesto.save();
+
+      const nuevoActualizacionStock = new ActualizacionStock();
+      nuevoActualizacionStock.set('repuesto', res);
+      nuevoActualizacionStock.set('tipo', 'inicial');
+      nuevoActualizacionStock.set('cantidad', stock);
+      nuevoActualizacionStock.set('stockPrevio', 0);
+      const resActualizacion = await nuevoActualizacionStock.save();
+
       this.alertService.showSuccessToast('Exito', 'Se ha agregado un nuevo repuesto');
       return true;
     } catch (e) {

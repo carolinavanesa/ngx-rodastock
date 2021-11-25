@@ -12,10 +12,10 @@ export class PedidosProveedorComponent implements OnInit {
   searchText = '';
   pedidos = [];
   pedidosEntregados = [];
+  pedidosSolicitados = [];
 
   constructor(
     private service: PedidosProveedorService,
-
     private router: Router
   ) {}
 
@@ -26,17 +26,20 @@ export class PedidosProveedorComponent implements OnInit {
   cargarPedidoProveedor() {
     this.service.cargarPedidoProveedor().then((pedidos) => {
       this.pedidos = pedidos;
+      this.pedidosSolicitados = this.pedidos.filter(
+        (o) => o.estado === 'Solicitado'
+      );
       this.pedidosEntregados = this.pedidos.filter(
-        (o) => o.estado === 'Entregado'
+        (o) => o.estado === 'Recibido'
       );
     });
   }
 
-  onEdit(event: any) {
-    this.router.navigateByUrl(
-      `pages/pedidos-proveedor/editar/${event.data.id}`
-    );
-  }
+  // onEdit(event: any) {
+  //   this.router.navigateByUrl(
+  //     `pages/pedidos-proveedor/editar/${event.data.id}`
+  //   );
+  // }
 
   nuevoPedido() {
     this.router.navigateByUrl(`pages/pedidos-proveedor/nuevo`);
