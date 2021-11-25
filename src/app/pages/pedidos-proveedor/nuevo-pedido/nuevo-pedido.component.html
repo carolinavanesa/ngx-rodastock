@@ -1,0 +1,204 @@
+<nb-card class="main">
+  <nb-card-header
+    >{{ modoEdicion ? 'Editar' : 'Nuevo' }} Pedido de Proveedor</nb-card-header
+  >
+  <nb-card-body class="m-2">
+    <form [formGroup]="nuevoForm">
+      <h5 class="text-hint mb-5">
+        Ingrese la información referida al pedido
+      </h5>
+
+      <div class="row m-3">
+        <div class="col-12 col-md-6 col-xs-12 m0">
+          <mat-form-field class="mx-auto w-100 mt-3">
+            <mat-label>Numero</mat-label>
+            <input
+              formControlName="numero"
+              matInput
+              autocomplete="off"
+              maxlength="30"
+            />
+            <mat-error
+              *ngIf="
+                nuevoForm.get('numero')?.hasError('pattern') &&
+                !nuevoForm.get('numero').hasError('required')
+              "
+            >
+              Por favor ingrese un numero de pedido válido.
+            </mat-error>
+            <mat-error *ngIf="nuevoForm.get('numero')?.hasError('pattern')">
+              Este campo es requerido
+            </mat-error>
+            <mat-hint>Solo se permiten letras y números</mat-hint>
+          </mat-form-field>
+        </div>
+        <!-- estado -->
+        <div class="col-12 col-md-6 col-xs-12 w-100 m0">
+          <mat-form-field appearance="fill" class="w-100">
+            <mat-label>Estado</mat-label>
+            <mat-select
+              formControlName="estado"
+            >
+              <mat-option
+                *ngFor="let estado of estadoOptions"
+                [value]="estado"
+              >
+                {{ estado }}
+              </mat-option>
+            </mat-select>
+            <mat-error *ngIf="nuevoForm.get('estado')?.hasError('required')">
+              Este campo es requerido
+            </mat-error>
+          </mat-form-field>
+        </div>
+      </div>
+
+      <!-- NOMBRE -->
+      <div class="row m-3">
+        <mat-form-field class="mx-auto w-100">
+          <mat-label>Proveedor</mat-label>
+          <input
+            formControlName="nombreProveedor"
+            matInput
+            autocomplete="on"
+            maxlength="30"
+          />
+          <mat-error
+            *ngIf="
+              nuevoForm.get('nombreProveedor')?.hasError('pattern') &&
+              !nuevoForm.get('nombreProveedor').hasError('required')
+            "
+          >
+            Por favor ingrese un nombre válido.
+          </mat-error>
+          <mat-error *ngIf="nuevoForm.get('nombreProveedor')?.hasError('pattern')">
+            Este campo es requerido
+          </mat-error>
+          <mat-hint>Solo se permiten letras y números</mat-hint>
+        </mat-form-field>
+      </div>
+
+      <!-- Notas -->
+      <div class="row m-3 w-100">
+        <mat-form-field class="mx-auto w-100">
+          <mat-label>Notas</mat-label>
+          <textarea
+          row="2"
+          formControlName="notas"
+          matInput
+          autocomplete="off"
+          maxlength="200"
+        ></textarea>
+          <mat-error
+            *ngIf="nuevoForm.get('notas')?.hasError('pattern')"
+          >
+            Por favor ingrese un nombre válido.
+          </mat-error>
+          <mat-hint>Solo se permiten letras y números</mat-hint>
+        </mat-form-field>
+      </div>
+
+      <!-- UNIDADES NECESARIOS -->
+      <div class="row m-3 w-100">
+        <h5 class="text-hint mt-5">
+          Agregue las unidades encargadas al proveedor
+        </h5>
+
+        <div class="col-md-12">
+          <button
+            nbButton
+            matRipple
+            hero
+            status="primary"
+            (click)="nuevoRepuesto()"
+            class="mb-2"
+          >
+            Nueva Unidad
+          </button>
+        </div>
+        <div class="col-md-12">
+          <ng2-smart-table
+            class="custom-table"
+            [settings]="settings"
+            [source]="source"
+            (deleteConfirm)="onDeleteConfirm($event)"
+          >
+          </ng2-smart-table>
+        </div>
+      </div>
+
+      <div class="row m-3">
+        <p>Costo total estimado de unidades requeridas: $ {{ costoTotalRepuestos }}</p>
+      </div>
+
+      <div class="row mt-4">
+        <div class="col-12 col-md-6 col-xs-12">
+          <mat-form-field class="w-100">
+            <mat-label>Fecha</mat-label>
+            <input
+              formControlName="fecha"
+              autocomplete="off"
+              matInput
+              [matDatepicker]="picker2"
+            />
+            <mat-datepicker-toggle
+              matSuffix
+              [for]="picker2"
+            ></mat-datepicker-toggle>
+            <mat-datepicker #picker2></mat-datepicker>
+            <mat-error
+              *ngIf="nuevoForm.get('fecha')?.hasError('required')"
+            >
+              Este campo es requerido
+            </mat-error>
+            <mat-hint
+              class="fecha-entrega-hint"
+              *ngIf="nuevoForm.get('fecha').pristine"
+              >Se establecio automaticamente en base a la duracion de las
+              reparaciones</mat-hint
+            >
+          </mat-form-field>
+        </div>
+        <div class="col-12 col-md-6 col-xs-12 w-100">
+          <mat-form-field>
+            <mat-label>Monto $</mat-label>
+            <input
+              formControlName="monto"
+              type="text"
+              matInput
+              autocomplete="off"
+              maxLength="10"
+              currency-mask
+            />
+            <mat-hint>Solo se permiten numeros</mat-hint>
+          </mat-form-field>
+        </div>
+      </div>
+    </form>
+  </nb-card-body>
+  <nb-card-footer>
+    <div class="row">
+      <div class="col">
+        <button nbButton matRipple ghost status="primary" (click)="goBack()">
+          Volver
+        </button>
+      </div>
+      <div class="col">
+        <button
+          [disabled]="
+            loading ||
+            (!modoEdicion && (!nuevoForm.valid || nuevoForm.pristine))
+          "
+          nbButton
+          matRipple
+          hero
+          status="primary"
+          (click)="confirm()"
+          class="float-right"
+        >
+          {{ modoEdicion ? 'Editar' : 'Crear' }}
+        </button>
+      </div>
+    </div>
+  </nb-card-footer>
+</nb-card>

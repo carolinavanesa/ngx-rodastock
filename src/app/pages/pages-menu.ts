@@ -27,7 +27,12 @@ export const MENU_ITEMS: NbMenuItem[] = [
     title: 'Pedidos',
     icon: 'paper-plane-outline',
     link: '/pages/ordenes',
-  }
+  },
+  {
+    title: 'Pedidos a Proveedores',
+    icon: 'car-outline',
+    link: '/pages/pedidos-proveedor',
+  },
 ];
 
 export const MENU_ITEMS_CLIENTE: NbMenuItem[] = [
@@ -42,6 +47,5 @@ export const MENU_ITEMS_CLIENTE: NbMenuItem[] = [
     title: 'Mis Pedidos',
     icon: 'paper-plane-outline',
     link: '/pages/mis-pedidos',
-  }
+  },
 ];
-

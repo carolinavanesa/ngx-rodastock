@@ -1,0 +1,138 @@
+<nb-card status="primary" class="estado-card">
+  <nb-card-header
+    >Actualizar estado de Pedido N {{ pedido.get('numero') }}</nb-card-header
+  >
+  <nb-card-body class="m-2">
+    <nb-stepper
+      orientation="horizontal"
+      [linear]="true"
+      [disableStepNavigation]="true"
+      [selectedIndex]="selectedIndex"
+      *ngIf="!completo && !cancelado"
+    >
+      <nb-step [label]="labelOne" [completed]="estado !== 'Pendiente'">
+        <!-- <ng-template #labelOne>En Curso</ng-template> -->
+        <ng-template #labelOne>
+          <ngx-pedido-status status="Pendiente"></ngx-pedido-status>
+        </ng-template>
+        <h5 class="mx-auto">
+          Estado actual:
+          <ngx-pedido-status status="Pendiente"></ngx-pedido-status>
+        </h5>
+        <p class="lorem">Este detalle de pedido aun no se ha solicitado al proveedor</p>
+
+        <div class="row">
+          <button
+            [disabled]="loading"
+            nbButton
+            matRipple
+            status="danger"
+            class="mx-auto"
+            (click)="cancelar()"
+          >
+            Cancelarlo
+          </button>
+          <button
+            [disabled]="loading"
+            nbButton
+            matRipple
+            nbStepperNext
+            status="primary"
+            class="mx-auto"
+            (click)="cambiarEstado('Solicitado')"
+          >
+            Ya lo envié!
+          </button>
+        </div>
+      </nb-step>
+      <nb-step
+        [label]="labelTwo"
+        [completed]="estado !== 'Pendiente' && estado !== 'Solicitado'"
+      >
+        <!-- <ng-template #labelTwo>Terminado</ng-template> -->
+        <ng-template #labelTwo>
+          <ngx-pedido-status status="Solicitado"></ngx-pedido-status>
+        </ng-template>
+        <h5 class="mx-auto">
+          Estado actual: <ngx-pedido-status status="Solicitado"></ngx-pedido-status>
+        </h5>
+        <p class="lorem">
+          Este pedido se ha solicitado. Cuando recibas las unidades del Proveedor podes marcar el pedido como Entregado para así actualizar el stock
+        </p>
+        <div class="row">
+          <button
+            [disabled]="loading"
+            class="mx-auto"
+            nbButton
+            matRipple
+            nbStepperNext
+            status="primary"
+            (click)="cambiarEstado('Entregado')"
+          >
+            Ya lo tengo!
+          </button>
+        </div>
+      </nb-step>
+    </nb-stepper>
+
+    <nb-stepper
+      orientation="horizontal"
+      [disableStepNavigation]="true"
+      selectedIndex="3"
+      *ngIf="completo"
+    >
+      <nb-step [label]="labelOne" [completed]="true">
+        <ng-template #labelOne
+          ><ngx-pedido-status status="En Curso"></ngx-pedido-status
+        ></ng-template>
+      </nb-step>
+      <nb-step [label]="labelTwo" [completed]="true">
+        <ng-template #labelTwo
+          ><ngx-pedido-status status="Terminado"></ngx-pedido-status
+        ></ng-template>
+      </nb-step>
+      <nb-step [label]="labelThree" [completed]="true">
+        <ng-template #labelThree
+          ><ngx-pedido-status status="Entregado"></ngx-pedido-status
+        ></ng-template>
+      </nb-step>
+      <!-- <nb-step [label]="labelThree" [hidden]="true">
+        <ng-template #labelThree></ng-template>
+      </nb-step> -->
+    </nb-stepper>
+
+    <ng-container *ngIf="completo">
+      <div class="row">
+        <h5 class="mx-auto">Pedido Finalizado</h5>
+      </div>
+      <div class="row">
+
+      </div>
+    </ng-container>
+
+    <ng-container *ngIf="cancelado">
+      <div class="row">
+        <h5 class="mx-auto">Pedido Cancelado</h5>
+      </div>
+      <div class="row">
+        <p class="lorem">
+          Puede eliminar este pedido de la lista de pedidos. Esta seguro?
+        </p>
+        <button
+          nbButton
+          matRipple
+          status="danger"
+          class="mx-auto"
+          (click)="eliminar()"
+        >
+          Eliminar
+        </button>
+      </div>
+    </ng-container>
+  </nb-card-body>
+  <nb-card-footer>
+    <button nbButton matRipple ghost status="primary" (click)="dismiss()">
+      Volver
+    </button>
+  </nb-card-footer>
+</nb-card>

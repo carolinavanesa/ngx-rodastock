@@ -1,0 +1,65 @@
+<nb-card>
+  <nb-card-header>Pedidos</nb-card-header>
+
+  <nb-card-body>
+    <div class="row">
+      <div class="col col-md-2 col-lg-2">
+        <button
+          nbButton
+          matRipple
+          hero
+          status="primary"
+          class="mb-3"
+          (click)="nuevoPedido()"
+        >
+          Nuevo Pedido
+        </button>
+      </div>
+
+      <div class="col col-md-10 col-lg-10">
+        <nb-icon icon="search-outline" pack="eva" class="mr-4"></nb-icon>
+        <mat-form-field floatLabel="never">
+          <input
+            matInput
+            [(ngModel)]="searchText"
+            placeholder="Buscar"
+            autocomplete="off"
+          />
+        </mat-form-field>
+        <nb-icon
+          style="cursor: pointer"
+          (click)="clearSearch()"
+          icon="close-outline"
+          pack="eva"
+          class="ml-4"
+        ></nb-icon>
+      </div>
+    </div>
+
+    <nb-tabset fullWidth class="w-100">
+      <nb-tab tabTitle="Todas" class="w-100">
+        <div class="row">
+          <div
+            *ngFor="let pedido of pedidos | filterPedido: searchText"
+            class="col-md-4 col-12 col-xs-12 col-lg-3"
+          >
+            <ngx-pedido-card [pedido]="pedido" (estadoChanged)="cargarPedidoProveedor()"></ngx-pedido-card>
+          </div>
+          <!-- <h4 class="mt-4 mx-auto" *ngIf="pedido.length === 0">Aun no tenes pedidos!</h4> -->
+        </div>
+      </nb-tab>
+      <nb-tab tabTitle="Entrega hoy" class="w-100">
+        <div class="row">
+          <div
+            *ngFor="let pedido of pedidosEntregados | filterPedido: searchText"
+            class="col-md-4 col-12 col-xs-12 col-lg-3"
+          >
+            <ngx-pedido-card [pedido]="pedido" (estadoChanged)="cargarPedidoProveedor()"></ngx-pedido-card>
+          </div>
+          <h4 class="mt-4 mx-auto" *ngIf="pedidosEntregados.length === 0">No hay pedidos para entregar hoy!</h4>
+        </div>
+      </nb-tab>
+
+    </nb-tabset>
+  </nb-card-body>
+</nb-card>

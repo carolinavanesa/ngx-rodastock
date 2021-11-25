@@ -4,9 +4,9 @@ import { DatePipe } from '@angular/common';
 const { isArray } = Array;
 
 @Pipe({
-  name: 'filterOrden',
+  name: 'filterPedido',
 })
-export class FilterOrdenPipe implements PipeTransform {
+export class FilterPedidoPipe implements PipeTransform {
 
   constructor(private datePipe: DatePipe){}
 
@@ -27,14 +27,13 @@ export class FilterOrdenPipe implements PipeTransform {
 
       return (
         obj.numero.toString().includes(search) ||
-        obj.cliente.get('nombre').toLowerCase().includes(search) ||
-        obj.reparaciones.some((r) =>
+        obj.npmbreProveedor.toLowerCase().includes(search) ||
+        obj.repuestos.some((r) =>
           r.get('nombre').toLowerCase().includes(search)
         ) ||
-        obj.rodado?.toLowerCase().includes(search) ||
+        obj.notas?.toLowerCase().includes(search) ||
         obj.estado?.toLowerCase().includes(search) ||
-        self.datePipe.transform(obj.fecha, 'dd/MM/yyyy').includes(search) ||
-        self.datePipe.transform(obj.fechaEntrega, 'dd/MM/yyyy').includes(search)
+        self.datePipe.transform(obj.fecha, 'dd/MM/yyyy').includes(search)
       );
     });
   }

@@ -1,0 +1,82 @@
+<nb-card class="main">
+  <nb-card-header>Detalle del Pedido</nb-card-header>
+  <nb-card-body class="m-2" *ngIf="pedido">
+    <div class="row">
+      <!-- pedido N -->
+      <div class="col-6 col-md-6 col-xs-6 mt-2">
+        <h5>PEDIDO Nº: {{ pedido.get('numero') }}</h5>
+      </div>
+
+      <!-- FECHA PEDIDO -->
+      <div class="col-6 col-md-6 col-xs-6 mt-2">
+        <div class="row">
+          <div class="text-hint">Fecha:</div>
+          <div class="ml-3">
+            {{ pedido.get('fecha') | date: 'dd/MM/yyyy' }}
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- CLIENTE -->
+    <div class="row mt-4">
+      <div class="col-xs-6 col-6 col-md-2 col-lg-2 text-hint">Proveedor:</div>
+      <div class="col-xs-6 col-6 col-md-9 col-lg-9">
+        {{ pedido.get('nombreProveedor') }}
+      </div>
+    </div>
+
+    <div class="row mt-2">
+      <!-- OBSERVACIONES -->
+      <div class="col-xs-6 col-6 col-md-2 col-lg-2 text-hint">Notas:</div>
+      <div class="col-xs-6 col-6 col-md-9 col-lg-9">
+        {{ pedido.get('notas') }}
+      </div>
+    </div>
+
+    <!-- Unidades -->
+    <div class="row m-5 w-100">
+      <table class="table">
+        <thead>
+          <tr>
+            <th scope="col" style="width: 60%">Repuesto</th>
+            <th scope="col">Cantidad</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let item of unidades">
+            <td>{{ item.nombre }}</td>
+            <td>{{ item.cantidad }}</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <!-- COSTO TOTAL -->
+    <div class="row mt-2">
+      <div class="col-6 col-md-9">
+        <h5 class="float-right">TOTAL:</h5>
+      </div>
+      <div class="col-6 col-md-3">
+        <h5>
+          {{ pedido.get('monto') | currency }}
+        </h5>
+      </div>
+    </div>
+
+  </nb-card-body>
+  <nb-card-footer>
+    <div class="row">
+      <div class="col">
+        <button nbButton matRipple ghost status="primary" (click)="goBack()">
+          Volver a Pedidos
+        </button>
+      </div>
+      <div class="col">
+        <button nbButton matRipple hero status="primary" (click)="print()" class="float-right">
+          Imprimir
+        </button>
+      </div>
+    </div>
+  </nb-card-footer>
+</nb-card>
