@@ -189,7 +189,8 @@ export class PedidosProveedorService {
     let actualizacionStockPromises = []
     repuestos.forEach((o) => {
       const repuestoInventario = o.get('repuesto');
-      const nuevoStock = repuestoInventario.get('stock') + o.get('cantidad');
+      const stockPrevio = repuestoInventario.get('stock');
+      const nuevoStock = stockPrevio + o.get('cantidad');
       repuestoInventario.set('stock', nuevoStock)
       repuestoInventarioPromises.push(repuestoInventario.save());
 
@@ -198,7 +199,7 @@ export class PedidosProveedorService {
       nuevoActualizacionStock.set('tipo', 'ingreso');
       nuevoActualizacionStock.set('repuesto', repuestoInventario);
       nuevoActualizacionStock.set('cantidad', o.get('cantidad'));
-      nuevoActualizacionStock.set('stockPrevio', repuestoInventario.get('stock'));
+      nuevoActualizacionStock.set('stockPrevio', stockPrevio);
       actualizacionStockPromises.push(nuevoActualizacionStock.save());
     });
 

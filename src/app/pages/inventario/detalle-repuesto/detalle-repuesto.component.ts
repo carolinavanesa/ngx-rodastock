@@ -17,7 +17,7 @@ export class DetalleRepuestoComponent implements OnInit {
   repuesto: any;
   listaIngresos = [];
   listaEgresos = [];
-  inicial;
+  inicial: any;
 
   ngOnInit(){
     const id = this.route.snapshot.paramMap.get('id');

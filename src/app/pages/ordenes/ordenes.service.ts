@@ -55,16 +55,21 @@ export class OrdenesService {
     return result;
   }
 
-  async getRepuestosFromReparaciones(tipoReparaciones: any[]){
+  async includeRepuestosFromReparaciones(tipoReparaciones: any[]){
     let repuestoPromises = [];
-    let result = [];
+    // let result = [];
 
     tipoReparaciones.forEach((o) => {
-      repuestoPromises.push(o.get('repuestos').query().find());
+      repuestoPromises.push(o.get('repuestos').query().include('repuesto').find());
     });
 
-    result = await Promise.all(repuestoPromises);
-    return result;
+    const repuestosPorReparacion = await Promise.all(repuestoPromises);
+
+    tipoReparaciones.forEach((o, i) => {
+      o.repuestos = repuestosPorReparacion[i]
+    });
+
+    return tipoReparaciones;
   }
 
   async getOrden(id: string) {
@@ -183,6 +188,7 @@ export class OrdenesService {
           });
 
           // Actualizar stock
+          debugger
           const resultadoInventario = await this.actualizarStock(res, repuestos)
 
           break;
@@ -237,12 +243,13 @@ export class OrdenesService {
     }
   }
 
-  async actualizarStock(parseObject: any, repuestos: any[]) {
+  async actualizarStock(parseObject: any, repuestosUnidad: any[]) {
     let repuestoInventarioPromises = [];
     let actualizacionStockPromises = []
-    repuestos.forEach((o) => {
+    repuestosUnidad.forEach((o) => {
       const repuestoInventario = o.get('repuesto');
-      const nuevoStock = repuestoInventario.get('stock') + o.get('cantidad');
+      const stockPrevio = repuestoInventario.get('stock');
+      const nuevoStock = stockPrevio - o.get('cantidad');
       repuestoInventario.set('stock', nuevoStock)
       repuestoInventarioPromises.push(repuestoInventario.save());
 
@@ -251,7 +258,7 @@ export class OrdenesService {
       nuevoActualizacionStock.set('tipo', 'egreso');
       nuevoActualizacionStock.set('repuesto', repuestoInventario);
       nuevoActualizacionStock.set('cantidad', o.get('cantidad'));
-      nuevoActualizacionStock.set('stockPrevio', repuestoInventario.get('stock'));
+      nuevoActualizacionStock.set('stockPrevio', stockPrevio);
       actualizacionStockPromises.push(nuevoActualizacionStock.save());
     });
 

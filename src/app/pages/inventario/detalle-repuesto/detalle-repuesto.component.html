@@ -1,9 +1,9 @@
 <nb-card status="primary" class="nueva-card">
   <nb-card-header>Detalles de Movimientos de stock del Repuesto</nb-card-header>
   <nb-card-body class="m-2" *ngIf="repuesto">
-    <p><b>Nombre: </b>{{ repuesto.nombre }}</p>
-    <p><b>Cantidad Actual: </b>{{ repuesto.nombre }}</p>
-    <p><b>Costo: </b>{{ repuesto.nombre | currency }}</p>
+    <p><b>Nombre: </b>{{ repuesto.get('nombre') }}</p>
+    <p><b>Stock Actual: </b>{{ repuesto.get('stock') }}</p>
+    <p><b>Costo: </b>{{ repuesto.get('costo') | currency }}</p>
 
     <h6>Ingresos</h6>
     <table class="table table-striped">
@@ -18,7 +18,7 @@
       </thead>
       <tbody>
         <tr *ngFor="let item of listaIngresos">
-          <td>{{ item.get('createdAt') | date }}</td>
+          <td>{{ item.get('createdAt') | date: 'dd/MM/yyyy' }}</td>
           <td>{{ item.get('cantidad') }}</td>
           <td>{{ item.get('stockPrevio') }}</td>
           <td>{{ (item.get('cantidad') + item.get('stockPrevio')) }}</td>
@@ -26,7 +26,7 @@
         </tr>
 
         <tr *ngIf="inicial">
-          <td>{{ inicial.get('createdAt') | date }}</td>
+          <td>{{ inicial.get('createdAt') | date: 'dd/MM/yyyy' }}</td>
           <td>{{ inicial.get('cantidad') }}</td>
           <td>0</td>
           <td>{{ inicial.get('cantidad') }}</td>
@@ -53,7 +53,7 @@
           <td>{{ item.get('createdAt') | date }}</td>
           <td>{{ item.get('cantidad') }}</td>
           <td>{{ item.get('stockPrevio') }}</td>
-          <td>{{ (item.get('cantidad') + item.get('stockPrevio')) }}</td>
+          <td>{{ (item.get('stockPrevio') - item.get('cantidad')) }}</td>
           <td>{{ item.get('pedidoEgreso').get('numero') }}</td>
         </tr>
       </tbody>

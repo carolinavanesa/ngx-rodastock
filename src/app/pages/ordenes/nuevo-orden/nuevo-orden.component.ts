@@ -238,7 +238,7 @@ export class NuevoOrdenComponent {
           const nombre = rep.get('repuesto')?.get('nombre');
           const stock = rep.get('repuesto')?.get('stock');
           const cantidad = rep.get('cantidad');
-          if (stock < rep.get('cantidad')) {
+          if (stock < cantidad) {
             this.erroresDeStock.push({
               reparacion: reparacion.get('nombre'),
               repuesto: nombre,

@@ -21,14 +21,15 @@
         </h5>
         <p class="lorem">Este pedido esta en espera. Comproba que contas con stock antes de continuar</p>
 
-        <nb-alert *ngFor="let msg of erroresDeStock" outline="warning">
-          <p>
-            No hay stock para
+        <div *ngFor="let msg of erroresDeStock" class="border border-danger p-2 mt-3 mb-3">
+          <nb-icon icon="alert-circle-outline" pack="eva" status="danger"></nb-icon>
+          <span class="text-danger ml-2">
+            Reparacion <b>{{ msg.reparacion }}</b>: No hay suficiente stock para
             <b>{{ msg.repuesto }}</b
             >. Requerido: <b>{{ msg.cantidad }}</b
             >, Actual: <b>{{ msg.stock }}</b>
-          </p>
-        </nb-alert>
+          </span>
+        </div>
 
         <div class="row">
           <button

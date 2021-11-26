@@ -29,33 +29,32 @@ export class EstadosModalComponent implements OnInit {
   erroresDeStock = [];
 
   ngOnInit(): void {
-
     this.mapEstados();
   }
 
   mapEstados() {
     switch (this.estado) {
       case 'Pendiente':
-        this.service.getRepuestosFromReparaciones(this.reparaciones).then((repuestos) => {
-          // this.reparaciones.forEach((reparacion) => {
-          //   reparacion.repuestosFetched.forEach((rep) => {
-              // this.repuestos.push(rep);
-
-              repuestos.forEach((rep) => {
-                const nombre = rep.get('repuesto')?.get('nombre');
-                const stock = rep.get('repuesto')?.get('stock');
+        this.service
+          .includeRepuestosFromReparaciones(this.reparaciones)
+          .then((repuestosPorReparacion) => {
+            repuestosPorReparacion.forEach((repReparacion) => {
+              repReparacion.repuestos.forEach((rep) => {
+                this.repuestos.push(rep);
+                const nombre = rep.get('repuesto').get('nombre');
+                const stock = rep.get('repuesto').get('stock');
                 const cantidad = rep.get('cantidad');
-                if (stock < rep.get('cantidad')) {
+                if (stock < cantidad) {
                   this.erroresDeStock.push({
+                    reparacion: repReparacion.get('nombre'),
                     repuesto: nombre,
                     stock: stock,
                     cantidad: cantidad,
                   });
                 }
-              })
-          //   });
-          // })
-        });
+              });
+            });
+          });
         this.selectedIndex = 0;
         break;
 
@@ -105,10 +104,12 @@ export class EstadosModalComponent implements OnInit {
       icon: 'exclamation',
     };
     this.modalService.showConfirmationModal(config).then((success) =>
-      this.service.cambiarEstado('Cancelado', this.orden, this.repuestos).then((res) => {
-        this.nuevoEstado = 'Cancelado';
-        this.cancelado = true;
-      })
+      this.service
+        .cambiarEstado('Cancelado', this.orden, this.repuestos)
+        .then((res) => {
+          this.nuevoEstado = 'Cancelado';
+          this.cancelado = true;
+        })
     );
   }
 

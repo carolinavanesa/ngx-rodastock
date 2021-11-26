@@ -56,7 +56,7 @@ export class InventarioService {
     query.include('pedidoEgreso');
     query.include('pedidoIngreso');
     query.include('repuesto');
-    query.ascending("createdAt");
+    query.descending("createdAt");
     query.limit(5000);
     try {
       result = await query.find();
