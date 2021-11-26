@@ -17,9 +17,30 @@ export class NuevoRepuestoModalComponent {
 
   loading = false;
   nuevoForm: FormGroup = this.formBuilder.group({
-    nombre: ['', [Validators.required, Validators.maxLength(30), Validators.pattern("[a-zA-Z0-9 ,']*")]],
-    costo: ['', [Validators.required, Validators.maxLength(5), Validators.pattern('([0-9]+\.?[0-9]*|\.[0-9]+)')]], // TODO checkear estaa
-    stock: ['', [Validators.required, Validators.maxLength(3), Validators.pattern('[0-9]*')]],
+    nombre: [
+      '',
+      [
+        Validators.required,
+        Validators.maxLength(30),
+        Validators.pattern("[a-zA-Z0-9 ,']*"),
+      ],
+    ],
+    costo: [
+      '',
+      [
+        Validators.required,
+        Validators.maxLength(5),
+        Validators.pattern('([0-9]+.?[0-9]*|.[0-9]+)'),
+      ],
+    ], // TODO checkear estaa
+    stock: [
+      '',
+      [
+        Validators.required,
+        Validators.maxLength(3),
+        Validators.pattern('[0-9]*'),
+      ],
+    ],
   });
 
   // matcher = new MyErrorStateMatcher();
@@ -31,17 +52,17 @@ export class NuevoRepuestoModalComponent {
   confirm() {
     if (!this.loading) {
       this.loading = true;
-    this.service
-      .agregarRepuestoInventario(
-        this.nuevoForm.get('nombre').value,
-        Number(this.nuevoForm.get('costo').value),
-        Number(this.nuevoForm.get('stock').value)
-      )
-      .then((res) => this.ref.close(true))
-      .catch((e) => this.ref.close(false))
-      .finally(() => {
-        this.loading = false;
-      });
+      this.service
+        .agregarRepuestoInventario(
+          this.nuevoForm.get('nombre').value,
+          Number(this.nuevoForm.get('costo').value),
+          Number(this.nuevoForm.get('stock').value)
+        )
+        .then((res) => this.ref.close(true))
+        .catch((e) => this.ref.close(false))
+        .finally(() => {
+          this.loading = false;
+        });
     }
   }
 }

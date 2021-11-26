@@ -9,11 +9,15 @@
       class="custom-table"
       [settings]="settings"
       [source]="source"
-      (createConfirm)="onCreateConfirm($event)"
-      (editConfirm)="onEditConfirm($event)"
-      (deleteConfirm)="onDeleteConfirm($event)"
-      (userRowSelect)="onUserRowSelect($event)"
+      (edit)="onEdit($event)"
+      (delete)="onDelete($event)"
+      (create)="onCreate()"
     >
     </ng2-smart-table>
   </nb-card-body>
 </nb-card>
+
+<!-- (userRowSelect)="onUserRowSelect($event)" -->
+<!-- (createConfirm)="onCreateConfirm($event)"
+      (editConfirm)="onEditConfirm($event)"
+      (deleteConfirm)="onDeleteConfirm($event)" -->

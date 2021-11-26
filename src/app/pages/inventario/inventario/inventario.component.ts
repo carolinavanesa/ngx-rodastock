@@ -16,14 +16,13 @@ import { Router } from '@angular/router';
 })
 export class InventarioComponent implements OnInit, OnDestroy {
   settings = {
+    mode: 'external',
     actions: {
       add: false,
-      columnTitle: ''
+      columnTitle: '',
     },
     add: {
       addButtonContent: '<i class="nb-plus"></i>',
-      createButtonContent: '<i class="nb-checkmark"></i>',
-      cancelButtonContent: '<i class="nb-close"></i>',
       confirmCreate: true,
     },
     edit: {
@@ -66,7 +65,7 @@ export class InventarioComponent implements OnInit, OnDestroy {
     private modalService: ModalService,
     private dialogService: NbDialogService,
     private alertService: AlertService,
-    private router: Router,
+    private router: Router
   ) {}
 
   ngOnInit() {
@@ -81,7 +80,8 @@ export class InventarioComponent implements OnInit, OnDestroy {
     });
   }
 
-  onDeleteConfirm(event: any) {
+  // onDeleteConfirm(event: any) {
+  onDelete(event: any) {
     const config = {
       title: 'Eliminar Repuesto',
       body: `Estas seguro que quieres eliminar el repuesto ${event.data.nombre}`,
@@ -98,53 +98,41 @@ export class InventarioComponent implements OnInit, OnDestroy {
     });
   }
 
-  onCreateConfirm(event: any) {
-    this.service
-      .agregarRepuestoInventario(
-        event.newData.nombre,
-        event.newData.barrio,
-        Number(event.newData.telefono)
-      )
-      .then((res) => {
-        if (res) {
-          event.confirm.resolve();
-          this.cargarInventario();
-        } else {
-          event.confirm.reject();
-        }
-      });
+  // onEditConfirm(event: any) {
+  onEdit(event: any) {
+    this.router.navigateByUrl(`pages/inventario/detalle/${event.data.id}`);
+    // const costo = Number(event.newData.costo);
+    // if (isNaN(costo) || costo < 0 || costo > 99999) {
+    //   this.alertService.showErrorToast(
+    //     'Error',
+    //     'El campo costo debe ser un numero entre 0 y 99999'
+    //   );
+    // } else {
+    //   this.service
+    //     .editarRepuestoInventario(
+    //       event.newData.id,
+    //       event.newData.nombre,
+    //       Number(event.newData.costo),
+    //       Number(event.newData.stock)
+    //     )
+    //     .then((res) => {
+    //       if (res) {
+    //         event.confirm.resolve();
+    //         this.cargarInventario();
+    //       } else {
+    //         event.confirm.reject();
+    //       }
+    //     });
+    // }
   }
 
-  onEditConfirm(event: any) {
-    const costo = Number(event.newData.costo);
-    if (isNaN(costo) || costo < 0 || costo > 99999) {
-      this.alertService.showErrorToast("Error", "El campo costo debe ser un numero entre 0 y 99999")
-    } else {
-      this.service
-        .editarRepuestoInventario(
-          event.newData.id,
-          event.newData.nombre,
-          Number(event.newData.costo),
-          Number(event.newData.stock)
-        )
-        .then((res) => {
-          if (res) {
-            event.confirm.resolve();
-            this.cargarInventario();
-          } else {
-            event.confirm.reject();
-          }
-        });
-    }
-  }
+  // onUserRowSelect(event: any) {
+  //   this.router.navigateByUrl(`pages/inventario/detalle/${event.data.id}`);
+  // }
 
-  onUserRowSelect(event: any) {
-    this.router.navigateByUrl(
-      `pages/inventario/detalle/${event.data.id}`
-    );
-  }
+  nuevoRepuesto() {}
 
-  nuevoRepuesto() {
+  onCreate() {
     this.dialogService
       .open(NuevoRepuestoModalComponent)
       .onClose.pipe(take(1))

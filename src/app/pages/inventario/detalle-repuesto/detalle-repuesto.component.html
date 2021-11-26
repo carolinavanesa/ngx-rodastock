@@ -1,5 +1,5 @@
 <nb-card status="primary" class="nueva-card">
-  <nb-card-header>Detalles de Movimientos de stock del Repuesto</nb-card-header>
+  <nb-card-header>Historial de movimientos de stock</nb-card-header>
   <nb-card-body class="m-2" *ngIf="repuesto">
     <p><b>Nombre: </b>{{ repuesto.get('nombre') }}</p>
     <p><b>Stock Actual: </b>{{ repuesto.get('stock') }}</p>
@@ -50,7 +50,7 @@
       </thead>
       <tbody>
         <tr *ngFor="let item of listaEgresos">
-          <td>{{ item.get('createdAt') | date }}</td>
+          <td>{{ item.get('createdAt') | date: 'dd/MM/yyyy' }}</td>
           <td>{{ item.get('cantidad') }}</td>
           <td>{{ item.get('stockPrevio') }}</td>
           <td>{{ (item.get('stockPrevio') - item.get('cantidad')) }}</td>
