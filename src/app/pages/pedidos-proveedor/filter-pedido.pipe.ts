@@ -26,10 +26,10 @@ export class FilterPedidoPipe implements PipeTransform {
       const keys: string[] = Object.keys(obj);
 
       return (
-        obj.numero.toString().includes(search) ||
-        obj.npmbreProveedor.toLowerCase().includes(search) ||
-        obj.repuestos.some((r) =>
-          r.get('nombre').toLowerCase().includes(search)
+        obj.numero?.toString().includes(search) ||
+        obj.nombreProveedor?.toLowerCase().includes(search) ||
+        obj.repuestos?.some((r) =>
+          r.get('nombre')?.toLowerCase().includes(search)
         ) ||
         obj.notas?.toLowerCase().includes(search) ||
         obj.estado?.toLowerCase().includes(search) ||

@@ -127,7 +127,7 @@ export class InventarioService {
         'Exito',
         'Se ha modificado un repuesto'
       );
-      return true;
+      return repuestoAEditar;
     } catch (e) {
       this.alertService.showErrorToast(
         'Error',

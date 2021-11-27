@@ -1,12 +1,22 @@
 <nb-card status="primary" class="nueva-card">
   <nb-card-header>Historial de movimientos de stock</nb-card-header>
   <nb-card-body class="m-2" *ngIf="repuesto">
+    <div class="row mb-3">
+      <button nbButton matRipple (click)="onEdit()" status="primary">Editar</button>
+    </div>
     <p><b>Nombre: </b>{{ repuesto.get('nombre') }}</p>
     <p><b>Stock Actual: </b>{{ repuesto.get('stock') }}</p>
     <p><b>Costo: </b>{{ repuesto.get('costo') | currency }}</p>
 
     <h6>Ingresos</h6>
-    <table class="table table-striped">
+    <ng2-smart-table
+      class="custom-table"
+      [settings]="settings"
+      [source]="sourceIngreso"
+      (edit)="onEditIngresos($event)"
+    >
+    </ng2-smart-table>
+    <!-- <table class="table table-striped">
       <thead>
         <tr>
           <th>Fecha</th>
@@ -34,11 +44,17 @@
         </tr>
 
       </tbody>
-    </table>
+    </table> -->
 
-
-    <h6>Egresos</h6>
-    <table class="table table-striped">
+    <h6 class="mt-3">Egresos</h6>
+    <ng2-smart-table
+      class="custom-table"
+      [settings]="settings"
+      [source]="sourceEgreso"
+      (edit)="onEditEgresos($event)"
+    >
+    </ng2-smart-table>
+    <!-- <table class="table table-striped">
       <thead>
         <tr>
           <th>Fecha</th>
@@ -57,16 +73,12 @@
           <td>{{ item.get('pedidoEgreso').get('numero') }}</td>
         </tr>
       </tbody>
-    </table>
-
-
+    </table> -->
   </nb-card-body>
   <nb-card-footer>
     <div class="row">
       <div class="col">
-        <button nbButton matRipple ghost status="primary">
-          Cerrar
-        </button>
+        <button nbButton matRipple ghost status="primary">Cerrar</button>
       </div>
     </div>
   </nb-card-footer>

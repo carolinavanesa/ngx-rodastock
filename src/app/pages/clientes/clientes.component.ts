@@ -17,12 +17,6 @@ export class ClientesComponent implements OnInit, OnDestroy {
     actions: {
       add: false,
     },
-    add: {
-      addButtonContent: '<i class="nb-plus"></i>',
-      createButtonContent: '<i class="nb-checkmark"></i>',
-      cancelButtonContent: '<i class="nb-close"></i>',
-      confirmCreate: true,
-    },
     edit: {
       editButtonContent: '<i class="nb-edit"></i>',
       saveButtonContent: '<i class="nb-checkmark"></i>',
@@ -34,12 +28,12 @@ export class ClientesComponent implements OnInit, OnDestroy {
       confirmDelete: true,
     },
     columns: {
-      id: {
-        title: 'ID',
-        type: 'number',
-        hide: true,
-        editable: false,
-      },
+      // id: {
+      //   title: 'ID',
+      //   type: 'number',
+      //   hide: true,
+      //   editable: false,
+      // },
       nombre: {
         title: 'Nombre',
         type: 'string',

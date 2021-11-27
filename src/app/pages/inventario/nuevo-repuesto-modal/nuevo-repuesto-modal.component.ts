@@ -15,6 +15,8 @@ export class NuevoRepuestoModalComponent {
     private service: InventarioService
   ) {}
 
+  modoEdicion = false;
+  repuesto: any;
   loading = false;
   nuevoForm: FormGroup = this.formBuilder.group({
     nombre: [
@@ -25,25 +27,19 @@ export class NuevoRepuestoModalComponent {
         Validators.pattern("[a-zA-Z0-9 ,']*"),
       ],
     ],
-    costo: [
-      '',
-      [
-        Validators.required,
-        Validators.maxLength(5),
-        Validators.pattern('([0-9]+.?[0-9]*|.[0-9]+)'),
-      ],
-    ], // TODO checkear estaa
-    stock: [
-      '',
-      [
-        Validators.required,
-        Validators.maxLength(3),
-        Validators.pattern('[0-9]*'),
-      ],
-    ],
+    costo: ['', [Validators.required, Validators.maxLength(10)]],
+    stock: ['', [Validators.required, Validators.maxLength(3)]],
   });
 
-  // matcher = new MyErrorStateMatcher();
+  ngOnInit() {
+    if (this.modoEdicion) {
+      this.nuevoForm.patchValue({
+        nombre: this.repuesto.get('nombre'),
+        costo: this.repuesto.get('costo'),
+        stock: this.repuesto.get('stock'),
+      });
+    }
+  }
 
   dismiss() {
     this.ref.close(false);
@@ -52,17 +48,32 @@ export class NuevoRepuestoModalComponent {
   confirm() {
     if (!this.loading) {
       this.loading = true;
-      this.service
-        .agregarRepuestoInventario(
-          this.nuevoForm.get('nombre').value,
-          Number(this.nuevoForm.get('costo').value),
-          Number(this.nuevoForm.get('stock').value)
-        )
-        .then((res) => this.ref.close(true))
-        .catch((e) => this.ref.close(false))
-        .finally(() => {
-          this.loading = false;
-        });
+      if (this.modoEdicion) {
+        this.service
+          .editarRepuestoInventario(
+            this.repuesto.id,
+            this.nuevoForm.get('nombre').value,
+            Number(this.nuevoForm.get('costo').value),
+            this.repuesto.get('stock')
+          )
+          .then((res) => this.ref.close(res))
+          .catch((e) => this.ref.close(false))
+          .finally(() => {
+            this.loading = false;
+          });
+      } else {
+        this.service
+          .agregarRepuestoInventario(
+            this.nuevoForm.get('nombre').value,
+            Number(this.nuevoForm.get('costo').value),
+            Number(this.nuevoForm.get('stock').value)
+          )
+          .then((res) => this.ref.close(true))
+          .catch((e) => this.ref.close(false))
+          .finally(() => {
+            this.loading = false;
+          });
+      }
     }
   }
 }

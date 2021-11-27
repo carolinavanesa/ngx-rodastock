@@ -2,7 +2,7 @@
   <nb-card-header> Inventario de Repuestos </nb-card-header>
 
   <nb-card-body>
-    <button nbButton matRipple hero status="primary" (click)="nuevoRepuesto()" class="mb-3">
+    <button nbButton matRipple hero status="primary" (click)="onCreate()" class="mb-3">
       Nuevo Repuesto
     </button>
     <ng2-smart-table
@@ -11,7 +11,6 @@
       [source]="source"
       (edit)="onEdit($event)"
       (delete)="onDelete($event)"
-      (create)="onCreate()"
     >
     </ng2-smart-table>
   </nb-card-body>

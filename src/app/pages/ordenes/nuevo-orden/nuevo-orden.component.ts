@@ -36,13 +36,13 @@ export class NuevoOrdenComponent {
       confirmDelete: true,
     },
     columns: {
-      id: {
-        title: 'ID',
-        type: 'text',
-        hide: true,
-        editable: false,
-        filter: false,
-      },
+      // id: {
+      //   title: 'ID',
+      //   type: 'text',
+      //   hide: true,
+      //   editable: false,
+      //   filter: false,
+      // },
       nombre: {
         title: 'Nombre',
         type: 'text',

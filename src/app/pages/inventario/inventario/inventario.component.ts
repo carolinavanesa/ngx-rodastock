@@ -14,7 +14,7 @@ import { Router } from '@angular/router';
   templateUrl: './inventario.component.html',
   encapsulation: ViewEncapsulation.None,
 })
-export class InventarioComponent implements OnInit, OnDestroy {
+export class InventarioComponent implements OnInit {
   settings = {
     mode: 'external',
     actions: {
@@ -36,12 +36,12 @@ export class InventarioComponent implements OnInit, OnDestroy {
       confirmDelete: true,
     },
     columns: {
-      id: {
-        title: 'ID',
-        type: 'text',
-        hide: true,
-        editable: false,
-      },
+      // id: {
+      //   title: 'ID',
+      //   type: 'text',
+      //   hide: true,
+      //   editable: false,
+      // },
       nombre: {
         title: 'Nombre',
         type: 'text',
@@ -72,8 +72,6 @@ export class InventarioComponent implements OnInit, OnDestroy {
     this.cargarInventario();
   }
 
-  ngOnDestroy() {}
-
   cargarInventario() {
     this.service.cargarInventario().then((repuestos) => {
       this.source.load(repuestos);
@@ -91,9 +89,9 @@ export class InventarioComponent implements OnInit, OnDestroy {
       if (res) {
         this.service
           .eliminarRepuestoInventario(event.data.id)
-          .then((res) =>
-            res ? event.confirm.resolve() : event.confirm.reject()
-          );
+          // .then((res) =>
+          //   res ? event.confirm.resolve() : event.confirm.reject()
+          // );
       }
     });
   }
@@ -129,8 +127,6 @@ export class InventarioComponent implements OnInit, OnDestroy {
   // onUserRowSelect(event: any) {
   //   this.router.navigateByUrl(`pages/inventario/detalle/${event.data.id}`);
   // }
-
-  nuevoRepuesto() {}
 
   onCreate() {
     this.dialogService

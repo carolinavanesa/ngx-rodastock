@@ -43,7 +43,7 @@
             Cancelar
           </button>
           <button
-            [disabled]="loading"
+            [disabled]="loading || erroresDeStock.length > 0"
             nbButton
             matRipple
             nbStepperNext

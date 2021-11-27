@@ -34,12 +34,12 @@ export class TipoReparacionComponent implements OnInit, OnDestroy {
       confirmDelete: true,
     },
     columns: {
-      id: {
-        title: 'ID',
-        type: 'text',
-        hide: true,
-        editable: false,
-      },
+      // id: {
+      //   title: 'ID',
+      //   type: 'text',
+      //   hide: true,
+      //   editable: false,
+      // },
       nombre: {
         title: 'Nombre',
         type: 'text',

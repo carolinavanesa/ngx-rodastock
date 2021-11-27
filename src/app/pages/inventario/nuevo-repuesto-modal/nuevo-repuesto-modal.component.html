@@ -24,7 +24,27 @@
 
       <div class="row m-3">
         <mat-form-field class="mx-auto w-100">
-          <mat-label>Stock Inicial</mat-label>
+          <mat-label>Costo</mat-label>
+          <input
+            formControlName="costo"
+            matInput
+            type="number"
+            matInput
+            autocomplete="off"
+            max="99999"
+            min="0"
+            currency-mask
+          />
+          <mat-error *ngIf="nuevoForm.get('costo').hasError('required')">
+            Este campo es requerido
+          </mat-error>
+          <mat-hint>Solo se permiten numeros</mat-hint>
+        </mat-form-field>
+      </div>
+
+      <div class="row m-3" *ngIf="!modoEdicion">
+        <mat-form-field class="mx-auto w-100">
+          <mat-label>Stock</mat-label>
           <input
             formControlName="stock"
             type="number"
@@ -37,24 +57,6 @@
             Este campo es requerido
           </mat-error>
           <mat-hint>Solo se permiten números</mat-hint>
-        </mat-form-field>
-      </div>
-
-      <div class="row m-3">
-        <mat-form-field class="mx-auto w-100">
-          <mat-label>Costo</mat-label>
-          <input
-            formControlName="costo"
-            type="text"
-            matInput
-            autocomplete="off"
-            maxLength="10"
-            currency-mask
-          />
-          <mat-error *ngIf="nuevoForm.get('costo').hasError('required')">
-            Este campo es requerido
-          </mat-error>
-          <mat-hint>Solo se permiten numeros</mat-hint>
         </mat-form-field>
       </div>
     </form>
