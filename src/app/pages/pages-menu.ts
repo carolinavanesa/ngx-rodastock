@@ -33,6 +33,16 @@ export const MENU_ITEMS: NbMenuItem[] = [
     icon: 'car-outline',
     link: '/pages/pedidos-proveedor',
   },
+  {
+    title: 'Reportes',
+    icon: 'pie-chart-outline',
+    children: [
+      {
+        title: 'Repuestos mas utilizados',
+        link: '/pages/reportes/reporte1',
+      },
+    ],
+  },
 ];
 
 export const MENU_ITEMS_CLIENTE: NbMenuItem[] = [

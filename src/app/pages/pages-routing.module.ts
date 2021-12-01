@@ -53,6 +53,14 @@ const routes: Routes = [
             (m) => m.PedidosProveedorModule
           ),
       },
+      {
+        path: 'reportes',
+        canActivate: [AdminGuard],
+        loadChildren: () =>
+          import('./reportes/reportes.module').then(
+            (m) => m.ReportesModule
+          ),
+      },
 
       {
         path: 'mis-pedidos',

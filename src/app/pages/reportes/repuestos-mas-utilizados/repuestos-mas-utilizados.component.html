@@ -1,0 +1,23 @@
+<div class="row">
+  <div class="col-12 col-md-12 col-lg-12 col-xs-12">
+    <nb-card>
+      <nb-card-header>Repuestos mas utilizados</nb-card-header>
+      <nb-card-body>
+        <nb-tabset fullWidth class="w-100">
+          <nb-tab tabTitle="Todo" class="w-100">
+            <ngx-repuestos-mas-utilizados-pie
+              *ngIf="data.length"
+              [data]="data"
+            ></ngx-repuestos-mas-utilizados-pie>
+          </nb-tab>
+          <nb-tab tabTitle="Ultimo mes" class="w-100">
+            <ngx-repuestos-mas-utilizados-pie
+              *ngIf="dataMes.length"
+              [data]="dataMes"
+            ></ngx-repuestos-mas-utilizados-pie>
+          </nb-tab>
+        </nb-tabset>
+      </nb-card-body>
+    </nb-card>
+  </div>
+</div>

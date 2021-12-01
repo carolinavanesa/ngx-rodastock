@@ -138,14 +138,15 @@
             <mat-label>Costo Adicional $</mat-label>
             <input
               formControlName="costoAdicional"
-              type="text"
               matInput
+              type="number"
               autocomplete="off"
-              maxLength="10"
+              max="99999"
+              min="0"
               currency-mask
             />
 
-            <mat-hint>Solo se permiten numeros</mat-hint>
+            <mat-hint>Solo se permiten numeros de 0 a 99999</mat-hint>
           </mat-form-field>
         </div>
       </div>
@@ -267,13 +268,14 @@
             <mat-label>Entrega Inicial $</mat-label>
             <input
               formControlName="entregaInicial"
-              type="text"
               matInput
+              type="number"
               autocomplete="off"
-              maxLength="10"
+              max="99999"
+              min="0"
               currency-mask
             />
-            <mat-hint>Solo se permiten numeros</mat-hint>
+            <mat-hint>Solo se permiten numeros de 0 a 99999</mat-hint>
           </mat-form-field>
         </div>
       </div>

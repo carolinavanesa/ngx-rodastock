@@ -24,7 +24,7 @@
 
       <div class="row m-3">
         <mat-form-field class="mx-auto w-100">
-          <mat-label>Costo</mat-label>
+          <mat-label>Costo $</mat-label>
           <input
             formControlName="costo"
             matInput
@@ -38,7 +38,7 @@
           <mat-error *ngIf="nuevoForm.get('costo').hasError('required')">
             Este campo es requerido
           </mat-error>
-          <mat-hint>Solo se permiten numeros</mat-hint>
+          <mat-hint>Solo se permiten numeros de 0 a 99999</mat-hint>
         </mat-form-field>
       </div>
 
@@ -56,7 +56,7 @@
           <mat-error *ngIf="nuevoForm.get('stock')?.hasError('required')">
             Este campo es requerido
           </mat-error>
-          <mat-hint>Solo se permiten números</mat-hint>
+          <mat-hint>Solo se permiten numeros de 0 a 999</mat-hint>
         </mat-form-field>
       </div>
     </form>
