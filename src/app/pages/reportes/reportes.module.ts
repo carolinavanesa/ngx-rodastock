@@ -26,6 +26,7 @@ import { ReportesRoutingModule } from './reportes-routing.module';
 import { ReportesService } from './reportes.service';
 import { ReporteIngresosMensualesComponent } from './ingresos-mensuales/ingresos-mensuales.component';
 import { IngresosMensualesBarComponent } from './ingresos-mensuales/ingresos-mensuales-bar.component';
+import { ClienteMorososComponent } from './cliente-morosos/cliente-morosos.component';
 
 @NgModule({
   imports: [
@@ -54,7 +55,8 @@ import { IngresosMensualesBarComponent } from './ingresos-mensuales/ingresos-men
     ReporteRepuestoMasUtilizadoComponent,
     RepuestosMasUtilizadosPieComponent,
     ReporteIngresosMensualesComponent,
-    IngresosMensualesBarComponent
+    IngresosMensualesBarComponent,
+    ClienteMorososComponent
   ],
   providers: [ReportesService],
 })

@@ -34,4 +34,8 @@ export class ReporteIngresosMensualesComponent implements OnInit{
       this.data = res;
     });
   }
+
+  hayIngresos(){
+    return this.data.some(x => x.ingreso > 0);
+  }
 }

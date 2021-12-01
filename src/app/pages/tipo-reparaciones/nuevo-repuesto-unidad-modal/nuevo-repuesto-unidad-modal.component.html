@@ -2,8 +2,8 @@
   <nb-card-header>Nuevo Repuesto</nb-card-header>
   <nb-card-body class="m-2">
     <form [formGroup]="nuevoForm">
-      <div class="row m-3">
-        <mat-form-field appearance="fill">
+      <div class="row m-3" style="min-width: 300px;">
+        <!-- <mat-form-field appearance="fill">
           <mat-label>Repuesto</mat-label>
           <mat-select formControlName="repuesto">
             <mat-option
@@ -13,6 +13,28 @@
               {{ repuesto.get('nombre') + " - $" + repuesto.get('costo')}}
             </mat-option>
           </mat-select>
+        </mat-form-field> -->
+        <mat-form-field
+          class="w-100"
+          appearance="fill"
+          *ngIf="options.length > 0"
+        >
+          <mat-label>Repuesto</mat-label>
+          <input
+            type="text"
+            placeholder="Repuesto"
+            matInput
+            formControlName="repuesto"
+            [matAutocomplete]="auto"
+          />
+          <mat-autocomplete #auto="matAutocomplete">
+            <mat-option
+              *ngFor="let option of filteredOptions | async"
+              [value]="option.get('nombre')"
+            >
+              {{ option.get('nombre') + ' - $' + option.get('costo') }}
+            </mat-option>
+          </mat-autocomplete>
         </mat-form-field>
       </div>
 

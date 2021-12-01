@@ -54,8 +54,6 @@ export class AgregarReparacionModalComponent {
     // Objeto completo de unidad para ser guardado en la pantalla de reparacion
     const reparacion = this.options.find(r => r.get('nombre') === this.nuevoForm.get('reparacion').value)
 
-    reparacion
-
     if (!reparacion) {
       this.alertService.showErrorToast('Error', 'Seleccione una reaparacion existente')
     } else {

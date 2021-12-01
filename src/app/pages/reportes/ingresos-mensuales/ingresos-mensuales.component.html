@@ -25,10 +25,14 @@
         </form>
 
         <ngx-ingresos-mensuales-bar
-          *ngIf="data.length"
+          *ngIf="hayIngresos(); else noResult"
           [data]="data"
         ></ngx-ingresos-mensuales-bar>
       </nb-card-body>
     </nb-card>
   </div>
 </div>
+
+<ng-template #noResult>
+  <h5>No se encontraron registros para el periodo seleccionado</h5>
+</ng-template>

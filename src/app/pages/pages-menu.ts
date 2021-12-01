@@ -1,17 +1,22 @@
 import { NbMenuItem } from '@nebular/theme';
 
 export const MENU_ITEMS: NbMenuItem[] = [
+  // {
+  //   title: 'Dashboard',
+  //   icon: 'shopping-cart-outline',
+  //   link: '/pages/dashboard',
+  //   home: true,
+  // },
   {
-    title: 'Dashboard',
-    icon: 'shopping-cart-outline',
-    link: '/pages/dashboard',
+    title: 'Pedidos',
+    icon: 'paper-plane-outline',
+    link: '/pages/ordenes',
     home: true,
-    // data: { role: 'admin'}
   },
   {
-    title: 'Clientes',
-    icon: 'people-outline',
-    link: '/pages/clientes',
+    title: 'Pedidos a Proveedores',
+    icon: 'car-outline',
+    link: '/pages/pedidos-proveedor',
   },
   {
     title: 'Inventario',
@@ -24,14 +29,9 @@ export const MENU_ITEMS: NbMenuItem[] = [
     link: '/pages/tipo-reparaciones',
   },
   {
-    title: 'Pedidos',
-    icon: 'paper-plane-outline',
-    link: '/pages/ordenes',
-  },
-  {
-    title: 'Pedidos a Proveedores',
-    icon: 'car-outline',
-    link: '/pages/pedidos-proveedor',
+    title: 'Clientes',
+    icon: 'people-outline',
+    link: '/pages/clientes',
   },
   {
     title: 'Reportes',
@@ -51,15 +51,9 @@ export const MENU_ITEMS: NbMenuItem[] = [
 
 export const MENU_ITEMS_CLIENTE: NbMenuItem[] = [
   {
-    title: 'Dashboard',
-    icon: 'shopping-cart-outline',
-    link: '/pages/dashboard-cliente',
-    home: true,
-    // data: { role: 'admin'}
-  },
-  {
     title: 'Mis Pedidos',
     icon: 'paper-plane-outline',
     link: '/pages/mis-pedidos',
+    home: true,
   },
 ];

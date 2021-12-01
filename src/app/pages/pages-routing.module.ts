@@ -2,7 +2,6 @@ import { RouterModule, Routes } from '@angular/router';
 import { NgModule } from '@angular/core';
 
 import { PagesComponent } from './pages.component';
-import { DashboardComponent } from './dashboard/dashboard.component';
 import { NotFoundComponent } from './miscellaneous/not-found/not-found.component';
 import { AdminGuard } from './admin.guard';
 import { ClientGuard } from './client.guard';
@@ -12,11 +11,11 @@ const routes: Routes = [
     path: '',
     component: PagesComponent,
     children: [
-      {
-        path: 'dashboard', // Convertir en input de ambos roles
-        // canActivate: [AdminGuard],
-        component: DashboardComponent,
-      },
+      // {
+      //   path: 'dashboard', // Convertir en input de ambos roles
+      //   // canActivate: [AdminGuard],
+      //   component: DashboardComponent,
+      // },
       {
         path: 'clientes',
         canActivate: [AdminGuard],
@@ -61,7 +60,6 @@ const routes: Routes = [
             (m) => m.ReportesModule
           ),
       },
-
       {
         path: 'mis-pedidos',
         canActivate: [ClientGuard],
@@ -77,7 +75,7 @@ const routes: Routes = [
       // },
       {
         path: '',
-        redirectTo: 'dashboard',
+        redirectTo: 'ordenes',
         pathMatch: 'full',
       },
       {

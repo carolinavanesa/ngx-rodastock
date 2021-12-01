@@ -1,11 +1,12 @@
 nb-card.nueva-card {
-  font-size: 110%;
+  // font-size: 110%;
 
   .dialog-hint {
     font-size: 75%;
   }
 
   mat-input {
+    min-width: 400px;
     width: 200%;
   }
 }

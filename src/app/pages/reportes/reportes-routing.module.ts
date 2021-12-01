@@ -17,6 +17,10 @@ const routes: Routes = [
         path: 'reporte2',
         component: ReporteIngresosMensualesComponent,
       },
+      {
+        path: 'reporte3',
+        component: ClienteMorososComponent,
+      },
     ],
   },
 ];
