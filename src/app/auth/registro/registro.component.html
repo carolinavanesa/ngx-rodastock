@@ -5,6 +5,9 @@
         <nb-card>
           <nb-card-header>Registrarse</nb-card-header>
           <nb-card-body>
+            <div class="row mt-2 mb-2">
+              <h2 class="mx-auto font-weight-light">Roda<span class="text-primary font-weight-bold">Stock</span></h2>
+            </div>
             <form [formGroup]="registroForm">
               <div class="row">
                 <mat-form-field class="mx-auto">
@@ -15,11 +18,18 @@
                     matInput
                     autocomplete="off"
                   />
+                  <mat-hint>Ingresa el mismo email con el que registraron tu primer pedido</mat-hint>
+                  <mat-error *ngIf="registroForm.get('email')?.hasError('required')">
+                    Ingresa un email
+                  </mat-error>
+                  <mat-error *ngIf="registroForm.get('email')?.hasError('pattern')">
+                    Por favor ingrese un email válido.
+                  </mat-error>
                   <!-- <mat-hint>hint</mat-hint> -->
                 </mat-form-field>
               </div>
 
-              <div class="row">
+              <div class="row mt-3">
                 <mat-form-field class="mx-auto">
                   <mat-label>Password</mat-label>
                   <input
@@ -28,11 +38,18 @@
                     matInput
                     autocomplete="off"
                   />
-                  <!-- <mat-hint>hint</mat-hint> -->
+                  <mat-error *ngIf="registroForm.get('password')?.hasError('required')">
+                    Ingresa un password
+                  </mat-error>
+                  <mat-hint>Ingrese un password de minimo 8 caracteres y maximo 30</mat-hint>
                 </mat-form-field>
               </div>
 
-              <div class="row">
+              <!-- <div class="row mt-4 mb-2">
+                <p class="text-hint mx-auto">Utiliza el mismo email con el que te registraron inicialmente</p>
+              </div> -->
+
+              <div class="row mt-5">
                 <button
                   class="mx-auto"
                   (click)="register()"

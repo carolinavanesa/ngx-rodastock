@@ -14,11 +14,12 @@ export class LoginComponent implements OnInit {
     loginForm: FormGroup = this.formBuilder.group({
       email: ['', [
         Validators.required,
+        Validators.maxLength(50),
         Validators.pattern(
           "^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:.[a-zA-Z0-9-]+)*$"
         ),
       ]],
-      password: ['', [Validators.required]],
+      password: ['', [Validators.required, Validators.maxLength(30), Validators.minLength(8)]],
     })
 
     ngOnInit(){

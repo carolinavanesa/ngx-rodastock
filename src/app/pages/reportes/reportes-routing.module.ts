@@ -3,6 +3,7 @@ import { RouterModule, Routes } from '@angular/router';
 import { ReportesMainComponent } from './reportes-main.component';
 import { ReporteRepuestoMasUtilizadoComponent } from './repuestos-mas-utilizados/repuestos-mas-utilizados.component';
 import { ReporteIngresosMensualesComponent } from './ingresos-mensuales/ingresos-mensuales.component';
+import { ClienteMorososComponent } from './cliente-morosos/cliente-morosos.component';
 
 const routes: Routes = [
   {

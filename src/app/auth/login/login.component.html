@@ -5,6 +5,10 @@
         <nb-card>
           <nb-card-header>Login</nb-card-header>
           <nb-card-body>
+
+            <div class="row mt-2 mb-2">
+              <h2 class="mx-auto font-weight-light">Roda<span class="text-primary font-weight-bold">Stock</span></h2>
+            </div>
             <form [formGroup]="loginForm">
 
               <div class="row">
@@ -17,6 +21,12 @@
                     autocomplete="off"
                     maxLength="50"
                   />
+                  <mat-error *ngIf="loginForm.get('email')?.hasError('required')">
+                    Ingresa un email
+                  </mat-error>
+                  <mat-error *ngIf="loginForm.get('email')?.hasError('pattern')">
+                    Por favor ingrese un email válido.
+                  </mat-error>
                   <!-- <mat-hint>hint</mat-hint> -->
                 </mat-form-field>
               </div>
@@ -25,6 +35,9 @@
               <mat-form-field class="mx-auto">
                 <mat-label>Password</mat-label>
                 <input formControlName="password" type="password" matInput autocomplete="off" />
+                <mat-error *ngIf="loginForm.get('password')?.hasError('required')">
+                  Ingresa un password
+                </mat-error>
                 <!-- <mat-hint>hint</mat-hint> -->
               </mat-form-field>
             </div>
@@ -45,6 +58,10 @@
             </form>
 
             <div class="row mt-4">
+              <p class="text-hint mx-auto">¿Sos cliente y no tenes cuenta?</p>
+            </div>
+
+            <div class="row mt-2">
               <button
                 [routerLink]="['/auth/register']"
                 class="mx-auto"
