@@ -1,15 +1,16 @@
-import { AfterViewInit, Component, OnDestroy } from '@angular/core';
+import { AfterViewInit, Component, OnDestroy, Input } from '@angular/core';
 import { NbThemeService } from '@nebular/theme';
 
 @Component({
-  selector: 'ngx-repuestos-mas-utilizados-bar',
+  selector: 'ngx-ingresos-mensuales-bar',
   template: `
     <div echarts [options]="options" class="echart"></div>
   `,
 })
-export class RepuestosMasUtilizadosBarComponent implements AfterViewInit, OnDestroy {
+export class IngresosMensualesBarComponent implements AfterViewInit, OnDestroy {
   options: any = {};
   themeSubscription: any;
+  @Input() data: any[];
 
   constructor(private theme: NbThemeService) {
   }
@@ -17,12 +18,12 @@ export class RepuestosMasUtilizadosBarComponent implements AfterViewInit, OnDest
   ngAfterViewInit() {
     this.themeSubscription = this.theme.getJsTheme().subscribe(config => {
 
-      const colors: any = config.variables;
+      // const colors: any = config.variables;
       const echarts: any = config.variables.echarts;
 
       this.options = {
         backgroundColor: echarts.bg,
-        color: [colors.primaryLight],
+        color: ['#903df4'],
         tooltip: {
           trigger: 'axis',
           axisPointer: {
@@ -38,7 +39,7 @@ export class RepuestosMasUtilizadosBarComponent implements AfterViewInit, OnDest
         xAxis: [
           {
             type: 'category',
-            data: ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'],
+            data: this.data.map(x => x.mes),
             axisTick: {
               alignWithLabel: true,
             },
@@ -76,10 +77,10 @@ export class RepuestosMasUtilizadosBarComponent implements AfterViewInit, OnDest
         ],
         series: [
           {
-            name: 'Score',
+            name: 'Ingreso Total',
             type: 'bar',
             barWidth: '60%',
-            data: [10, 52, 200, 334, 390, 330, 220],
+            data: this.data.map(x => x.ingreso),
           },
         ],
       };

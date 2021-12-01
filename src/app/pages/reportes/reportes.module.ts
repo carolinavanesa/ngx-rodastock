@@ -21,10 +21,11 @@ import { SharedAngularMaterialModule } from '../../shared/shared-angular-materia
 
 import { ReportesMainComponent } from './reportes-main.component';
 import { ReporteRepuestoMasUtilizadoComponent } from './repuestos-mas-utilizados/repuestos-mas-utilizados.component';
-import { RepuestosMasUtilizadosBarComponent } from './repuestos-mas-utilizados/repuestos-mas-utilizados-bar.component';
 import { RepuestosMasUtilizadosPieComponent } from './repuestos-mas-utilizados/repuestos-mas-utilizados-pie';
 import { ReportesRoutingModule } from './reportes-routing.module';
 import { ReportesService } from './reportes.service';
+import { ReporteIngresosMensualesComponent } from './ingresos-mensuales/ingresos-mensuales.component';
+import { IngresosMensualesBarComponent } from './ingresos-mensuales/ingresos-mensuales-bar.component';
 
 @NgModule({
   imports: [
@@ -51,8 +52,9 @@ import { ReportesService } from './reportes.service';
   declarations: [
     ReportesMainComponent,
     ReporteRepuestoMasUtilizadoComponent,
-    RepuestosMasUtilizadosBarComponent,
-    RepuestosMasUtilizadosPieComponent
+    RepuestosMasUtilizadosPieComponent,
+    ReporteIngresosMensualesComponent,
+    IngresosMensualesBarComponent
   ],
   providers: [ReportesService],
 })

@@ -53,4 +53,66 @@ export class ReportesService {
 
     return result;
   }
+
+  meses = [
+    'Enero', 'Febrero', 'Marzo', 'Abril', 'Mayo', 'Junio', 'Julio', 'Agosto', 'Septiembre', 'Octubre', 'Noviembre', 'Diciembre'
+  ]
+
+  async ingresosMensuales(year?: number) {
+    let result = [];
+    const query = new Parse.Query(Orden);
+    query.limit(1000);
+    query.equalTo('deleted', false);
+    query.equalTo('estado', 'Entregado')
+
+    const start = new Date();
+    start.setMonth(0);
+    start.setDate(1);
+    start.setHours(0);
+
+    const end = new Date();
+    end.setMonth(11);
+    end.setDate(31);
+    end.setHours(23);
+
+    if(year) {
+      start.setFullYear(year);
+      end.setFullYear(year);
+    }
+
+    try {
+      const response = await query.find();
+      const today = new Date();
+
+      const arrayData = [];
+
+      for (let i = 0; i < 12; i++) {
+        // let id = mesActual - i;
+
+        // if (id < 1 ) {
+        //   id = 11 + id
+        // }
+        arrayData.push({
+          id: i,
+          mes: this.meses[i],
+          ingreso: 0
+        });
+      }
+      response.forEach(orden => {
+        const mes = orden.get('fechaEntrega').getMonth();
+        const objetoMes = arrayData.find(x => x.id === mes)
+        objetoMes.ingreso += orden.get('importe');
+      });
+
+
+      return arrayData;
+    } catch (e) {
+      this.alertService.showPrimaryToast(
+        'Error',
+        'No se pudo cargar el reporte'
+      );
+    }
+
+    return result;
+  }
 }

@@ -41,6 +41,10 @@ export const MENU_ITEMS: NbMenuItem[] = [
         title: 'Repuestos mas utilizados',
         link: '/pages/reportes/reporte1',
       },
+      {
+        title: 'Ingresos mensuales',
+        link: '/pages/reportes/reporte2',
+      },
     ],
   },
 ];
