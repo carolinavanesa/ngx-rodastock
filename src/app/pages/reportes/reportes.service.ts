@@ -80,6 +80,9 @@ export class ReportesService {
       end.setFullYear(year);
     }
 
+    query.greaterThan('fecha', start);
+    query.lessThan('fecha', end);
+
     try {
       const response = await query.find();
       const today = new Date();
