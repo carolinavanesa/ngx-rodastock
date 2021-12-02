@@ -1,5 +1,5 @@
 import { Component, OnDestroy, OnInit, ViewEncapsulation } from '@angular/core';
-import { Router } from '@angular/router';
+import { Router, ActivatedRoute } from '@angular/router';
 import { OrdenesService } from '../ordenes.service';
 
 @Component({
@@ -16,11 +16,17 @@ export class OrdenesComponent implements OnInit {
 
   constructor(
     private service: OrdenesService,
-    private router: Router
+    private router: Router,
+    private route: ActivatedRoute
   ) {}
 
   ngOnInit() {
     this.cargarOrdenes();
+
+    const search = this.route.snapshot.paramMap.get('search');
+    if (search) {
+      this.searchText = search;
+    }
   }
 
   clearSearch() {

@@ -118,4 +118,39 @@ export class ReportesService {
 
     return result;
   }
+
+
+  async clientesMorosos() {
+    let result = [];
+    const query = new Parse.Query(Orden);
+    query.limit(1000);
+    query.equalTo('deleted', false);
+    query.equalTo('estado', 'Terminado');
+    query.include('cliente');
+    query.lessThan('fechaEntrega', new Date());
+
+    try {
+      const response = await query.find();
+
+      const arrayData = response.map(orden => {
+        return {
+          nombre: orden.get('cliente').get('nombre'),
+          pedido: orden.get('numero'),
+          rodado: orden.get('rodado'),
+          debe: orden.get('importe') - orden.get('entregaInicial')
+        }
+      })
+
+      return arrayData;
+    } catch (e) {
+      this.alertService.showPrimaryToast(
+        'Error',
+        'No se pudo cargar el reporte'
+      );
+    }
+
+    return result;
+  }
+
+
 }

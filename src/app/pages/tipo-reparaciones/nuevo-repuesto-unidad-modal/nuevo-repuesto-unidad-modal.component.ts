@@ -46,6 +46,11 @@ export class NuevoRepuestoUnidadModalComponent {
     return this.options.filter(option => option.get('nombre').toLowerCase().includes(filterValue));
   }
 
+  onCantidadChange(event: any){
+    const stock = this.nuevoForm.get('cantidad').value;
+    this.nuevoForm.get('cantidad').setValue(Math.floor(stock));
+  }
+
   dismiss() {
     this.ref.close(false);
   }

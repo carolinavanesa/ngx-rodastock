@@ -27,6 +27,7 @@ import { ReportesService } from './reportes.service';
 import { ReporteIngresosMensualesComponent } from './ingresos-mensuales/ingresos-mensuales.component';
 import { IngresosMensualesBarComponent } from './ingresos-mensuales/ingresos-mensuales-bar.component';
 import { ClienteMorososComponent } from './cliente-morosos/cliente-morosos.component';
+import { Ng2SmartTableModule } from 'ng2-smart-table';
 
 @NgModule({
   imports: [
@@ -48,7 +49,8 @@ import { ClienteMorososComponent } from './cliente-morosos/cliente-morosos.compo
     SharedAngularMaterialModule,
     ReportesRoutingModule,
     NgxEchartsModule,
-    NgxChartsModule
+    NgxChartsModule,
+    Ng2SmartTableModule,
   ],
   declarations: [
     ReportesMainComponent,

@@ -50,6 +50,8 @@
             type="number"
             matInput
             autocomplete="off"
+            step="1"
+            (change)="onStockChange($event)"
             max="999"
             min="0"
           />

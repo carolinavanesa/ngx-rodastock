@@ -45,6 +45,10 @@ export const MENU_ITEMS: NbMenuItem[] = [
         title: 'Ingresos mensuales',
         link: '/pages/reportes/reporte2',
       },
+      {
+        title: 'Clientes morosos',
+        link: '/pages/reportes/reporte3',
+      },
     ],
   },
 ];

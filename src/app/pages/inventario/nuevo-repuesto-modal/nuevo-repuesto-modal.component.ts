@@ -41,6 +41,11 @@ export class NuevoRepuestoModalComponent {
     }
   }
 
+  onStockChange(event: any){
+    const stock = this.nuevoForm.get('stock').value;
+    this.nuevoForm.get('stock').setValue(Math.floor(stock));
+  }
+
   dismiss() {
     this.ref.close(false);
   }

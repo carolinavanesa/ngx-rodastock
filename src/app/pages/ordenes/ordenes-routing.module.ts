@@ -14,6 +14,10 @@ const routes: Routes = [
         path: '',
         component: OrdenesComponent,
       },
+        {
+        path: 'search/:search',
+        component: OrdenesComponent,
+      },
       {
         path: 'nueva-orden',
         component: NuevoOrdenComponent,
