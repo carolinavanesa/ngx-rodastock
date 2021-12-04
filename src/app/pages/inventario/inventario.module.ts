@@ -20,7 +20,9 @@ import { SharedModalModule } from '../../shared/modal/modal.module';
 import { NuevoRepuestoModalComponent } from './nuevo-repuesto-modal/nuevo-repuesto-modal.component';
 import { SharedAngularMaterialModule } from '../../shared/shared-angular-material.module';
 import { DetalleRepuestoComponent } from './detalle-repuesto/detalle-repuesto.component';
+import { DetalleRepuestoChartComponent } from './detalle-repuesto/detalle-repuesto-chart.component';
 import { InventarioMainComponent } from './inventario-main.component';
+import { NgxEchartsModule } from 'ngx-echarts';
 
 @NgModule({
   imports: [
@@ -40,8 +42,15 @@ import { InventarioMainComponent } from './inventario-main.component';
     SharedModalModule,
     SharedAngularMaterialModule,
     InventarioRoutingModule,
+    NgxEchartsModule,
   ],
-  declarations: [InventarioComponent, InventarioMainComponent, NuevoRepuestoModalComponent, DetalleRepuestoComponent],
+  declarations: [
+    InventarioComponent,
+    InventarioMainComponent,
+    NuevoRepuestoModalComponent,
+    DetalleRepuestoComponent,
+    DetalleRepuestoChartComponent,
+  ],
   providers: [InventarioService],
 })
 export class InventarioModule {}

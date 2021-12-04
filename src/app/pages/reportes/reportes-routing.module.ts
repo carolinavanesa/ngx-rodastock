@@ -4,6 +4,8 @@ import { ReportesMainComponent } from './reportes-main.component';
 import { ReporteRepuestoMasUtilizadoComponent } from './repuestos-mas-utilizados/repuestos-mas-utilizados.component';
 import { ReporteIngresosMensualesComponent } from './ingresos-mensuales/ingresos-mensuales.component';
 import { ClienteMorososComponent } from './cliente-morosos/cliente-morosos.component';
+import { ReportePedidosMensualesComponent } from './pedidos-mensuales/pedidos-mensuales.component';
+import { EncuestasClienteComponent } from './encuestas-cliente/encuestas-cliente.component';
 
 const routes: Routes = [
   {
@@ -22,6 +24,12 @@ const routes: Routes = [
         path: 'reporte3',
         component: ClienteMorososComponent,
       },
+      {
+        path: 'reporte4',
+        component: EncuestasClienteComponent,
+      },
+
+
     ],
   },
 ];

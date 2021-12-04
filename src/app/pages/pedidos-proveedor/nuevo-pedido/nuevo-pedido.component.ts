@@ -60,7 +60,7 @@ export class NuevoPedidoComponent {
   modoEdicion = false;
   content = '';
   costoTotalRepuestos = 0;
-  estadoOptions = ['Pendiente', 'Solicitado', 'Entregado'];
+  estadoOptions = ['Pendiente', 'En curso', 'Entregado'];
 
   constructor(
     private formBuilder: FormBuilder,

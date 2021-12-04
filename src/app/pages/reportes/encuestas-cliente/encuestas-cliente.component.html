@@ -1,0 +1,17 @@
+<nb-card>
+  <nb-card-header>Encuestas de satisfacción</nb-card-header>
+
+  <nb-card-body>
+    <h5 *ngIf="noEncuestas" >
+      Aun no hay encuestas
+    </h5>
+    <nb-list *ngIf="encuestas.length">
+      <nb-list-item matRipple class="contact" *ngFor="let c of encuestas">
+        <nb-user [name]="c.get('cliente').get('nombre')" [title]="c.get('cliente').get('email')" size="large"></nb-user>
+        <mat-star-rating [rating]="c.get('puntuacion')"></mat-star-rating>
+        <p> "{{ c.get('comentario') }} "</p>
+        <nb-icon icon="phone-outline" pack="eva"></nb-icon>
+      </nb-list-item>
+    </nb-list>
+  </nb-card-body>
+</nb-card>

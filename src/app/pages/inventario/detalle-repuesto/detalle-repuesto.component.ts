@@ -25,6 +25,11 @@ export class DetalleRepuestoComponent implements OnInit {
     // private location: Location,
   ) {}
 
+  meses = [
+    'Enero', 'Febrero', 'Marzo', 'Abril', 'Mayo', 'Junio', 'Julio', 'Agosto', 'Septiembre', 'Octubre', 'Noviembre', 'Diciembre'
+  ]
+
+
   settings = {
     mode: 'external',
     sort: false,
@@ -73,6 +78,9 @@ export class DetalleRepuestoComponent implements OnInit {
   sourceIngreso: LocalDataSource = new LocalDataSource();
   sourceEgreso: LocalDataSource = new LocalDataSource();
 
+  ingresosChart = [ ];
+  egresosChart = [ ];
+
   // listaIngresos = [];
   // listaEgresos = [];
   // inicial: any;
@@ -84,9 +92,14 @@ export class DetalleRepuestoComponent implements OnInit {
         this.repuesto = repuesto;
 
         this.service.cargarActualizacionStock().then((actualizaciones) => {
-          const listaIngresos = this.mapRows(actualizaciones.filter(act => act.get('repuesto').id === repuesto.id &&  act.get('tipo') === 'ingreso'), 'ingreso');
+          let listaIngresos = this.mapRows(actualizaciones.filter(act => act.get('repuesto').id === repuesto.id &&  act.get('tipo') === 'ingreso'), 'ingreso');
           const listaEgresos = this.mapRows(actualizaciones.filter(act => act.get('repuesto').id === repuesto.id && act.get('tipo') === 'egreso'), 'egreso');
           const inicial = this.mapRows([actualizaciones.find(act => act.get('repuesto').id === repuesto.id && act.get('tipo') === 'inicial')], '');
+
+          listaIngresos = [...listaIngresos, ...inicial];
+
+          this.ingresosChart = this.mapChartRows(listaIngresos);
+          this.egresosChart = this.mapChartRows(listaEgresos);
 
           this.sourceIngreso.load([...listaIngresos, ...inicial]);
           this.sourceEgreso.load(listaEgresos);
@@ -100,6 +113,25 @@ export class DetalleRepuestoComponent implements OnInit {
   }
   onEditEgresos(event) {
     this.router.navigateByUrl(`pages/ordenes/detalle-orden/${event.data.id}`);
+  }
+
+  mapChartRows(lista) {
+    const arrayData = [];
+
+    for (let i = 0; i < 12; i++) {
+      arrayData.push({
+        id: i,
+        mes: this.meses[i],
+        cantidad: 0,
+      });
+    }
+    lista.forEach(orden => {
+      const mes = (new Date(orden.fecha)).getMonth();
+      const objetoMes = arrayData.find(x => x.id === mes)
+      objetoMes.cantidad++;
+    });
+
+    return arrayData;
   }
 
   onEdit() {
@@ -126,9 +158,9 @@ export class DetalleRepuestoComponent implements OnInit {
         fecha: this.datePipe.transform(r.get('createdAt'), 'dd/MM/yyyy'),
         cantidad: r.get('cantidad'),
         stockPrevio: r.get('stockPrevio'),
-        stockSiguiente: r.get('cantidad') + r.get('stockPrevio'),
+        stockSiguiente: tipo == 'ingreso' ? (r.get('cantidad') + r.get('stockPrevio')) : tipo == 'egreso' ? (r.get('stockPrevio') - r.get('cantidad')) : r.get('cantidad'),
         stock: r.get('cantidad'),
-        pedido: r.get('pedidoIngreso')?.get('numero') || 'Stock inicial',
+        pedido: r.get('pedidoIngreso')?.get('numero') || r.get('pedidoEgreso')?.get('numero')|| 'Stock inicial',
       }
     })
   }

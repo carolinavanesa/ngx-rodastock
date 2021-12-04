@@ -13,7 +13,7 @@
       <nb-step [label]="labelOne" [completed]="estado !== 'Pendiente'">
         <!-- <ng-template #labelOne>En Curso</ng-template> -->
         <ng-template #labelOne>
-          <ngx-pedido-status status="Solicitado"></ngx-pedido-status>
+          <ngx-pedido-status status="En curso"></ngx-pedido-status>
         </ng-template>
         <h5 class="mx-auto">
           Estado actual:
@@ -39,7 +39,7 @@
             nbStepperNext
             status="primary"
             class="mx-auto"
-            (click)="cambiarEstado('Solicitado')"
+            (click)="cambiarEstado('')"
           >
             Ya lo envié!
           </button>
@@ -47,14 +47,14 @@
       </nb-step>
       <nb-step
         [label]="labelTwo"
-        [completed]="estado !== 'Pendiente' && estado !== 'Solicitado'"
+        [completed]="estado !== 'Pendiente' && estado !== 'En curso'"
       >
         <!-- <ng-template #labelTwo>Terminado</ng-template> -->
         <ng-template #labelTwo>
           <ngx-pedido-status status="Recibido"></ngx-pedido-status>
         </ng-template>
         <h5 class="mx-auto">
-          Estado actual: <ngx-pedido-status status="Solicitado"></ngx-pedido-status>
+          Estado actual: <ngx-pedido-status status="En curso"></ngx-pedido-status>
         </h5>
         <p class="lorem">
           Este pedido se ha solicitado. Cuando recibas las unidades del Proveedor podes marcar el pedido como Recibido para así actualizar el stock
@@ -83,7 +83,7 @@
     >
       <nb-step [label]="labelOne" [completed]="true">
         <ng-template #labelOne
-          ><ngx-pedido-status status="Solicitado"></ngx-pedido-status
+          ><ngx-pedido-status status="En curso"></ngx-pedido-status
         ></ng-template>
       </nb-step>
       <nb-step [label]="labelTwo" [completed]="true">

@@ -10,6 +10,7 @@ import {
   NbIconModule,
   NbStepperModule,
   NbAlertModule,
+  NbUserModule,
 } from '@nebular/theme';
 import { NgxEchartsModule } from 'ngx-echarts';
 import { NgxChartsModule } from '@swimlane/ngx-charts';
@@ -28,6 +29,10 @@ import { ReporteIngresosMensualesComponent } from './ingresos-mensuales/ingresos
 import { IngresosMensualesBarComponent } from './ingresos-mensuales/ingresos-mensuales-bar.component';
 import { ClienteMorososComponent } from './cliente-morosos/cliente-morosos.component';
 import { Ng2SmartTableModule } from 'ng2-smart-table';
+import { ReportePedidosMensualesComponent } from './pedidos-mensuales/pedidos-mensuales.component';
+import { PedidosMultipleXaxisComponent } from './pedidos-mensuales/pedidos-multiple-xaxis.component';
+import { SharedPipesModule } from '../../shared/shared-pipes.module';
+import { EncuestasClienteComponent } from './encuestas-cliente/encuestas-cliente.component';
 
 @NgModule({
   imports: [
@@ -51,6 +56,8 @@ import { Ng2SmartTableModule } from 'ng2-smart-table';
     NgxEchartsModule,
     NgxChartsModule,
     Ng2SmartTableModule,
+    SharedPipesModule,
+    NbUserModule,
   ],
   declarations: [
     ReportesMainComponent,
@@ -58,7 +65,10 @@ import { Ng2SmartTableModule } from 'ng2-smart-table';
     RepuestosMasUtilizadosPieComponent,
     ReporteIngresosMensualesComponent,
     IngresosMensualesBarComponent,
-    ClienteMorososComponent
+    ClienteMorososComponent,
+    ReportePedidosMensualesComponent,
+    PedidosMultipleXaxisComponent,
+    EncuestasClienteComponent,
   ],
   providers: [ReportesService],
 })

@@ -37,7 +37,7 @@
     </div>
 
     <nb-tabset fullWidth class="w-100">
-      <nb-tab tabTitle="Todas" class="w-100">
+      <nb-tab tabTitle="Todos" class="w-100">
         <div class="row">
           <div
             *ngFor="let pedido of pedidos | filterPedido: searchText"
@@ -48,7 +48,7 @@
           <!-- <h4 class="mt-4 mx-auto" *ngIf="pedido.length === 0">Aun no tenes pedidos!</h4> -->
         </div>
       </nb-tab>
-      <nb-tab tabTitle="Solicitados" class="w-100">
+      <nb-tab tabTitle="En curso" class="w-100">
         <div class="row">
           <div
             *ngFor="let pedido of pedidosSolicitados | filterPedido: searchText"

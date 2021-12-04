@@ -49,6 +49,10 @@ export const MENU_ITEMS: NbMenuItem[] = [
         title: 'Clientes morosos',
         link: '/pages/reportes/reporte3',
       },
+      {
+        title: 'Encuestas de satisfaccion',
+        link: '/pages/reportes/reporte4',
+      },
     ],
   },
 ];

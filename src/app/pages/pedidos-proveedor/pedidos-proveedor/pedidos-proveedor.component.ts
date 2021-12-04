@@ -27,7 +27,7 @@ export class PedidosProveedorComponent implements OnInit {
     this.service.cargarPedidoProveedor().then((pedidos) => {
       this.pedidos = pedidos;
       this.pedidosSolicitados = this.pedidos.filter(
-        (o) => o.estado === 'Solicitado'
+        (o) => o.estado === 'En curso'
       );
       this.pedidosEntregados = this.pedidos.filter(
         (o) => o.estado === 'Recibido'

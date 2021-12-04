@@ -48,12 +48,12 @@
             autocomplete="off"
             (change)="onCantidadChange($event)"
             max="999"
-            min="0"
+            min="1"
           />
           <mat-error *ngIf="nuevoForm.get('cantidad')?.hasError('required')">
             Este campo es requerido
           </mat-error>
-          <mat-hint>Solo se permiten numeros de 0 a 999</mat-hint>
+          <mat-hint>Solo se permiten numeros de 1 a 999</mat-hint>
         </mat-form-field>
       </div>
     </form>

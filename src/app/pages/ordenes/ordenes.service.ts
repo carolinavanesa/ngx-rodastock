@@ -136,6 +136,7 @@ export class OrdenesService {
     fechaEntrega: Date,
     reparaciones: any[],
     importe: number,
+    entregaInicial: number,
     file?: any
   ): Promise<boolean> {
     ;
@@ -148,6 +149,7 @@ export class OrdenesService {
     nuevaOrden.set('observaciones', observaciones);
     nuevaOrden.set('costoAdicional', costoAdicional);
     nuevaOrden.set('fechaEntrega', fechaEntrega);
+    nuevaOrden.set('entregaInicial', entregaInicial);
     nuevaOrden.relation('reparaciones').add(reparaciones);
     nuevaOrden.set('importe', importe);
 
@@ -299,6 +301,7 @@ export class OrdenesService {
     const nuevaCalificacion = new Calificacion();
     nuevaCalificacion.set('puntuacion', puntuacion);
     nuevaCalificacion.set('comentario', comentario);
+    nuevaCalificacion.set('cliente', ordenParse.ge('cliente'));
 
     try {
       const resSaved = await nuevaCalificacion.save();

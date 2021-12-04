@@ -279,7 +279,8 @@ export class NuevoOrdenComponent {
             this.nuevoForm.get('fechaEntrega').value,
             this.reparaciones.map((rep) => rep.reparacion),
             this.calcularCostoTotalOrden(),
-            this.fileToUpload
+            this.nuevoForm.get('entregaInicial').value,
+            this.fileToUpload,
           )
           .then((res) => this.router.navigateByUrl(`pages/ordenes`))
           .finally(() => {

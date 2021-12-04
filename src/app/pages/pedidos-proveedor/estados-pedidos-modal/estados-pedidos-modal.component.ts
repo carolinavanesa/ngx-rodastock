@@ -34,7 +34,7 @@ export class EstadosPedidosModalComponent implements OnInit {
       case 'Pendiente':
         this.selectedIndex = 0;
         break;
-      case 'Solicitado':
+      case 'En curso':
         this.selectedIndex = 1;
         break;
       case 'Recibido':
