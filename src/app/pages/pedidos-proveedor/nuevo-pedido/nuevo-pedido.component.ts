@@ -8,6 +8,8 @@ import { ModalService } from '../../../shared/modal/modal.service';
 import { InventarioService } from '../../inventario/inventario.service';
 import { PedidosProveedorService } from '../pedidos-proveedor.service';
 import { NuevoRepuestoUnidadModalComponent } from '../../tipo-reparaciones/nuevo-repuesto-unidad-modal/nuevo-repuesto-unidad-modal.component';
+import { ProveedoresService } from '../../proveedores/proveedores.service';
+import { MatSelect } from '@angular/material/select';
 
 @Component({
   selector: 'ngx-nuevo-pedido',
@@ -58,6 +60,7 @@ export class NuevoPedidoComponent {
   pedidoAEditar;
   descripcion = '';
   modoEdicion = false;
+  proveedorOptions = [];
   content = '';
   costoTotalRepuestos = 0;
   estadoOptions = ['Pendiente', 'En curso', 'Entregado'];
@@ -67,6 +70,7 @@ export class NuevoPedidoComponent {
     private service: PedidosProveedorService,
     private route: ActivatedRoute,
     private router: Router,
+    private proveedorService: ProveedoresService,
     private inventarioService: InventarioService,
     private modalService: ModalService,
     private dialogService: NbDialogService
@@ -81,12 +85,10 @@ export class NuevoPedidoComponent {
         Validators.pattern('[0-9]*'),
       ],
     ],
-    nombreProveedor: [
+    proveedor: [
       '',
       [
         Validators.required,
-        Validators.maxLength(50),
-        Validators.pattern("[a-zA-Z0-9 ,']*"),
       ],
     ],
     notas: [
@@ -113,7 +115,7 @@ export class NuevoPedidoComponent {
         this.pedidoAEditar = pedido;
         this.nuevoForm.patchValue({
           numero: pedido.get('numero'),
-          nombreProveedor: pedido.get('nombreProveedor'),
+          proveedor: pedido.get('proveedor'),
           notas: pedido.get('notas'),
           fecha: pedido.get('fecha'),
         });
@@ -133,6 +135,11 @@ export class NuevoPedidoComponent {
         this.modoEdicion = true;
       });
     }
+
+    this.proveedorService
+      .cargarProveedores()
+      .then((proveedors) => (this.proveedorOptions = proveedors));
+    
   }
 
   ngOnDestroy() {}
@@ -171,11 +178,15 @@ export class NuevoPedidoComponent {
     if (!this.loading) {
       this.loading = true;
 
+      const proveedor = this.proveedorOptions.find(
+        (c) => c.id === this.nuevoForm.get('proveedor').value
+      );
+
       if (!this.modoEdicion) {
         this.service
           .agregarPedidoProveedor(
             Number(this.nuevoForm.get('numero').value),
-            this.nuevoForm.get('nombreProveedor').value,
+            proveedor.proveedor,
             this.nuevoForm.get('fecha').value,
             this.unidades,
             this.nuevoForm.get('notas').value,
@@ -204,6 +215,12 @@ export class NuevoPedidoComponent {
       }
     }
   }
+
+  // onProveedorChange(event: MatSelect) {
+  //   const telefono =
+  //     this.proveedorOptions.find((c) => c.id === event.value)?.telefono || '';
+  // }
+
 
   onDeleteConfirm(event: any) {
     if (!event.data.id) {

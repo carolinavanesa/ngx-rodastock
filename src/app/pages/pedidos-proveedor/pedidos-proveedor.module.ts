@@ -28,6 +28,7 @@ import { PedidoStatusComponent } from './pedido-status/pedido-status.component';
 import { PedidosProveedorService } from './pedidos-proveedor.service';
 import { InventarioService } from '../inventario/inventario.service';
 import { FilterPedidoPipe } from './filter-pedido.pipe';
+import { ProveedoresService } from '../proveedores/proveedores.service';
 
 @NgModule({
   declarations: [
@@ -59,6 +60,6 @@ import { FilterPedidoPipe } from './filter-pedido.pipe';
     SharedModalModule,
     SharedAngularMaterialModule,
   ],
-  providers: [PedidosProveedorService, InventarioService],
+  providers: [PedidosProveedorService, InventarioService, ProveedoresService],
 })
 export class PedidosProveedorModule {}

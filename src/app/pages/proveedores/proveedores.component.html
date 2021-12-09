@@ -1,0 +1,17 @@
+<nb-card>
+  <nb-card-header> Proveedores </nb-card-header>
+
+  <nb-card-body>
+    <button nbButton matRipple hero status="primary" (click)="nuevoProveedor()" class="mb-3">
+      Nuevo Proveedor
+    </button>
+    <ng2-smart-table
+      [settings]="settings"
+      [source]="source"
+      (createConfirm)="onCreateConfirm($event)"
+      (editConfirm)="onEditConfirm($event)"
+      (deleteConfirm)="onDeleteConfirm($event)"
+    >
+    </ng2-smart-table>
+  </nb-card-body>
+</nb-card>

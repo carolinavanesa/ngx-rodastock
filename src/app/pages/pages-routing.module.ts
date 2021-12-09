@@ -23,6 +23,12 @@ const routes: Routes = [
           import('./clientes/clientes.module').then((m) => m.ClientesModule),
       },
       {
+        path: 'proveedores',
+        canActivate: [AdminGuard],
+        loadChildren: () =>
+          import('./proveedores/proveedores.module').then((m) => m.ProveedoresModule),
+      },
+      {
         path: 'inventario',
         canActivate: [AdminGuard],
         loadChildren: () =>

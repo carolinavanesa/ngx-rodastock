@@ -1,0 +1,123 @@
+<nb-card status="primary" class="nuevo-proveedor-card">
+  <nb-card-header>Nuevo Proveedor</nb-card-header>
+  <nb-card-body class="m-2">
+    <form [formGroup]="nuevoForm">
+      <p class="dialog-hint">Ingrese la información referida al proveedor que desea registrar</p>
+      <div class="row m-3">
+        <mat-form-field class="mx-auto w-100">
+          <mat-label>Nombre</mat-label>
+          <input
+            formControlName="nombre"
+            matInput
+            autocomplete="off"
+            maxlength="30"
+          />
+          <mat-error *ngIf="nuevoForm.get('nombre')?.hasError('pattern')">
+            Por favor ingrese un nombre válido.
+          </mat-error>
+          <mat-error *ngIf="nuevoForm.get('nombre')?.hasError('required')">
+            Este campo es requerido
+          </mat-error>
+          <mat-hint>Solo se permiten letras</mat-hint>
+        </mat-form-field>
+      </div>
+
+      <div class="row m-3">
+        <mat-form-field class="mx-auto w-100">
+          <mat-label>Direccion</mat-label>
+          <input
+            formControlName="direccion"
+            type="text"
+            matInput
+            autocomplete="on"
+            maxlength="30"
+          />
+          <mat-error
+            *ngIf="
+              nuevoForm.get('direccion')?.hasError('pattern') &&
+              !nuevoForm.get('direccion').hasError('required')
+            "
+          >
+            Por favor ingrese un direccion válido.
+          </mat-error>
+          <mat-error *ngIf="nuevoForm.get('direccion')?.hasError('required')">
+            Este campo es requerido
+          </mat-error>
+          <mat-hint>Solo se permiten letras y números</mat-hint>
+          <!-- <mat-hint>hint</mat-hint> -->
+        </mat-form-field>
+      </div>
+
+      <div class="row m-3">
+        <mat-form-field class="mx-auto w-100">
+          <mat-label>Teléfono</mat-label>
+          <input
+            formControlName="telefono"
+            matInput
+            autocomplete="off"
+            maxlength="12"
+          />
+          <mat-error
+            *ngIf="
+              nuevoForm.get('telefono').hasError('pattern') &&
+              !nuevoForm.get('telefono').hasError('required')
+            "
+          >
+            Por favor ingrese un telefono válido.
+          </mat-error>
+          <mat-error *ngIf="nuevoForm.get('telefono').hasError('required')">
+            Este campo es requerido
+          </mat-error>
+          <mat-hint>Solo se permiten numero</mat-hint>
+          <!-- <mat-hint>hint</mat-hint> -->
+        </mat-form-field>
+      </div>
+
+      <div class="row m-3">
+        <mat-form-field class="mx-auto w-100">
+          <mat-label>Email</mat-label>
+          <input
+            formControlName="email"
+            matInput
+            autocomplete="off"
+            maxlength="30"
+          />
+          <mat-error
+            *ngIf="
+              nuevoForm.get('email').hasError('pattern') &&
+              !nuevoForm.get('email').hasError('required')
+            "
+          >
+            Por favor ingrese un email válido.
+          </mat-error>
+          <mat-error *ngIf="nuevoForm.get('email').hasError('required')">
+            Este campo es requerido
+          </mat-error>
+          <mat-hint>ejemplo@ejemplo.com</mat-hint>
+        </mat-form-field>
+      </div>
+    </form>
+  </nb-card-body>
+  <nb-card-footer>
+    <div class="row">
+      <div class="col">
+        <button nbButton matRipple ghost status="primary" (click)="dismiss()">
+          Cancelar
+        </button>
+      </div>
+      <div class="col">
+        <button
+          [disabled]="loading || !nuevoForm.valid || nuevoForm.pristine"
+          nbButton
+          matRipple
+          hero
+          status="primary"
+          (click)="confirm()"
+          class="float-right"
+        >
+          Crear
+        </button>
+      </div>
+    </div>
+  </nb-card-footer>
+</nb-card>

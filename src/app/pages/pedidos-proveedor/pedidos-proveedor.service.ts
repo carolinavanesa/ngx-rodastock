@@ -95,7 +95,7 @@ export class PedidosProveedorService {
 
   async agregarPedidoProveedor(
     numero: number,
-    nombreProveedor: string,
+    proveedor: any,
     fecha: Date,
     unidades: any[],
     notas: string,
@@ -104,7 +104,7 @@ export class PedidosProveedorService {
   ): Promise<boolean> {
     const nuevoPedidoProveedor = new PedidoProveedor();
     nuevoPedidoProveedor.set('numero', numero);
-    nuevoPedidoProveedor.set('nombreProveedor', nombreProveedor);
+    nuevoPedidoProveedor.set('proveedor', proveedor);
     nuevoPedidoProveedor.set('fecha', fecha);
     nuevoPedidoProveedor.set('notas', notas);
     nuevoPedidoProveedor.set('monto', monto);

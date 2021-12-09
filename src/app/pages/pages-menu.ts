@@ -34,6 +34,11 @@ export const MENU_ITEMS: NbMenuItem[] = [
     link: '/pages/clientes',
   },
   {
+    title: 'Proveedores',
+    icon: 'people-outline',
+    link: '/pages/proveedores',
+  },
+  {
     title: 'Reportes',
     icon: 'pie-chart-outline',
     children: [
