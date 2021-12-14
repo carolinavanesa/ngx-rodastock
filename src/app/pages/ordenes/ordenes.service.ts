@@ -300,7 +300,7 @@ export class OrdenesService {
     const nuevaCalificacion = new Calificacion();
     nuevaCalificacion.set('puntuacion', puntuacion);
     nuevaCalificacion.set('comentario', comentario);
-    nuevaCalificacion.set('cliente', ordenParse.ge('cliente'));
+    nuevaCalificacion.set('cliente', ordenParse.get('cliente'));
 
     try {
       const resSaved = await nuevaCalificacion.save();

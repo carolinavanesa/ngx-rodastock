@@ -5,13 +5,27 @@
     <h5 *ngIf="noEncuestas" >
       Aun no hay encuestas
     </h5>
-    <nb-list *ngIf="encuestas.length">
-      <nb-list-item matRipple class="contact" *ngFor="let c of encuestas">
-        <nb-user [name]="c.get('cliente').get('nombre')" [title]="c.get('cliente').get('email')" size="large"></nb-user>
-        <mat-star-rating [rating]="c.get('puntuacion')"></mat-star-rating>
-        <p> "{{ c.get('comentario') }} "</p>
-        <nb-icon icon="phone-outline" pack="eva"></nb-icon>
-      </nb-list-item>
-    </nb-list>
+    <div *ngIf="encuestas.length">
+      <h5> Promedio de calificaciones </h5>
+      <div class="col-md-3 col-lg-3 col-xs-3">
+        <mat-star-rating [rating]="calcularPromedio()"></mat-star-rating>
+      </div>
+      <nb-list>
+        <nb-list-item matRipple class="contact" *ngFor="let c of encuestas">
+          <div class="col-md-3 col-lg-3 col-xs-3">
+            <nb-user [name]="c.get('cliente').get('nombre')" [title]="c.get('cliente').get('email')" color="#0495ee" size="large"></nb-user>
+          </div>
+          <div class="col-md-3 col-lg-3 col-xs-3">
+            <mat-star-rating [rating]="c.get('puntuacion')"></mat-star-rating>
+          </div>
+          <div class="col-md-3 col-lg-3 col-xs-3">
+            <b> "{{ c.get('comentario') }}"</b>
+          </div>
+          <div class="col-md-3 col-lg-3 col-xs-3">
+            <nb-icon icon="calendar-outline" pack="eva"></nb-icon>{{ c.get('createdAt') | date: 'dd/MM/yyyy' }}
+          </div>
+        </nb-list-item>
+      </nb-list>
+    </div>
   </nb-card-body>
 </nb-card>

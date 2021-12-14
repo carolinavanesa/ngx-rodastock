@@ -23,6 +23,12 @@ export class EncuestasClienteComponent implements OnInit {
     });
   }
 
+  calcularPromedio() {
+    let promedio = 0;
+    this.encuestas.forEach(x => promedio += x.get('puntuacion'));
+    return promedio / this.encuestas.length;
+  }
+
   onEdit(event: any) {
     this.router.navigateByUrl(`pages/ordenes/search/${event.data.nombre}`);
   }

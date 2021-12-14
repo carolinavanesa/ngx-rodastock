@@ -11,7 +11,12 @@ export class LoginService {
   async login(username: string, password: string) {
     try {
       await Parse.User.logIn(username, password);
-      this.router.navigateByUrl("/pages");
+
+      if(Parse.User.current()?.get('role') === 'admin') {
+        this.router.navigateByUrl("pages/ordenes");
+      } else {
+        this.router.navigateByUrl("pages/mis-pedidos");
+      }
     } catch (e) {
       this.alertService.showErrorToast("Error", "Por favor compruebe que los datos ingresados son correctos");
     }

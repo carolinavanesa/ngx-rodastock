@@ -231,7 +231,7 @@ export class ReportesService {
     const query = new Parse.Query(Calificacion);
     query.limit(1000);
     query.descending('createdAt');
-
+    query.include('cliente')
 
     try {
       const response = await query.find();
