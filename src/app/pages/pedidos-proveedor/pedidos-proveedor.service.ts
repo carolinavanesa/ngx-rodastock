@@ -18,6 +18,7 @@ export class PedidosProveedorService {
     const query = new Parse.Query(PedidoProveedor);
     query.limit(1000);
     query.equalTo('deleted', false);
+    query.include('proveedor');
     try {
       const response = await query.find();
 
@@ -26,31 +27,19 @@ export class PedidosProveedorService {
         unidadesPromises.push(o.get('repuestos').query().include('repuesto').find());
       });
 
-      result = response.map(o => {
-        return {
-          id: o.id,
-          pedido: o,
-          numero: o.get('numero'),
-          nombreProveedor: o.get('nombreProveedor'),
-          fecha: o.get('fecha'),
-          notas: o.get('notas'),
-          estado: o.get('estado'),
-          monto: o.get('monto'),
-        }
-      })
-
       result = await Promise.all(unidadesPromises).then((unidades) => {
         return response.map((o, i) => {
           return {
             id: o.id,
             pedido: o,
             numero: o.get('numero'),
-            nombreProveedor: o.get('nombreProveedor'),
+
             fecha: o.get('fecha'),
             notas: o.get('notas'),
             estado: o.get('estado'),
             monto: o.get('monto'),
             repuestos: unidades[i],
+            proveedor: o.get('proveedor')
           };
         });
       });

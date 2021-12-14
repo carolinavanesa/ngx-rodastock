@@ -18,6 +18,7 @@ export class DetalleRepuestoChartComponent implements AfterViewInit, OnDestroy {
   }
 
   ngAfterViewInit() {
+    debugger
     this.themeSubscription = this.theme.getJsTheme().subscribe(config => {
 
       // const colors: any = config.variables;
@@ -68,7 +69,7 @@ export class DetalleRepuestoChartComponent implements AfterViewInit, OnDestroy {
                 },
               },
             },
-            data: this.ingresos.map(x => x.cantidad),
+            data: this.ingresos.map(x => x.fecha),
           },
           {
             type: 'category',
@@ -95,7 +96,7 @@ export class DetalleRepuestoChartComponent implements AfterViewInit, OnDestroy {
                 },
               },
             },
-            data: this.egresos.map(x => x.cantidad),
+            data: this.egresos.map(x => x.fecha),
           },
         ],
         yAxis: [
@@ -124,13 +125,13 @@ export class DetalleRepuestoChartComponent implements AfterViewInit, OnDestroy {
             type: 'line',
             xAxisIndex: 1,
             smooth: true,
-            data: this.ingresos.map(x => x.cantidad),
+            data: this.ingresos.map(x => x.stockSiguiente),
           },
           {
             name: 'Pedidos a Proveedor totales',
             type: 'line',
             smooth: true,
-            data: this.egresos.map(x => x.cantidad),
+            data: this.egresos.map(x => x.stockSiguiente),
           },
         ],
       };

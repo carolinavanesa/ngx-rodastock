@@ -190,7 +190,6 @@ export class OrdenesService {
           });
 
           // Actualizar stock
-          debugger
           const resultadoInventario = await this.actualizarStock(res, repuestos)
 
           break;

@@ -13,15 +13,23 @@ const ActualizacionStock = Parse.Object.extend('ActualizacionStock');
 export class ReportesService {
   constructor(private alertService: AlertService) {}
 
-  async repuestosMasUtilizados(date?: Date) {
+  async repuestosMasUtilizados(start?: Date, end?: Date) {
     let result = [];
     const query = new Parse.Query(ActualizacionStock);
     query.limit(1000);
     query.equalTo('tipo', 'egreso');
     query.include('repuesto');
 
-    if(date) {
-      query.greaterThan('createdAt', date);
+    if(start) {
+      query.greaterThan('createdAt', start);
+
+      if(end) {
+        query.lessThan('createdAt', end);
+      } else {
+        const newEnd = new Date(start);
+        newEnd.setHours(23);
+        query.lessThan('createdAt', newEnd);
+      }
     }
 
     try {
@@ -42,6 +50,10 @@ export class ReportesService {
           })
         }
 
+      });
+
+      arrayData.sort(function(a, b) {
+        return b.cantidad - a.cantidad;
       });
 
       return arrayData;

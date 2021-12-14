@@ -99,6 +99,8 @@
       </div>
       <div class="row">
         <p>Veras impactado el stock en el inventario:</p>
+      </div>
+      <div class="row">
         <ul>
           <li *ngFor="let rep of repuestos">
             {{ rep.get('repuesto').get('nombre') }} x{{ rep.get('cantidad')}}

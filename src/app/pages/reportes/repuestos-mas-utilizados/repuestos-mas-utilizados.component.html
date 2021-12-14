@@ -3,21 +3,47 @@
     <nb-card>
       <nb-card-header>Repuestos mas utilizados</nb-card-header>
       <nb-card-body>
-        <nb-tabset fullWidth class="w-100">
-          <nb-tab tabTitle="Todo" class="w-100">
-            <ngx-repuestos-mas-utilizados-pie
-              *ngIf="data.length"
-              [data]="data"
-            ></ngx-repuestos-mas-utilizados-pie>
-          </nb-tab>
-          <nb-tab tabTitle="Ultimo mes" class="w-100">
-            <ngx-repuestos-mas-utilizados-pie
-              *ngIf="dataMes.length"
-              [data]="dataMes"
-            ></ngx-repuestos-mas-utilizados-pie>
-          </nb-tab>
-        </nb-tabset>
+        <form [formGroup]="dateForm">
+          <mat-form-field appearance="fill" class="example-form-field">
+            <mat-label>Ingrese el rango de fechas</mat-label>
+            <mat-date-range-input [rangePicker]="rangePicker">
+              <input matStartDate formControlName="desde" placeholder="Desde" />
+              <input matEndDate formControlName="hasta" placeholder="Hasta" />
+            </mat-date-range-input>
+            <mat-datepicker-toggle
+              matSuffix
+              [for]="rangePicker"
+            ></mat-datepicker-toggle>
+            <mat-date-range-picker #rangePicker>
+              <mat-date-range-picker-actions>
+                <button mat-button matDateRangePickerCancel>Cancelar</button>
+                <button
+                  mat-raised-button
+                  color="primary"
+                  matDateRangePickerApply
+                >
+                  Aceptar
+                </button>
+              </mat-date-range-picker-actions>
+            </mat-date-range-picker>
+          </mat-form-field>
+          <nb-icon
+            style="cursor: pointer"
+            (click)="clearSearch()"
+            icon="close-outline"
+            pack="eva"
+            class="ml-4"
+          ></nb-icon>
+        </form>
+
+        <ngx-repuestos-mas-utilizados-pie
+          *ngIf="data.length; else noResult"
+          [data]="data"
+        ></ngx-repuestos-mas-utilizados-pie>
       </nb-card-body>
     </nb-card>
   </div>
 </div>
+<ng-template #noResult>
+  <h5>No se encontraron datos para el rango de fecha seleccionado</h5>
+</ng-template>

@@ -118,20 +118,22 @@ export class DetalleRepuestoComponent implements OnInit {
   mapChartRows(lista) {
     const arrayData = [];
 
-    for (let i = 0; i < 12; i++) {
-      arrayData.push({
-        id: i,
-        mes: this.meses[i],
-        cantidad: 0,
-      });
-    }
-    lista.forEach(orden => {
-      const mes = (new Date(orden.fecha)).getMonth();
-      const objetoMes = arrayData.find(x => x.id === mes)
-      objetoMes.cantidad++;
-    });
-
-    return arrayData;
+    // for (let i = 0; i < 12; i++) {
+    //   arrayData.push({
+    //     id: i,
+    //     mes: this.meses[i],
+    //     fecha:
+    //     cantidad: 0,
+    //   });
+    // }
+    // lista.forEach(orden => {
+    //   var splitDate = orden.fecha.split('/');
+    //   const mes = (new Date(splitDate[2],splitDate[1],splitDate[0])).getMonth();
+    //   const objetoMes = arrayData.find(x => x.id === mes)
+    //   objetoMes.cantidad++;
+    // });
+    return lista;
+    // return arrayData;
   }
 
   onEdit() {

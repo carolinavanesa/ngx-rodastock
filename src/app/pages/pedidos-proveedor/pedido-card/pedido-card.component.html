@@ -19,7 +19,7 @@
   <div class="row ml-1 mr-1">
     <div class="col-xs-12 col-lg-12 col-md-12">
       <nb-icon icon="person-outline" pack="eva"></nb-icon>
-      {{ pedido.nombreProveedor }}
+      {{ pedido.proveedor?.get('nombre') }}
     </div>
   </div>
   <div class="row ml-1 mr-1 mt-2">

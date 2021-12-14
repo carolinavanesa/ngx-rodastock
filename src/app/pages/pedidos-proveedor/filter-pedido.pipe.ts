@@ -27,7 +27,7 @@ export class FilterPedidoPipe implements PipeTransform {
 
       return (
         obj.numero?.toString().includes(search) ||
-        obj.nombreProveedor?.toLowerCase().includes(search) ||
+        obj.proveedor?.get('nombre')?.toLowerCase().includes(search) ||
         obj.repuestos?.some((r) =>
           r.get('nombre')?.toLowerCase().includes(search)
         ) ||
