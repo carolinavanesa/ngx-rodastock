@@ -44,12 +44,11 @@ export class ProveedoresComponent implements OnInit, OnDestroy {
       },
       telefono: {
         title: 'Telefono',
-        type: 'number',
+        type: 'string',
       },
       email: {
         title: 'Email',
-        type: 'number',
-        editable: false,
+        type: 'string',
       },
     },
   };

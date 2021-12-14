@@ -69,6 +69,7 @@ export class PedidosProveedorService {
     const query = new Parse.Query(PedidoProveedor);
     query.equalTo('deleted', false);
     query.equalTo('objectId', id);
+    query.include('proveedor');
     let result;
 
     try {

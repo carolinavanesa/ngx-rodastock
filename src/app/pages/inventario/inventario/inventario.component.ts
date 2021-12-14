@@ -26,7 +26,7 @@ export class InventarioComponent implements OnInit {
       confirmCreate: true,
     },
     edit: {
-      editButtonContent: '<i class="nb-edit"></i>',
+      editButtonContent: '<i class="nb-compose"></i>',
       saveButtonContent: '<i class="nb-checkmark"></i>',
       cancelButtonContent: '<i class="nb-close"></i>',
       confirmSave: true,
