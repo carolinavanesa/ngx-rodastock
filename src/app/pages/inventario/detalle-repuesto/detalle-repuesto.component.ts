@@ -39,15 +39,9 @@ export class DetalleRepuestoComponent implements OnInit {
       columnTitle: '',
     },
     edit: {
-      editButtonContent: '<i class="nb-edit"></i>',
+      editButtonContent: '<i class="nb-compose"></i>',
     },
     columns: {
-      // id: {
-      //   title: 'ID',
-      //   type: 'text',
-      //   hide: true,
-      //   editable: false,
-      // },
       fecha: {
         title: 'Fecha',
         type: 'text',

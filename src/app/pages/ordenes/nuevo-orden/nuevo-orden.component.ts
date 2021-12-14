@@ -99,7 +99,7 @@ export class NuevoOrdenComponent {
   nuevoForm: FormGroup = this.formBuilder.group({
     observaciones: ['', [Validators.maxLength(100)]],
     cliente: ['', [Validators.required]],
-    rodado: ['', [Validators.required, Validators.maxLength(50), Validators.pattern("[a-zA-Z0-9 ,']*"),]],
+    rodado: ['', [Validators.required, Validators.maxLength(50), Validators.pattern("[a-zA-Z0-9ñº# ,']*"),]],
     fecha: [new Date(), [Validators.required]],
     fechaEntrega: [new Date(), [Validators.required]],
     telefono: ['', [Validators.required, Validators.pattern('[0-9 ()-]*')]],

@@ -164,6 +164,18 @@ export class OrdenesService {
         'Exito',
         'Se ha generado un nuevo Pedido Nº ' + numero
       );
+
+      this.sendEmail({
+        toEmail: res.get('cliente').get('email'),
+        subject: 'Pedido de Reparacion En Curso!',
+        body:
+          'Tu Pedido de Reparacion Nº' +
+          this.getStringNumeroPedido(res.get('numero'))+
+          ' de ' +
+          res.get('rodado') +
+          ' se ha generado. Te notificaremos cuando este listo para ser retirado!',
+      });
+
       return true;
     } catch (e) {
       this.alertService.showErrorToast('Error', 'No se pudo generar el pedido');
@@ -214,7 +226,7 @@ export class OrdenesService {
               this.getStringNumeroPedido(parseObject.get('numero'))+
               ' de ' +
               parseObject.get('rodado') +
-              ' ha sido entregado. Por favor tomate unos minutos para evaluar el servicio brindado en: <LINK>',
+              ' ha sido entregado. Por favor tomate unos minutos para evaluar el servicio brindado en: https://rodastock.b4a.app/pages/mis-pedidos',
           });
           break;
         case 'Cancelado':

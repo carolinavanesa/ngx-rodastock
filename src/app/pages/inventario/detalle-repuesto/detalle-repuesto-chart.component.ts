@@ -18,7 +18,6 @@ export class DetalleRepuestoChartComponent implements AfterViewInit, OnDestroy {
   }
 
   ngAfterViewInit() {
-    debugger
     this.themeSubscription = this.theme.getJsTheme().subscribe(config => {
 
       // const colors: any = config.variables;

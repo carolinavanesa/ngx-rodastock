@@ -19,7 +19,7 @@ export class ClienteMorososComponent implements OnInit {
       columnTitle: '',
     },
     edit: {
-      editButtonContent: '<i class="nb-edit"></i>',
+      editButtonContent: '<i class="nb-compose"></i>',
     },
     columns: {
       nombre: {

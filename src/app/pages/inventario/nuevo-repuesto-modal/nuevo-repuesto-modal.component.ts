@@ -24,7 +24,7 @@ export class NuevoRepuestoModalComponent {
       [
         Validators.required,
         Validators.maxLength(30),
-        Validators.pattern("[a-zA-Z0-9 ,']*"),
+        Validators.pattern("[a-zA-Z0-9ñº# ,']*"),
       ],
     ],
     costo: ['', [Validators.required, Validators.maxLength(10)]],

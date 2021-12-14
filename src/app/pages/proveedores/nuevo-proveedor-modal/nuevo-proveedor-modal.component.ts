@@ -36,7 +36,7 @@ export class NuevoProveedorModalComponent {
       [
         Validators.required,
         Validators.maxLength(30),
-        Validators.pattern("[a-zA-Z0-9 ,']*"),
+        Validators.pattern("[a-zA-Z0-9ñº# ,']*"),
       ],
     ],
     telefono: ['', [Validators.required, Validators.pattern('[0-9 ()-]*')]],

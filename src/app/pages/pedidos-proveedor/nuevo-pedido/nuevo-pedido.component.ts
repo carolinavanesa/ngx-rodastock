@@ -93,7 +93,7 @@ export class NuevoPedidoComponent {
     ],
     notas: [
       '',
-      [Validators.maxLength(200), Validators.pattern("[a-zA-Z0-9 ,']*")],
+      [Validators.maxLength(200), Validators.pattern("[a-zA-Z0-9ñº# ,']*")],
     ],
     fecha: [new Date(), [Validators.required]],
     monto: [
@@ -139,7 +139,7 @@ export class NuevoPedidoComponent {
     this.proveedorService
       .cargarProveedores()
       .then((proveedors) => (this.proveedorOptions = proveedors));
-    
+
   }
 
   ngOnDestroy() {}

@@ -24,7 +24,7 @@ export class ReviewModalComponent implements OnInit {
     // puntuacion: ['', [Validators.required, Validators.maxLength(30), Validators.pattern("[a-zA-Z ,']*")]],
     comentario: [
       '',
-      [Validators.maxLength(100), Validators.pattern("[a-zA-Z0-9 ,']*")],
+      [Validators.maxLength(100), Validators.pattern("[a-zA-Z0-9ñº# ,']*")],
     ],
   });
 

@@ -10,8 +10,8 @@
       <div class="col-md-3 col-lg-3 col-xs-3">
         <mat-star-rating [rating]="calcularPromedio()"></mat-star-rating>
       </div>
-      <nb-list>
-        <nb-list-item matRipple class="contact" *ngFor="let c of encuestas">
+
+        <div class="row border-bottom m-2 p-2" *ngFor="let c of encuestas">
           <div class="col-md-3 col-lg-3 col-xs-3">
             <nb-user [name]="c.get('cliente').get('nombre')" [title]="c.get('cliente').get('email')" color="#0495ee" size="large"></nb-user>
           </div>
@@ -21,11 +21,11 @@
           <div class="col-md-3 col-lg-3 col-xs-3">
             <b> "{{ c.get('comentario') }}"</b>
           </div>
-          <div class="col-md-3 col-lg-3 col-xs-3">
+          <div class="col-md-2 col-lg-2 col-xs-2">
             <nb-icon icon="calendar-outline" pack="eva"></nb-icon>{{ c.get('createdAt') | date: 'dd/MM/yyyy' }}
           </div>
-        </nb-list-item>
-      </nb-list>
+        </div>
+
     </div>
   </nb-card-body>
 </nb-card>
