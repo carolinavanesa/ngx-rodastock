@@ -40,7 +40,8 @@ export class IngresosMensualesBarComponent implements AfterViewInit, OnDestroy {
         xAxis: [
           {
             type: 'category',
-            data: this.data.map(x => x.mes),
+            // data: this.data.map(x => x.mes),
+            data: this.data.map(x => x.fecha),
             axisTick: {
               alignWithLabel: true,
             },
@@ -81,7 +82,7 @@ export class IngresosMensualesBarComponent implements AfterViewInit, OnDestroy {
             name: 'Ingreso Total',
             type: 'bar',
             barWidth: '60%',
-            data: this.data.map(x => x.ingreso),
+            data: this.data.map(x => x.total),
           },
         ],
       };

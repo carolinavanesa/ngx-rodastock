@@ -29,7 +29,6 @@ export class DetalleRepuestoComponent implements OnInit {
     'Enero', 'Febrero', 'Marzo', 'Abril', 'Mayo', 'Junio', 'Julio', 'Agosto', 'Septiembre', 'Octubre', 'Noviembre', 'Diciembre'
   ]
 
-
   settings = {
     mode: 'external',
     sort: false,
