@@ -1,6 +1,7 @@
 import { Component, OnDestroy, OnInit, ViewEncapsulation } from '@angular/core';
 import { Router, ActivatedRoute } from '@angular/router';
 import { OrdenesService } from '../ordenes.service';
+import { FormControl } from '@angular/forms';
 
 @Component({
   selector: 'ngx-dashboard',
@@ -10,7 +11,9 @@ import { OrdenesService } from '../ordenes.service';
 })
 export class OrdenesComponent implements OnInit {
   searchText = '';
+  estadoFormControl = new FormControl('Todos');
   ordenes = [];
+  ordenesFull = [];
   ordenesEntrega = [];
   ordenesLista = [];
 
@@ -27,6 +30,14 @@ export class OrdenesComponent implements OnInit {
     if (search) {
       this.searchText = search;
     }
+
+    this.estadoFormControl.valueChanges.subscribe(val => {
+      if (val && val !== 'Todos') {
+        this.ordenes = this.ordenesFull.filter(x => x.estado === val);
+      } else {
+        this.ordenes = this.ordenesFull;
+      }
+    })
   }
 
   clearSearch() {
@@ -36,6 +47,7 @@ export class OrdenesComponent implements OnInit {
   cargarOrdenes() {
     this.service.cargarOrdenes().then((ordenes) => {
       this.ordenes = ordenes;
+      this.ordenesFull = [...ordenes];
       this.ordenesEntrega = this.ordenes.filter(o => isToday(o.fechaEntrega) && o.estado !== 'Cancelado' && o.estado !== 'Entregado');
       this.ordenesLista = this.ordenes.filter(o => o.estado === 'Terminado');
     });

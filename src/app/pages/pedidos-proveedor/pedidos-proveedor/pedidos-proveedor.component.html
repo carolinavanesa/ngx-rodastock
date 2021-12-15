@@ -36,8 +36,21 @@
       </div>
     </div>
 
-    <nb-tabset fullWidth class="w-100">
-      <nb-tab tabTitle="Todos" class="w-100">
+    <!-- <nb-tabset fullWidth class="w-100">
+      <nb-tab tabTitle="Todos" class="w-100"> -->
+        <div class="row ml-2">
+          <nb-icon icon="funnel-outline" pack="eva" class="mr-4 mt-2" style="font-size: 2rem"></nb-icon>
+          <mat-form-field appearance="fill">
+            <mat-label>Estado</mat-label>
+            <mat-select [formControl]="estadoFormControl">
+              <mat-option value="Todos"> Todos </mat-option>
+              <mat-option value="Pendiente"> Pendiente </mat-option>
+              <mat-option value="En curso"> En curso </mat-option>
+              <mat-option value="Recibido"> Recibido </mat-option>
+              <mat-option value="Cancelado"> Cancelado </mat-option>
+            </mat-select>
+          </mat-form-field>
+        </div>
         <div class="row">
           <div
             *ngFor="let pedido of pedidos | filterPedido: searchText"
@@ -47,7 +60,7 @@
           </div>
           <!-- <h4 class="mt-4 mx-auto" *ngIf="pedido.length === 0">Aun no tenes pedidos!</h4> -->
         </div>
-      </nb-tab>
+      <!-- </nb-tab>
       <nb-tab tabTitle="En curso" class="w-100">
         <div class="row">
           <div
@@ -68,9 +81,9 @@
             <ngx-pedido-card [pedido]="pedido" (estadoChanged)="cargarPedidoProveedor()"></ngx-pedido-card>
           </div>
           <h4 class="mt-4 mx-auto" *ngIf="pedidosEntregados.length === 0">No hay pedidos recibidos!</h4>
-        </div>
-      </nb-tab>
+        </div> -->
+      <!-- </nb-tab> -->
 
-    </nb-tabset>
+    <!-- </nb-tabset> -->
   </nb-card-body>
 </nb-card>
