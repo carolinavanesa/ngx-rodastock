@@ -27,6 +27,27 @@
     </div>
 
     <div class="row mt-2">
+      <div class="col-xs-6 col-6 col-md-2 col-lg-2 text-hint">Direccion:</div>
+      <div class="col-xs-6 col-6 col-md-9 col-lg-9">
+        {{ pedido.get('proveedor')?.get('direccion') }}
+      </div>
+    </div>
+
+    <div class="row mt-2">
+      <div class="col-xs-6 col-6 col-md-2 col-lg-2 text-hint">Telefono:</div>
+      <div class="col-xs-6 col-6 col-md-9 col-lg-9">
+        {{ pedido.get('proveedor')?.get('telefono') }}
+      </div>
+    </div>
+
+    <div class="row mt-2">
+      <div class="col-xs-6 col-6 col-md-2 col-lg-2 text-hint">Email:</div>
+      <div class="col-xs-6 col-6 col-md-9 col-lg-9">
+        {{ pedido.get('proveedor')?.get('email') }}
+      </div>
+    </div>
+
+    <div class="row mt-2">
       <!-- OBSERVACIONES -->
       <div class="col-xs-6 col-6 col-md-2 col-lg-2 text-hint">Notas:</div>
       <div class="col-xs-6 col-6 col-md-9 col-lg-9">
@@ -36,7 +57,9 @@
 
     <div class="row mt-4" *ngIf="pedido.get('fechaRecibido') as fechaRecibido">
       <div class="col-xs-6 col-6 col-md-9 col-lg-9">
-        <span class="border p-2">RECIBIDO el {{ fechaRecibido | date: 'dd/MM/yyyy' }}</span>
+        <span class="border p-2"
+          >RECIBIDO el {{ fechaRecibido | date: 'dd/MM/yyyy' }}</span
+        >
       </div>
     </div>
 
@@ -69,7 +92,6 @@
         </h5>
       </div>
     </div>
-
   </nb-card-body>
   <nb-card-footer>
     <div class="row">
@@ -79,8 +101,16 @@
         </button>
       </div>
       <div class="col">
-        <button nbButton matRipple hero status="primary" (click)="print()" class="float-right">
-          Imprimir
+        <button
+          nbButton
+          matRipple
+          hero
+          status="primary"
+          (click)="print()"
+          class="float-right"
+        >
+          <nb-icon icon="printer-outline" pack="eva"></nb-icon
+          ><span class="ml-1">Imprimir</span>
         </button>
       </div>
     </div>

@@ -33,4 +33,8 @@ export class EncuestasClienteComponent implements OnInit {
     this.router.navigateByUrl(`pages/ordenes/search/${event.data.nombre}`);
   }
 
+  print(){
+    window.print();
+  }
+
 }

@@ -2,30 +2,51 @@
   <nb-card-header>Encuestas de satisfacción</nb-card-header>
 
   <nb-card-body>
-    <h5 *ngIf="noEncuestas" >
-      Aun no hay encuestas
-    </h5>
+    <h5 *ngIf="noEncuestas">Aun no hay encuestas</h5>
     <div *ngIf="encuestas.length">
-      <h5> Promedio de calificaciones </h5>
+      <h5>Promedio de calificaciones</h5>
       <div class="col-md-3 col-lg-3 col-xs-3">
         <mat-star-rating [rating]="calcularPromedio()"></mat-star-rating>
       </div>
 
-        <div class="row border-bottom m-2 p-2" *ngFor="let c of encuestas">
-          <div class="col-md-3 col-lg-3 col-xs-3">
-            <nb-user [name]="c.get('cliente').get('nombre')" [title]="c.get('cliente').get('email')" color="#0495ee" size="large"></nb-user>
-          </div>
-          <div class="col-md-3 col-lg-3 col-xs-3">
-            <mat-star-rating [rating]="c.get('puntuacion')"></mat-star-rating>
-          </div>
-          <div class="col-md-3 col-lg-3 col-xs-3">
-            <b> "{{ c.get('comentario') }}"</b>
-          </div>
-          <div class="col-md-2 col-lg-2 col-xs-2">
-            <nb-icon icon="calendar-outline" pack="eva"></nb-icon>{{ c.get('createdAt') | date: 'dd/MM/yyyy' }}
-          </div>
+      <div class="row border-bottom m-2 p-2" *ngFor="let c of encuestas">
+        <div class="col-md-3 col-lg-3 col-xs-3">
+          <nb-user
+            [name]="c.get('cliente').get('nombre')"
+            [title]="c.get('cliente').get('email')"
+            color="#0495ee"
+            size="large"
+          ></nb-user>
         </div>
-
+        <div class="col-md-3 col-lg-3 col-xs-3">
+          <mat-star-rating [rating]="c.get('puntuacion')"></mat-star-rating>
+        </div>
+        <div class="col-md-3 col-lg-3 col-xs-3">
+          <b> "{{ c.get('comentario') }}"</b>
+        </div>
+        <div class="col-md-2 col-lg-2 col-xs-2">
+          <nb-icon icon="calendar-outline" pack="eva"></nb-icon
+          >{{ c.get('createdAt') | date: 'dd/MM/yyyy' }}
+        </div>
+      </div>
     </div>
   </nb-card-body>
+
+  <nb-card-footer>
+    <div class="row">
+      <div class="col">
+        <button
+          nbButton
+          matRipple
+          hero
+          status="primary"
+          (click)="print()"
+          class="float-right"
+        >
+          <nb-icon icon="printer-outline" pack="eva"></nb-icon
+          ><span class="ml-1">Imprimir</span>
+        </button>
+      </div>
+    </div>
+  </nb-card-footer>
 </nb-card>

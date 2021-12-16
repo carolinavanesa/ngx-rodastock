@@ -5,6 +5,7 @@ import { LocalDataSource } from 'ng2-smart-table';
 import { DatePipe } from '@angular/common';
 import { NuevoRepuestoModalComponent } from '../nuevo-repuesto-modal/nuevo-repuesto-modal.component';
 import { take } from 'rxjs/operators';
+import { Location } from '@angular/common'
 import { NbDialogService } from '@nebular/theme';
 
 
@@ -22,6 +23,7 @@ export class DetalleRepuestoComponent implements OnInit {
     private datePipe: DatePipe,
     private router: Router,
     private dialogService: NbDialogService,
+    private location: Location,
     // private location: Location,
   ) {}
 
@@ -91,8 +93,8 @@ export class DetalleRepuestoComponent implements OnInit {
 
           listaIngresos = [...listaIngresos, ...inicial];
 
-          this.ingresosChart = this.mapChartRows(listaIngresos);
-          this.egresosChart = this.mapChartRows(listaEgresos);
+          this.ingresosChart = listaIngresos;
+          this.egresosChart = listaEgresos;
 
           this.sourceIngreso.load([...listaIngresos, ...inicial]);
           this.sourceEgreso.load(listaEgresos);
@@ -101,32 +103,19 @@ export class DetalleRepuestoComponent implements OnInit {
     }
   }
 
+  goBack() {
+    this.location.back();
+  }
+
+  print(){
+    window.print();
+  }
+
   onEditIngresos(event) {
     this.router.navigateByUrl(`pages/pedidos-proveedor/detalle/${event.data.id}`);
   }
   onEditEgresos(event) {
     this.router.navigateByUrl(`pages/ordenes/detalle-orden/${event.data.id}`);
-  }
-
-  mapChartRows(lista) {
-    const arrayData = [];
-
-    // for (let i = 0; i < 12; i++) {
-    //   arrayData.push({
-    //     id: i,
-    //     mes: this.meses[i],
-    //     fecha:
-    //     cantidad: 0,
-    //   });
-    // }
-    // lista.forEach(orden => {
-    //   var splitDate = orden.fecha.split('/');
-    //   const mes = (new Date(splitDate[2],splitDate[1],splitDate[0])).getMonth();
-    //   const objetoMes = arrayData.find(x => x.id === mes)
-    //   objetoMes.cantidad++;
-    // });
-    return lista;
-    // return arrayData;
   }
 
   onEdit() {

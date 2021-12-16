@@ -136,6 +136,10 @@ export class ReportePagosProveedoresComponent implements OnInit {
   }
 
   onEditIngresos(event) {
-    this.router.navigateByUrl(`pages/ordenes/detalle-orden/${event.data.id}`);
+    this.router.navigateByUrl(`pages/pedidos-proveedor/detalle/${event.data.id}`);
+  }
+
+  print(){
+    window.print();
   }
 }

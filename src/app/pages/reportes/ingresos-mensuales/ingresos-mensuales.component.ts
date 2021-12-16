@@ -122,4 +122,8 @@ export class ReporteIngresosMensualesComponent implements OnInit{
   onEditIngresos(event) {
     this.router.navigateByUrl(`pages/ordenes/detalle-orden/${event.data.id}`);
   }
+
+  print(){
+    window.print();
+  }
 }

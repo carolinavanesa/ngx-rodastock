@@ -11,4 +11,22 @@
     >
     </ng2-smart-table>
   </nb-card-body>
+
+  <nb-card-footer>
+    <div class="row">
+      <div class="col">
+        <button
+          nbButton
+          matRipple
+          hero
+          status="primary"
+          (click)="print()"
+          class="float-right"
+        >
+          <nb-icon icon="printer-outline" pack="eva"></nb-icon
+          ><span class="ml-1">Imprimir</span>
+        </button>
+      </div>
+    </div>
+  </nb-card-footer>
 </nb-card>

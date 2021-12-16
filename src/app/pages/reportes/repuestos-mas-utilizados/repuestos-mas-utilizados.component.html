@@ -36,11 +36,40 @@
           ></nb-icon>
         </form>
 
-        <ngx-repuestos-mas-utilizados-pie
-          *ngIf="data.length; else noResult"
-          [data]="data"
-        ></ngx-repuestos-mas-utilizados-pie>
+        <ng-container *ngIf="!loading">
+          <ngx-repuestos-mas-utilizados-pie
+            *ngIf="data.length; else noResult"
+            [data]="data"
+          ></ngx-repuestos-mas-utilizados-pie>
+
+          <h6 class="mt-3 mb-3">Listado de Repuestos</h6>
+          <ng2-smart-table
+            class="custom-table"
+            [settings]="settings"
+            [source]="sourceRepuesto"
+            (edit)="onEditIngresos($event)"
+          >
+          </ng2-smart-table>
+        </ng-container>
       </nb-card-body>
+
+      <nb-card-footer>
+        <div class="row">
+          <div class="col">
+            <button
+              nbButton
+              matRipple
+              hero
+              status="primary"
+              (click)="print()"
+              class="float-right"
+            >
+              <nb-icon icon="printer-outline" pack="eva"></nb-icon
+              ><span class="ml-1">Imprimir</span>
+            </button>
+          </div>
+        </div>
+      </nb-card-footer>
     </nb-card>
   </div>
 </div>

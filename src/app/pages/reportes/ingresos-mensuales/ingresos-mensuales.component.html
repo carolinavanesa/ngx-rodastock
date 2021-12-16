@@ -64,8 +64,11 @@
 
         <ng-container *ngIf="!loading">
           <ng-container *ngIf="this.data.length; else noResult">
-            <h5 class="mt-3">Totales de ingresos por periodo</h5>
+            <h5 class="mt-3">
+              Totales de ingresos por periodo {{ total | currency }}
+            </h5>
             <ngx-ingresos-mensuales-bar
+              texto="Ingresos: "
               [data]="data"
             ></ngx-ingresos-mensuales-bar>
           </ng-container>
@@ -79,11 +82,27 @@
               (edit)="onEditIngresos($event)"
             >
             </ng2-smart-table>
-
-            <h6 class="m-3 pull-right">Total Periodo $ {{ total }}</h6>
           </ng-container>
         </ng-container>
       </nb-card-body>
+
+      <nb-card-footer>
+        <div class="row">
+          <div class="col">
+            <button
+              nbButton
+              matRipple
+              hero
+              status="primary"
+              (click)="print()"
+              class="float-right"
+            >
+              <nb-icon icon="printer-outline" pack="eva"></nb-icon
+              ><span class="ml-1">Imprimir</span>
+            </button>
+          </div>
+        </div>
+      </nb-card-footer>
     </nb-card>
   </div>
 </div>
@@ -91,4 +110,3 @@
 <ng-template #noResult>
   <h5 class="m-5">No se encontraron registros para el periodo seleccionado</h5>
 </ng-template>
-

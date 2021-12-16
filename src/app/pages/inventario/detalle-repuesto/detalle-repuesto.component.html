@@ -2,7 +2,9 @@
   <nb-card-header>Historial de movimientos de stock</nb-card-header>
   <nb-card-body class="m-2" *ngIf="repuesto">
     <div class="row mb-3">
-      <button nbButton matRipple (click)="onEdit()" status="primary">Editar</button>
+      <button nbButton matRipple (click)="onEdit()" status="primary">
+        Editar
+      </button>
     </div>
     <p><b>Nombre: </b>{{ repuesto.get('nombre') }}</p>
     <p><b>Stock Actual: </b>{{ repuesto.get('stock') }}</p>
@@ -75,14 +77,32 @@
       </tbody>
     </table> -->
 
-    <ngx-detalle-repuesto-chart *ngIf="ingresosChart.length" [ingresos]="ingresosChart" [egresos]="egresosChart">
-
+    <ngx-detalle-repuesto-chart
+      *ngIf="ingresosChart.length"
+      [ingresos]="ingresosChart"
+      [egresos]="egresosChart"
+    >
     </ngx-detalle-repuesto-chart>
   </nb-card-body>
   <nb-card-footer>
     <div class="row">
       <div class="col">
-        <button nbButton matRipple ghost status="primary">Cerrar</button>
+        <button nbButton matRipple ghost status="primary" (click)="goBack()">
+          Volver
+        </button>
+      </div>
+      <div class="col">
+        <button
+          nbButton
+          matRipple
+          hero
+          status="primary"
+          (click)="print()"
+          class="float-right"
+        >
+          <nb-icon icon="printer-outline" pack="eva"></nb-icon
+          ><span class="ml-1">Imprimir</span>
+        </button>
       </div>
     </div>
   </nb-card-footer>

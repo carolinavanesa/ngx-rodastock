@@ -12,6 +12,7 @@ export class IngresosMensualesBarComponent implements AfterViewInit, OnDestroy {
   options: any = {};
   themeSubscription: any;
   @Input() data: any[];
+  @Input() texto: string;
 
   constructor(private theme: NbThemeService) {
   }
@@ -79,7 +80,7 @@ export class IngresosMensualesBarComponent implements AfterViewInit, OnDestroy {
         ],
         series: [
           {
-            name: 'Ingreso Total',
+            name: this.texto,
             type: 'bar',
             barWidth: '60%',
             data: this.data.map(x => x.total),

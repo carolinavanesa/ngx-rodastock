@@ -1,6 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { ReportesService } from '../reportes.service';
 import { FormGroup, FormBuilder } from '@angular/forms';
+import { Router } from '@angular/router';
+import { LocalDataSource } from 'ng2-smart-table';
 
 @Component({
   selector: 'ngx-repuestos-mas-utilizados',
@@ -8,35 +10,73 @@ import { FormGroup, FormBuilder } from '@angular/forms';
   templateUrl: './repuestos-mas-utilizados.component.html',
 })
 export class ReporteRepuestoMasUtilizadoComponent implements OnInit{
-  constructor(private service: ReportesService, private formBuilder: FormBuilder) {}
+  constructor(private service: ReportesService, private formBuilder: FormBuilder, private router: Router) {}
 
   data = [];
   dataMes = [];
+  loading = true;
 
   dateForm: FormGroup = this.formBuilder.group({
     desde: '',
     hasta: '',
   })
 
-  ngOnInit() {
-    this.service.repuestosMasUtilizados().then(res => {
-      this.data = res;
-    });
+  sourceRepuesto: LocalDataSource = new LocalDataSource();
+  settings = {
+    mode: 'external',
+    sort: false,
+    actions: {
+      add: false,
+      delete: false,
+      columnTitle: '',
+    },
+    edit: {
+      editButtonContent: '<i class="nb-compose"></i>',
+    },
+    columns: {
+      nombre: {
+        title: 'Repuesto',
+        type: 'text',
+      },
+      cantidad: {
+        title: 'Cantidad',
+        type: 'number',
+      },
+    },
+  };
 
-    // const ultimoMes = new Date();
-    // ultimoMes.setDate(ultimoMes.getDate()-30);
-    // this.service.repuestosMasUtilizados(ultimoMes).then(res => {
-    //   this.dataMes = res;
-    // });
+  ngOnInit() {
+    this.cargarData();
 
     this.dateForm.valueChanges.subscribe(val => {
+      this.loading = true;
       this.service.repuestosMasUtilizados(val.desde, val.hasta).then(res => {
+        this.sourceRepuesto.load(res);
         this.data = res;
+        this.loading = false;
       });
+    });
+  }
+
+  cargarData(){
+    this.loading = true;
+    this.service.repuestosMasUtilizados().then(res => {
+      this.sourceRepuesto.load(res);
+      this.data = res;
+      this.loading = false;
     });
   }
 
   clearSearch() {
     this.dateForm.reset();
+    this.cargarData();
+  }
+
+  onEditIngresos(event) {
+    this.router.navigateByUrl(`pages/inventario/detalle/${event.data.id}`);
+  }
+
+  print(){
+    window.print();
   }
 }
