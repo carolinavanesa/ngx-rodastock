@@ -25,6 +25,7 @@ export class ReportesService {
       query.greaterThan('createdAt', start);
 
       if(end) {
+        end.setHours(23);
         query.lessThan('createdAt', end);
       } else {
         const newEnd = new Date(start);
@@ -151,14 +152,15 @@ export class ReportesService {
     query.include('cliente');
 
     if(start) {
-      query.greaterThan('createdAt', start);
+      query.greaterThan('fecha', start);
 
       if(end) {
-        query.lessThan('createdAt', end);
+        end.setHours(23);
+        query.lessThan('fecha', end);
       } else {
         const newEnd = new Date(start);
         newEnd.setHours(23);
-        query.lessThan('createdAt', newEnd);
+        query.lessThan('fecha', newEnd);
       }
     }
 
@@ -178,6 +180,7 @@ export class ReportesService {
             numero: this.getStringNumeroPedido(o.get('numero')),
             fecha: o.get('fecha'),
             fechaEntrega: o.get('fechaEntrega'),
+            updatedAt: o.get('updatedAt'),
             cliente: o.get('cliente'),
             calificacion: o.get('calificacion'),
             reparaciones: reparaciones[i],
@@ -193,7 +196,7 @@ export class ReportesService {
         o.reparaciones.forEach(r => {
           rows.push({
             id: o.id,
-            fecha: this.datePipe.transform(o.fecha, 'dd/MM/yyyy'),
+            fecha: this.datePipe.transform(o.updatedAt, 'dd/MM/yyyy'),
             cliente: o.cliente.get('nombre'),
             rodado: o.rodado,
             reparacion: r.get('nombre'),

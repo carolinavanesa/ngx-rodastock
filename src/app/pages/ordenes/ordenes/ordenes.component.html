@@ -37,20 +37,71 @@
     </div>
 
     <nb-tabset fullWidth class="w-100">
-      <nb-tab tabTitle="Todos" class="w-100">
+      <nb-tab [tabTitle]="'Todos: '+ordenes.length+' ('+ordenesTotal+')'" class="w-100">
         <div class="row ml-2">
-          <nb-icon icon="funnel-outline" pack="eva" class="mr-4 mt-2" style="font-size: 2rem"></nb-icon>
-          <mat-form-field appearance="fill">
-            <mat-label>Estado</mat-label>
-            <mat-select [formControl]="estadoFormControl">
-              <mat-option value="Todos"> Todos </mat-option>
-              <mat-option value="Pendiente"> Pendiente </mat-option>
-              <mat-option value="En Curso"> En Curso </mat-option>
-              <mat-option value="Terminado"> Terminado </mat-option>
-              <mat-option value="Entregado"> Entregado </mat-option>
-              <mat-option value="Cancelado"> Cancelado </mat-option>
-            </mat-select>
-          </mat-form-field>
+          <div class="col-xs-12 col-md-6 col-lg-6">
+            <nb-icon
+              icon="funnel-outline"
+              pack="eva"
+              class="mr-4 mt-2"
+              style="font-size: 2rem"
+            ></nb-icon>
+            <mat-form-field appearance="fill">
+              <mat-label>Estado</mat-label>
+              <mat-select [formControl]="estadoFormControl">
+                <mat-option value="Todos"> Todos </mat-option>
+                <mat-option value="Pendiente"> Pendiente </mat-option>
+                <mat-option value="En Curso"> En Curso </mat-option>
+                <mat-option value="Terminado"> Terminado </mat-option>
+                <mat-option value="Entregado"> Entregado </mat-option>
+                <mat-option value="Cancelado"> Cancelado </mat-option>
+              </mat-select>
+            </mat-form-field>
+          </div>
+          <div class="col-xs-12 col-md-6 col-lg-6">
+            <form [formGroup]="dateForm">
+              <mat-form-field appearance="fill" class="example-form-field">
+                <mat-label>Ingrese el rango de fechas</mat-label>
+                <mat-date-range-input [rangePicker]="rangePicker">
+                  <input
+                    matStartDate
+                    formControlName="desde"
+                    placeholder="Desde"
+                  />
+                  <input
+                    matEndDate
+                    formControlName="hasta"
+                    placeholder="Hasta"
+                  />
+                </mat-date-range-input>
+                <mat-datepicker-toggle
+                  matSuffix
+                  [for]="rangePicker"
+                ></mat-datepicker-toggle>
+                <mat-date-range-picker #rangePicker>
+                  <mat-date-range-picker-actions>
+                    <button mat-button matDateRangePickerCancel>
+                      Cancelar
+                    </button>
+                    <button
+                      mat-raised-button
+                      color="primary"
+                      matDateRangePickerApply
+                    >
+                      Aceptar
+                    </button>
+                  </mat-date-range-picker-actions>
+                </mat-date-range-picker>
+              </mat-form-field>
+              <nb-icon
+                style="cursor: pointer"
+                (click)="clearDateSearch()"
+                icon="close-outline"
+                pack="eva"
+                class="ml-4"
+              ></nb-icon>
+            </form>
+          </div>
         </div>
 
         <div class="row">
@@ -66,7 +117,7 @@
           <!-- <h4 class="mt-4 mx-auto" *ngIf="ordenes.length === 0">Aun no tenes pedidos!</h4> -->
         </div>
       </nb-tab>
-      <nb-tab tabTitle="Entrega hoy" class="w-100">
+      <nb-tab [tabTitle]="'Entrega Hoy: '+ordenesEntrega.length" class="w-100">
         <div class="row">
           <div
             *ngFor="let orden of ordenesEntrega | filterOrden: searchText"
@@ -82,10 +133,10 @@
           </h4>
         </div>
       </nb-tab>
-      <nb-tab tabTitle="Para retiro" class="w-100">
+      <nb-tab [tabTitle]="'Atrasados: '+ordenesAtrasados.length" class="w-100">
         <div class="row">
           <div
-            *ngFor="let orden of ordenesLista | filterOrden: searchText"
+            *ngFor="let orden of ordenesAtrasados | filterOrden: searchText"
             class="col-md-4 col-12 col-xs-12 col-lg-3"
           >
             <ngx-orden-card
@@ -93,8 +144,8 @@
               (estadoChanged)="cargarOrdenes()"
             ></ngx-orden-card>
           </div>
-          <h4 class="mt-4 mx-auto" *ngIf="ordenesLista.length === 0">
-            No hay pedidos listos para su retiro!
+          <h4 class="mt-4 mx-auto" *ngIf="ordenesAtrasados.length === 0">
+            No hay pedidos atrasados!
           </h4>
         </div>
       </nb-tab>

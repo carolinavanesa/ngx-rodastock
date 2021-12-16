@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { PedidosProveedorService } from '../pedidos-proveedor.service';
-import { FormControl } from '@angular/forms';
+import { FormControl, FormGroup, FormBuilder } from '@angular/forms';
 
 @Component({
   templateUrl: './pedidos-proveedor.component.html',
@@ -14,10 +14,16 @@ export class PedidosProveedorComponent implements OnInit {
   pedidosEntregados = [];
   pedidosSolicitados = [];
   estadoFormControl = new FormControl('Todos');
+  dateForm: FormGroup = this.formBuilder.group({
+    desde: '',
+    hasta: '',
+  })
+
 
   constructor(
     private service: PedidosProveedorService,
-    private router: Router
+    private router: Router,
+    private formBuilder: FormBuilder
   ) {}
 
   ngOnInit() {
@@ -29,7 +35,19 @@ export class PedidosProveedorComponent implements OnInit {
       } else {
         this.pedidos = this.pedidosFull;
       }
-    })
+    });
+
+    this.dateForm.valueChanges.subscribe(val => {
+      this.service.cargarPedidoProveedor(val.desde, val.hasta).then(pedidos => {
+        this.pedidos = pedidos;
+        this.pedidosFull = [...pedidos];
+      });
+    });
+  }
+
+  clearDateSearch() {
+    this.cargarPedidoProveedor();
+    this.dateForm.reset();
   }
 
   cargarPedidoProveedor() {

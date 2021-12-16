@@ -13,12 +13,26 @@ const ActualizacionStock = Parse.Object.extend('ActualizacionStock');
 export class PedidosProveedorService {
   constructor(private router: Router, private alertService: AlertService) {}
 
-  async cargarPedidoProveedor() {
+  async cargarPedidoProveedor(start?: Date, end?: Date) {
     let result = [];
     const query = new Parse.Query(PedidoProveedor);
     query.limit(1000);
     query.equalTo('deleted', false);
     query.include('proveedor');
+
+    if(start) {
+      query.greaterThan('fecha', start);
+
+      if(end) {
+        end.setHours(23);
+        query.lessThan('fecha', end);
+      } else {
+        const newEnd = new Date(start);
+        newEnd.setHours(23);
+        query.lessThan('fecha', newEnd);
+      }
+    }
+
     try {
       const response = await query.find();
 
