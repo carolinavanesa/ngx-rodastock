@@ -6,6 +6,7 @@ import { ReporteIngresosMensualesComponent } from './ingresos-mensuales/ingresos
 import { ClienteMorososComponent } from './cliente-morosos/cliente-morosos.component';
 import { ReportePedidosMensualesComponent } from './pedidos-mensuales/pedidos-mensuales.component';
 import { EncuestasClienteComponent } from './encuestas-cliente/encuestas-cliente.component';
+import { ReportePagosProveedoresComponent } from './pagos-proveedores/pagos-proveedores.component';
 
 const routes: Routes = [
   {
@@ -28,8 +29,10 @@ const routes: Routes = [
         path: 'reporte4',
         component: EncuestasClienteComponent,
       },
-
-
+      {
+        path: 'reporte5',
+        component: ReportePagosProveedoresComponent,
+      },
     ],
   },
 ];

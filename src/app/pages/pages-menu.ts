@@ -58,6 +58,10 @@ export const MENU_ITEMS: NbMenuItem[] = [
         title: 'Encuestas de satisfaccion',
         link: '/pages/reportes/reporte4',
       },
+      {
+        title: 'Pago a Proveedores',
+        link: '/pages/reportes/reporte5',
+      },
     ],
   },
 ];

@@ -386,5 +386,37 @@ export class ReportesService {
     return result;
   }
 
+  async pagosProveedores(start?: Date, end?: Date){
+    // let result = [];
+    const query = new Parse.Query(PedidoProveedor);
+    query.limit(1000);
+    query.equalTo('estado', 'Recibido');
+    query.include('proveedor');
+
+    if(start) {
+      query.greaterThan('updatedAt', start);
+
+      if(end) {
+        end.setHours(23);
+        query.lessThan('updatedAt', end);
+      } else {
+        const newEnd = new Date(start);
+        newEnd.setHours(23);
+        query.lessThan('updatedAt', newEnd);
+      }
+    }
+
+    try {
+      const response = await query.find();
+
+      return response;
+    } catch (e) {
+      this.alertService.showPrimaryToast(
+        'Error',
+        'No se pudo cargar el reporte'
+      );
+    }
+  }
+
 
 }
