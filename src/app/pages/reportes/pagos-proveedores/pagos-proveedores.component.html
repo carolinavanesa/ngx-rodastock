@@ -74,7 +74,7 @@
             <h5 class="mt-2">Detalle de pagos por Proveedor</h5>
 
             <ng-container *ngFor="let source of sourceProveedores">
-              <h6>{{ source.proveedor.get('nombre') }}</h6>
+              <h6>{{ source.nombre }}</h6>
               <ng2-smart-table
                 class="custom-table"
                 [settings]="settings"

@@ -49,6 +49,10 @@ export class ReporteIngresosMensualesComponent implements OnInit{
         title: 'Cliente',
         type: 'text',
       },
+      pedido: {
+        title: 'Pedido Nº',
+        type: 'text',
+      },
       rodado: {
         title: 'Rodado',
         type: 'text',
@@ -61,19 +65,11 @@ export class ReporteIngresosMensualesComponent implements OnInit{
         title: 'Ingreso $',
         type: 'number',
       },
-      pedido: {
-        title: 'Pedido Nº',
-        type: 'text',
-      },
     },
   };
 
   ngOnInit() {
-    this.service.ingresosMensualesReparaciones().then(res => {
-      this.sourceIngreso.load(res);
-      this.data = this.mapBars(res);
-      this.loading = false;
-    });
+    this.cargarData();
 
     // const year = new Date().getFullYear();
     // for (let i = 0; i < 5; i++) {
@@ -111,6 +107,16 @@ export class ReporteIngresosMensualesComponent implements OnInit{
 
   clearSearch() {
     this.dateForm.reset();
+    this.cargarData();
+  }
+
+  cargarData(){
+    this.loading = true;
+    this.service.ingresosMensualesReparaciones().then(res => {
+      this.sourceIngreso.load(res);
+      this.data = this.mapBars(res);
+      this.loading = false;
+    });
   }
 
   onEditIngresos(event) {

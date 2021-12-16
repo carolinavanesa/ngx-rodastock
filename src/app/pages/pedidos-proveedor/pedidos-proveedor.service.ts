@@ -49,6 +49,7 @@ export class PedidosProveedorService {
             numero: o.get('numero'),
 
             fecha: o.get('fecha'),
+            fechaRecibido: o.get('fechaRecibido'),
             notas: o.get('notas'),
             estado: o.get('estado'),
             monto: o.get('monto'),
@@ -138,6 +139,15 @@ export class PedidosProveedorService {
         nuevoPedidoProveedor.relation('repuestos').add(repuestoUnidades);
       }
 
+      if (estado === 'Recibido') {
+        const fechaRecibido = new Date();
+        fechaRecibido.setHours(0);
+        fechaRecibido.setMinutes(0);
+        fechaRecibido.setSeconds(0);
+        fechaRecibido.setMilliseconds(0);
+        nuevoPedidoProveedor.set('fechaRecibido', fechaRecibido)
+      }
+
       const res = await nuevoPedidoProveedor.save();
       if (estado == 'Recibido') {
         const resultadoInventario = await this.actualizarStock(res, repuestoUnidades)
@@ -171,6 +181,16 @@ export class PedidosProveedorService {
   async cambiarEstado(estado: string, parseObject: any, repuestos: any[]) {
     try {
       parseObject.set('estado', estado);
+
+      if (estado === 'Recibido') {
+        const fechaRecibido = new Date();
+        fechaRecibido.setHours(0);
+        fechaRecibido.setMinutes(0);
+        fechaRecibido.setSeconds(0);
+        fechaRecibido.setMilliseconds(0);
+        parseObject.set('fechaRecibido', fechaRecibido)
+      }
+
       const res = await parseObject.save();
       this.alertService.showSuccessToast('Exito', 'Pedido en estado ' + estado);
 

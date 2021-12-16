@@ -50,6 +50,12 @@
       </div>
     </div>
 
+    <div class="row mt-4" *ngIf="orden.get('fechaRetirado') as fechaRetirado">
+      <div class="col-xs-6 col-6 col-md-9 col-lg-9">
+        <span class="border p-2">ENTREGADO el {{ fechaRetirado | date: 'dd/MM/yyyy' }}</span>
+      </div>
+    </div>
+
     <!-- Reparaciones a realizar -->
     <div class="row m-5 w-100">
       <table class="table">

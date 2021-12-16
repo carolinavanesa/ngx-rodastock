@@ -47,8 +47,12 @@ export const MENU_ITEMS: NbMenuItem[] = [
         link: '/pages/reportes/reporte1',
       },
       {
-        title: 'Ingresos mensuales',
+        title: 'Ingresos por periodo',
         link: '/pages/reportes/reporte2',
+      },
+      {
+        title: 'Pago a Proveedores',
+        link: '/pages/reportes/reporte5',
       },
       {
         title: 'Clientes morosos',
@@ -57,10 +61,6 @@ export const MENU_ITEMS: NbMenuItem[] = [
       {
         title: 'Encuestas de satisfaccion',
         link: '/pages/reportes/reporte4',
-      },
-      {
-        title: 'Pago a Proveedores',
-        link: '/pages/reportes/reporte5',
       },
     ],
   },

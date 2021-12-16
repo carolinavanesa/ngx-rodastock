@@ -49,6 +49,7 @@ export class OrdenesService {
             numero: this.getStringNumeroPedido(o.get('numero')),
             fecha: o.get('fecha'),
             fechaEntrega: o.get('fechaEntrega'),
+            fechaRetirado: o.get('fechaRetirado'),
             cliente: o.get('cliente'),
             calificacion: o.get('calificacion'),
             reparaciones: reparaciones[i],
@@ -200,6 +201,16 @@ export class OrdenesService {
   async cambiarEstado(estado: string, parseObject: any, repuestos: any[]) {
     try {
       parseObject.set('estado', estado);
+
+      if (estado === 'Recibido') {
+        const fechaRetirado = new Date();
+        fechaRetirado.setHours(0);
+        fechaRetirado.setMinutes(0);
+        fechaRetirado.setSeconds(0);
+        fechaRetirado.setMilliseconds(0);
+        parseObject.set('fechaRetirado', fechaRetirado)
+      }
+
       const res = await parseObject.save();
       this.alertService.showSuccessToast('Exito', 'Pedido en estado ' + estado);
       switch (estado) {

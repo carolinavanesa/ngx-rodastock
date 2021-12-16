@@ -34,6 +34,12 @@
       </div>
     </div>
 
+    <div class="row mt-4" *ngIf="pedido.get('fechaRecibido') as fechaRecibido">
+      <div class="col-xs-6 col-6 col-md-9 col-lg-9">
+        <span class="border p-2">RECIBIDO el {{ fechaRecibido | date: 'dd/MM/yyyy' }}</span>
+      </div>
+    </div>
+
     <!-- Unidades -->
     <div class="row m-5 w-100">
       <table class="table">

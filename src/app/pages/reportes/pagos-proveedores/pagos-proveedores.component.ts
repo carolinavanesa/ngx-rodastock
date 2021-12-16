@@ -9,8 +9,12 @@ import { Router } from '@angular/router';
   styleUrls: ['./pagos-proveedores.component.scss'],
   templateUrl: './pagos-proveedores.component.html',
 })
-export class ReportePagosProveedoresComponent implements OnInit{
-  constructor(private service: ReportesService, private formBuilder: FormBuilder, private router: Router) {}
+export class ReportePagosProveedoresComponent implements OnInit {
+  constructor(
+    private service: ReportesService,
+    private formBuilder: FormBuilder,
+    private router: Router
+  ) {}
 
   data = [];
   periodo = new FormControl();
@@ -21,7 +25,7 @@ export class ReportePagosProveedoresComponent implements OnInit{
   dateForm = this.formBuilder.group({
     desde: '',
     hasta: '',
-  })
+  });
 
   sourceProveedores: any[];
   settings = {
@@ -53,67 +57,60 @@ export class ReportePagosProveedoresComponent implements OnInit{
   };
 
   ngOnInit() {
-    this.service.pagosProveedores().then(res => {
-      this.sourceProveedores = this.mapSourceData(res);
-      this.sourceProveedores.forEach(x => {
-        x.sourceData = new LocalDataSource();
-        x.sourceData.load(x.pedidos);
-      });
+    this.cargarData();
 
-      this.data = this.mapBars(res);
-      this.loading = false;
-    });
-
-    // const year = new Date().getFullYear();
-    // for (let i = 0; i < 5; i++) {
-    //   this.periodoOptions.push(year-i);
-    // }
-
-    this.dateForm.valueChanges.subscribe(val => {
+    this.dateForm.valueChanges.subscribe((val) => {
       this.loading = true;
-      this.service.ingresosMensualesReparaciones(val.desde, val.hasta).then(res => {
-        // this.sourceIngreso.load(res);
-        // this.data = this.mapBars(res);
-        // this.loading = false;
-      });
+      this.service
+        .pagosProveedores(val.desde, val.hasta)
+        .then((res) => {
+          this.sourceProveedores = this.mapSourceData(res);
+          this.sourceProveedores.forEach((x) => {
+            x.sourceData = new LocalDataSource();
+            x.sourceData.load(x.pedidos);
+          });
+
+          this.data = this.mapBars(res);
+          this.loading = false;
+        });
     });
   }
 
-  mapSourceData(response){
+  mapSourceData(response) {
     const result = [];
-    response.forEach(p => {
-      const existente = result.find(x => x.id === p.get('proveedor').id)
+    response.forEach((p) => {
+      const existente = result.find((x) => x.idProveedor === p.idProveedor);
 
       if (existente) {
-        existente.pedidos.push({ id: p.id, fecha: p.get('updatedAt'), importe: p.get('monto'), pedido: p.get('numero')});
-        existente.total += p.get('monto');
+        existente.pedidos.push(p);
+        existente.total += p.importe;
       } else {
         result.push({
-          id: p.get('proveedor').id,
-          proveedor: p.get('proveedor'),
-          pedidos: [{ id: p.id, fecha: p.get('updatedAt'), importe: p.get('monto'), pedido: p.get('numero')}],
-          total: p.get('monto'),
-        })
+          idProveedor: p.idProveedor,
+          nombre: p.nombre,
+          pedidos: [p],
+          total: p.importe,
+        });
       }
     });
 
     return result;
   }
 
-  mapBars(data: any[]){
+  mapBars(data: any[]) {
     const result = [];
     this.total = 0;
 
-    data.forEach(x => {
-      const existente = result.find(r => r.get('updatedAt') === x.get('updatedAt'));
+    data.forEach((x) => {
+      const existente = result.find((r) => r.fecha === x.fecha);
 
       if (existente) {
-        existente.total += x.monto;
+        existente.total += x.importe;
       } else {
-        result.push({ total: x.monto, ...x })
+        result.push({ total: x.importe, ...x });
       }
 
-      this.total += x.get('monto');
+      this.total += x.importe;
     });
 
     return result;
@@ -121,6 +118,21 @@ export class ReportePagosProveedoresComponent implements OnInit{
 
   clearSearch() {
     this.dateForm.reset();
+    this.cargarData();
+  }
+
+  cargarData(){
+    this.loading = true;
+    this.service.pagosProveedores().then((res) => {
+      this.sourceProveedores = this.mapSourceData(res);
+      this.sourceProveedores.forEach((x) => {
+        x.sourceData = new LocalDataSource();
+        x.sourceData.load(x.pedidos);
+      });
+
+      this.data = this.mapBars(res);
+      this.loading = false;
+    });
   }
 
   onEditIngresos(event) {

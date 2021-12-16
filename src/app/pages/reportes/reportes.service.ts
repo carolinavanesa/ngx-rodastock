@@ -178,9 +178,9 @@ export class ReportesService {
             id: o.id,
             orden: o,
             numero: this.getStringNumeroPedido(o.get('numero')),
-            fecha: o.get('fecha'),
-            fechaEntrega: o.get('fechaEntrega'),
-            updatedAt: o.get('updatedAt'),
+            // fecha: o.get('fecha'),
+            // fechaEntrega: o.get('fechaEntrega'),
+            fechaRetirado: o.get('fechaRetirado'),
             cliente: o.get('cliente'),
             calificacion: o.get('calificacion'),
             reparaciones: reparaciones[i],
@@ -196,7 +196,7 @@ export class ReportesService {
         o.reparaciones.forEach(r => {
           rows.push({
             id: o.id,
-            fecha: this.datePipe.transform(o.updatedAt, 'dd/MM/yyyy'),
+            fecha: this.datePipe.transform(o.fechaRetirado, 'dd/MM/yyyy'),
             cliente: o.cliente.get('nombre'),
             rodado: o.rodado,
             reparacion: r.get('nombre'),
@@ -394,22 +394,31 @@ export class ReportesService {
     query.include('proveedor');
 
     if(start) {
-      query.greaterThan('updatedAt', start);
+      query.greaterThan('fechaRecibido', start);
 
       if(end) {
         end.setHours(23);
-        query.lessThan('updatedAt', end);
+        query.lessThan('fechaRecibido', end);
       } else {
         const newEnd = new Date(start);
         newEnd.setHours(23);
-        query.lessThan('updatedAt', newEnd);
+        query.lessThan('fechaRecibido', newEnd);
       }
     }
 
     try {
       const response = await query.find();
 
-      return response;
+      return response.map(pedido => {
+        return {
+          id: pedido.id,
+          idProveedor: pedido.get('proveedor').get('id'),
+          nombre: pedido.get('proveedor').get('nombre'),
+          pedido: pedido.get('numero'),
+          fecha: this.datePipe.transform(pedido.get('fechaRecibido'), 'dd/MM/yyyy'),
+          importe: pedido.get('monto')
+        }
+      })
     } catch (e) {
       this.alertService.showPrimaryToast(
         'Error',
