@@ -2,6 +2,11 @@ import { Component, OnDestroy, OnInit, ViewEncapsulation } from '@angular/core';
 import { Router, ActivatedRoute } from '@angular/router';
 import { OrdenesService } from '../ordenes.service';
 import { FormControl, FormGroup, FormBuilder } from '@angular/forms';
+import { LocalDataSource } from 'ng2-smart-table';
+import { EstadosModalComponent } from '../estados-modal/estados-modal.component';
+import { DatePipe } from '@angular/common';
+import { take } from 'rxjs/operators';
+import { NbDialogService } from '@nebular/theme';
 
 @Component({
   selector: 'ngx-dashboard',
@@ -18,16 +23,69 @@ export class OrdenesComponent implements OnInit {
   ordenesEntrega = [];
   ordenesAtrasados = [];
 
+
   dateForm: FormGroup = this.formBuilder.group({
     desde: '',
     hasta: '',
   })
 
+  sourcePendientes: LocalDataSource = new LocalDataSource();
+  settings = {
+    mode: 'external',
+    actions: {
+      add: false,
+      delete: false,
+      columnTitle: '',
+    },
+    edit: {
+      editButtonContent: '<i class="nb-edit"></i>',
+    },
+    columns: {
+      fecha: {
+        title: 'Fecha',
+        type: 'text',
+        editable: false,
+      },
+      numero: {
+        title: 'Pedido Nº',
+        type: 'text',
+        editable: false,
+      },
+      cliente: {
+        title: 'Cliente',
+        type: 'text',
+        editable: false,
+      },
+      telefono: {
+        title: 'Telefono',
+        type: 'text',
+        editable: false,
+      },
+      rodado: {
+        title: 'Rodado',
+        type: 'text',
+        editable: false,
+      },
+      importe: {
+        title: 'Importe',
+        type: 'text',
+        editable: false,
+      },
+      fechaEntrega: {
+        title: 'Fecha Entrega',
+        type: 'text',
+        editable: false,
+      },
+    },
+  };
+
   constructor(
     private service: OrdenesService,
     private router: Router,
     private route: ActivatedRoute,
-    private formBuilder: FormBuilder
+    private formBuilder: FormBuilder,
+    private datePipe: DatePipe,
+    private dialogService: NbDialogService,
   ) {}
 
   ngOnInit() {
@@ -70,6 +128,17 @@ export class OrdenesComponent implements OnInit {
       this.ordenesFull = [...ordenes];
       this.ordenesEntrega = this.ordenes.filter(o => isToday(o.fechaEntrega) && o.estado !== 'Cancelado' && o.estado !== 'Entregado');
       this.ordenesAtrasados = this.ordenes.filter(o => (o.estado === 'Pendiente' || o.estado === 'En Curso') && this.menorFecha(o.fechaEntrega));
+
+      this.sourcePendientes.load(ordenes.filter(o => o.estado === 'Pendiente').map(o => ({
+        numero: o.numero,
+        cliente: o.cliente.get('nombre'),
+        telefono: o.cliente.get('telefono'),
+        rodado: o.rodado,
+        fecha: this.datePipe.transform(o.fecha, 'dd/MM/yyyy'),
+        importe: o.importe,
+        fechaEntrega: this.datePipe.transform(o.fechaEntrega, 'dd/MM/yyyy'),
+        result: o,
+      })));
     });
   }
 
@@ -90,6 +159,26 @@ export class OrdenesComponent implements OnInit {
 
   nuevaOrden() {
     this.router.navigateByUrl(`pages/ordenes/nueva-orden`);
+  }
+
+  openEstadoModal(event: any){
+    const orden = event.data.result;
+    this.dialogService
+      .open(EstadosModalComponent, {
+        context: {
+          estado: orden.estado,
+          orden: orden.orden,
+          calificacion: orden.calificacion,
+          reparaciones: orden.reparaciones,
+        },
+      })
+      .onClose.pipe(take(1))
+      .toPromise()
+      .then((res) => {
+        if (res) {
+          this.cargarOrdenes();
+        }
+      });
   }
 }
 

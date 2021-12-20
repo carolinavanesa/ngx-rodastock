@@ -188,15 +188,17 @@
         <p class="lorem">
           Puede eliminar este pedido de la lista de pedidos. Esta seguro?
         </p>
-        <button
-          nbButton
-          matRipple
-          status="danger"
-          class="mx-auto"
-          (click)="eliminar()"
-        >
-          Eliminar
-        </button>
+        <div class="row">
+          <button
+            nbButton
+            matRipple
+            status="danger"
+            class="mx-auto"
+            (click)="eliminar()"
+          >
+            Eliminar
+          </button>
+        </div>
       </div>
     </ng-container>
   </nb-card-body>

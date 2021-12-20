@@ -14,7 +14,7 @@ export class FaqComponent implements OnInit {
   ngOnInit(): void {
     const user = this.loginService.getCurrentUser();
 
-    if (user.get('role') === 'admin') {
+    if (user && user?.get('role') === 'admin') {
       this.isAdmin = true;
     }
   }

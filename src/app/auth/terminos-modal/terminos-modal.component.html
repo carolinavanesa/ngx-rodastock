@@ -1,4 +1,4 @@
-<nb-card status="primary" class="estado-card">
+<nb-card status="primary" class="termino-card">
   <nb-card-header>Términos y Condiciones</nb-card-header>
   <nb-card-body class="m-2">
     <h5>Bienvenido a RodaStock</h5>
@@ -25,43 +25,93 @@
     <p>
       En ningún caso debe entenderse que la solicitud de un producto o servicio
       implica obligación alguna para el Acceso y uso del Servicio. Para operar
-      el Servicio se requerirá siempre que se trate de clientes de ___________,
-      quienes podrán acceder mediante cualquier dispositivo con conexión a la
-      Red Internet. El cliente deberá proporcionar el número de documento de
-      identidad y la clave personal, que será provista por la aplicación como
+      el Servicio se requerirá siempre que se trate de clientes de “El Angel
+      Gabriel Bicicleteria” , quienes podrán acceder mediante cualquier
+      dispositivo con conexión a la Red Internet. El cliente deberá proporcionar
+      un mail y la clave personal, que será provista por la aplicación como
       requisito previo a la primera operación, en la forma que le sea requerida.
       La clave personal y todo o cualquier otro mecanismo adicional de
       autenticación personal provisto por el Banco tiene el carácter de secreto
       e intransferible,y por lo tanto asumo las consecuencias de su divulgación
-      a terceros, liberando a ____________________ de toda responsabilidad que
-      de ello se derive. En ningún caso ________ requerirá que le suministre la
-      totalidad de los datos, ni enviará mail requiriendo información personal
-      alguna.
+      a terceros, liberando a RodaStock de toda responsabilidad que de ello se
+      derive. En ningún caso se requerirá que le suministre la totalidad de los
+      datos, ni enviará mail requiriendo información personal alguna.
+    </p>
+
+    <h5>2. Costo del Servicio</h5>
+    <p>
+      La empresa XXXX podrá cobrar comisiones por el mantenimiento y/o uso de
+      este Servicio o los que en el futuro implemente, entendiéndose facultado
+      expresamente para efectuar los correspondientes débitos en mis cuentas,
+      aún en descubierto, por lo que presto para ello mi expresa conformidad. En
+      caso de cualquier modificación a la presente previsión, lo comunicará con
+      al menos 60 días de antelación.
+    </p>
+
+    <h5>3. Vigencia</h5>
+    <p>
+      El Usuario podrá dejar sin efecto la relación que surja de la presente, en
+      forma inmediata, sin otra responsabilidad que la derivada de los gastos
+      originados hasta ese momento. Si el cliente incumpliera cualquiera de las
+      obligaciones asumidas en su relación contractual con empresa XXXX, o de
+      los presentes Términos y Condiciones, el Banco podrá decretar la caducidad
+      del presente Servicio en forma inmediata, sin que ello genere derecho a
+      indemnización o compensación alguna.Al empresa XXX podrá dejar sin efecto
+      la relación que surja de la presente, con un preaviso mínimo de 60 días,
+      sin otra responsabilidad. Validez de operaciones y notificaciones
+    </p>
+    <p>
+      Los registros emitidos por la app serán prueba suficiente de las
+      operaciones cursadas por dicho canal. Renuncio expresamente a cuestionar
+      la idoneidad o habilidad de ese medio de prueba. A los efectos del
+      cumplimiento de disposiciones legales o contractuales, se otorga a las
+      notificaciones por este medio el mismo alcance de las notificaciones
+      mediante documento escrito.
+    </p>
+
+    <h5>4. Propiedad intelectual</h5>
+    <p>
+      El software en Argentina está protegido por la ley 11.723, que regula la
+      propiedad intelectual y los derechos de autor de todos aquellos creadores
+      de obras artísticas, literarias y científicas.
+    </p>
+
+    <h5>5. Privacidad de la información</h5>
+    <p>
+      Para utilizar los Servicios ofrecidos por XXXX, los Usuarios deberán
+      facilitar determinados datos de carácter personal. Su información personal
+      se procesa y almacena en servidores o medios magnéticos que mantienen
+      altos estándares de seguridad y protección tanto física como tecnológica.
+      Para mayor información sobre la privacidad de los Datos Personales y casos
+      en los que será revelada la información personal, se pueden consultar
+      nuestras políticas de privacidad.
     </p>
   </nb-card-body>
   <nb-card-footer>
-    <div class="col">
-      <button
-        nbButton
-        matRipple
-        ghost
-        status="primary"
-        (click)="dismiss(false)"
-      >
-        Cancelar
-      </button>
-    </div>
-    <div class="col">
-      <button
-        nbButton
-        matRipple
-        hero
-        status="primary"
-        (click)="dismiss(true)"
-        class="float-right"
-      >
-        Aceptar
-      </button>
+    <div class="row">
+      <div class="col-md-6 col-lg-6 col-xs-12">
+        <button
+          nbButton
+          matRipple
+          ghost
+          status="primary"
+          (click)="dismiss(false)"
+        >
+          Cancelar
+        </button>
+      </div>
+      <div class="col-md-6 col-lg-6 col-xs-12">
+        <button
+          nbButton
+          matRipple
+          hero
+          status="primary"
+          (click)="dismiss(true)"
+          class="float-right"
+        >
+          Aceptar
+        </button>
+      </div>
     </div>
   </nb-card-footer>
 </nb-card>

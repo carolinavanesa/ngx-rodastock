@@ -117,6 +117,17 @@
           <!-- <h4 class="mt-4 mx-auto" *ngIf="ordenes.length === 0">Aun no tenes pedidos!</h4> -->
         </div>
       </nb-tab>
+
+      <nb-tab [tabTitle]="'Pendientes: '+sourcePendientes.count()" class="w-100">
+        <ng2-smart-table
+          class="custom-table"
+          [settings]="settings"
+          [source]="sourcePendientes"
+          (edit)="openEstadoModal($event)"
+        >
+        </ng2-smart-table>
+      </nb-tab>
+
       <nb-tab [tabTitle]="'Entrega Hoy: '+ordenesEntrega.length" class="w-100">
         <div class="row">
           <div
