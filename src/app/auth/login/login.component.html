@@ -5,12 +5,12 @@
         <nb-card>
           <nb-card-header>Login</nb-card-header>
           <nb-card-body>
-
             <div class="row mt-2 mb-2">
-              <h2 class="mx-auto font-weight-light">Roda<span class="text-primary font-weight-bold">Stock</span></h2>
+              <h2 class="mx-auto font-weight-light">
+                Roda<span class="text-primary font-weight-bold">Stock</span>
+              </h2>
             </div>
             <form [formGroup]="loginForm">
-
               <div class="row">
                 <mat-form-field class="mx-auto">
                   <mat-label>Email</mat-label>
@@ -21,10 +21,14 @@
                     autocomplete="off"
                     maxLength="50"
                   />
-                  <mat-error *ngIf="loginForm.get('email')?.hasError('required')">
+                  <mat-error
+                    *ngIf="loginForm.get('email')?.hasError('required')"
+                  >
                     Ingresa un email
                   </mat-error>
-                  <mat-error *ngIf="loginForm.get('email')?.hasError('pattern')">
+                  <mat-error
+                    *ngIf="loginForm.get('email')?.hasError('pattern')"
+                  >
                     Por favor ingrese un email válido.
                   </mat-error>
                   <!-- <mat-hint>hint</mat-hint> -->
@@ -32,29 +36,36 @@
               </div>
 
               <div class="row">
-              <mat-form-field class="mx-auto">
-                <mat-label>Password</mat-label>
-                <input formControlName="password" type="password" matInput autocomplete="off" />
-                <mat-error *ngIf="loginForm.get('password')?.hasError('required')">
-                  Ingresa un password
-                </mat-error>
-                <!-- <mat-hint>hint</mat-hint> -->
-              </mat-form-field>
-            </div>
+                <mat-form-field class="mx-auto">
+                  <mat-label>Password</mat-label>
+                  <input
+                    formControlName="password"
+                    type="password"
+                    matInput
+                    autocomplete="off"
+                  />
+                  <mat-error
+                    *ngIf="loginForm.get('password')?.hasError('required')"
+                  >
+                    Ingresa un password
+                  </mat-error>
+                  <!-- <mat-hint>hint</mat-hint> -->
+                </mat-form-field>
+              </div>
 
-              <div class="row" >
-              <button
-                class="mx-auto"
-                (click)="login()"
-                [disabled]="!loginForm.valid"
-                nbButton
-                matRipple
-                maxLength="50"
-                status="primary"
-              >
-                Login
-              </button>
-            </div>
+              <div class="row">
+                <button
+                  class="mx-auto"
+                  (click)="login()"
+                  [disabled]="!loginForm.valid"
+                  nbButton
+                  matRipple
+                  maxLength="50"
+                  status="primary"
+                >
+                  Login
+                </button>
+              </div>
             </form>
 
             <div class="row mt-4">
@@ -69,10 +80,25 @@
                 matRipple
                 ghost
                 status="primary"
-              >Registrarse</button>
+              >
+                Registrarse
+              </button>
             </div>
           </nb-card-body>
         </nb-card>
+      </div>
+
+      <div class="col-lg-4">
+        <nb-actions size="medium" class="float-right">
+          <nb-action
+            class="control-item"
+            icon="question-mark-circle-outline"
+            matRipple
+            [matRippleUnbounded]="true"
+            [matRippleCentered]="true"
+            (click)="faq()"
+          ></nb-action>
+        </nb-actions>
       </div>
     </div>
   </nb-layout-column>

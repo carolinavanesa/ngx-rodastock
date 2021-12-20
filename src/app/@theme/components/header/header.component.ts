@@ -7,6 +7,7 @@ import { map, takeUntil } from 'rxjs/operators';
 import { Subject, Observable } from 'rxjs';
 import { RippleService } from '../../../@core/utils/ripple.service';
 import { LoginService } from '../../../auth/login/login.service';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'ngx-header',
@@ -45,6 +46,7 @@ export class HeaderComponent implements OnInit, OnDestroy {
     private breakpointService: NbMediaBreakpointsService,
     private rippleService: RippleService,
     private loginService: LoginService,
+    private router: Router,
   ) {
     this.materialTheme$ = this.themeService.onThemeChange()
       .pipe(map(theme => {
@@ -104,5 +106,9 @@ export class HeaderComponent implements OnInit, OnDestroy {
 
   logout() {
     this.loginService.logout();
+  }
+
+  faq(){
+    this.router.navigateByUrl("pages/faq");
   }
 }

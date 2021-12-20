@@ -1,0 +1,103 @@
+<nb-card>
+  <nb-card-header> Preguntas Frecuentes </nb-card-header>
+
+  <nb-card-body>
+    <nb-accordion *ngIf="isAdmin">
+      <nb-accordion-item>
+        <nb-accordion-item-header matRipple>
+          ¿Cómo registrar a un nuevo Cliente que no existe en el sistema?
+        </nb-accordion-item-header>
+        <nb-accordion-item-body>
+          Si vas a cargar un pedido para un cliente que no es usuario del sistema seguí los siguientes pasos:
+          <ol>
+            <li>Seleccioná la sección Clientes.</li>
+            <li>Presioná en el botón “Nuevo Cliente”.</li>
+            <li>Ingresa correctamente los datos del cliente, especialmente el email el cual será utilizado para completar el registro del usuario para este nuevo cliente. Insistí en que te faciliten un email válido y se encuentre en uso.</li>
+            <li>Listo! Ahora podrás seleccionar al nuevo cliente en la lista de clientes cuando cargues un nuevo pedido.
+            </li>
+          </ol>
+
+        </nb-accordion-item-body>
+      </nb-accordion-item>
+
+      <nb-accordion-item>
+        <nb-accordion-item-header matRipple>
+          ¿Puedo eliminar un pedido incorrecto de un cliente?
+        </nb-accordion-item-header>
+        <nb-accordion-item-body>
+          El pedido no se puede editar una vez creado pero si podés cancelar el pedido si el mismo se ha creado recientemente y se encuentra en “Pendiente”. Para hacerlo seguí estos pasos:
+          <ol>
+            <li>Hacé click en el ícono de pincel debajo del pedido.</li>
+            <li>En la ventana de “Actualización de estados del pedido” hacé click en el botón “Cancelar” y confirmá.</li>
+            <li>El pedido pasará a estar Cancelado y sólo podés eliminarlo definitivamente del listado de pedidos haciendo click nuevamente en el ícono de pincel y botón “Eliminar”.</li>
+            <li>CUIDADO: esta acción también elimina el pedido de la lista de pedidos que puede acceder el cliente usuario, por lo que sólo se aconseja a hacerlo cuando el pedido es realmente incorrecto. Si bien el usuario será notificado podés contactar para dar más detalles.</li>
+          </ol>
+        </nb-accordion-item-body>
+      </nb-accordion-item>
+
+      <nb-accordion-item>
+        <nb-accordion-item-header matRipple>
+          ¿Puedo eliminar un pedido a proveedor?
+        </nb-accordion-item-header>
+        <nb-accordion-item-body>
+          Podés eliminar un pedido siguiendo los mismos pasos para eliminar el pedido de un cliente en la sección listado de “Pedidos a Proveedor”. Las condiciones son las mismas, sólo podés eliminar pedidos que se encuentren en estado “Pendiente” luego de ser cancelados.
+        </nb-accordion-item-body>
+      </nb-accordion-item>
+
+      <nb-accordion-item>
+        <nb-accordion-item-header matRipple>
+          ¿Es necesario agregar repuestos en un tipo de reparación?
+        </nb-accordion-item-header>
+        <nb-accordion-item-body>
+          No es necesario agregar repuestos si la reparación no los requiere, los mismos no afectan al control de stock pero sí a los ingresos generados.
+        </nb-accordion-item-body>
+      </nb-accordion-item>
+    </nb-accordion>
+
+    <nb-accordion *ngIf="!isAdmin">
+      <nb-accordion-item>
+        <nb-accordion-item-header matRipple>
+          ¿Cómo hago para registrarme y acceder a la app?
+        </nb-accordion-item-header>
+        <nb-accordion-item-body>
+          Para registrarte ingresá en en <a href="https://rodastock.b4a.app/auth/register">rodastock.b4a.app/auth/register</a> deberás seguir los siguientes pasos:
+          <ol>
+            <li>Seleccioná la sección Clientes.</li>
+            <li>Presioná en el botón “Nuevo Cliente”.</li>
+            <li>Ingresa correctamente los datos del cliente, especialmente el email el cual será utilizado para completar el registro del usuario para este nuevo cliente. Insistí en que te faciliten un email válido y se encuentre en uso.</li>
+            <li>Listo! Ahora podrás seleccionar al nuevo cliente en la lista de clientes cuando cargues un nuevo pedido.</li>
+          </ol>
+
+        </nb-accordion-item-body>
+      </nb-accordion-item>
+
+      <nb-accordion-item>
+        <nb-accordion-item-header matRipple>
+          ¿Qué debo hacer si no me llegó el email de confirmación de registro de usuario o notificaciones sobre el estado de mi pedido?
+        </nb-accordion-item-header>
+        <nb-accordion-item-body>
+          Te recomendamos que revises tu casilla de correo no deseado. De no haber recibido el e-mail podés comunicarte a nuestro teléfono (364) 4423-579 de Lunes a Viernes de 10:00 a 14:00 y 15:00 a 19:00 hs. Sábados 09:00 a 13:00 hs.
+        </nb-accordion-item-body>
+      </nb-accordion-item>
+
+      <nb-accordion-item>
+        <nb-accordion-item-header matRipple>
+          ¿Puedo solicitar una factura A?
+        </nb-accordion-item-header>
+        <nb-accordion-item-body>
+          Para solicitar factura A por favor comunicate al (3644) 423579 de Lunes a Viernes de 10:00 a 14:00 y 15:00 a 19:00 hs. Sábados 09:00 a 13:00 hs. La misma será enviada a tu correo electrónico.
+        </nb-accordion-item-body>
+      </nb-accordion-item>
+
+      <nb-accordion-item>
+        <nb-accordion-item-header matRipple>
+          ¿Cuándo puedo calificar la atención recibida en mi pedido?
+        </nb-accordion-item-header>
+        <nb-accordion-item-body>
+          Una vez que retires tu pedido y el mismo se encuentre en estado “Entregado” podes puntuar y escribir un comentario sobre el servicio recibido, presionando en el ícono de estrella que se encuentra debajo de tu pedido.
+        </nb-accordion-item-body>
+      </nb-accordion-item>
+    </nb-accordion>
+
+  </nb-card-body>
+</nb-card>

@@ -74,6 +74,13 @@ const routes: Routes = [
             (m) => m.OrdenesClienteModule
           ),
       },
+      {
+        path: 'faq',
+        loadChildren: () =>
+          import('./faq/faq.module').then(
+            (m) => m.FaqModule
+          ),
+      },
       // {
       //   path: 'miscellaneous',
       //   loadChildren: () => import('./miscellaneous/miscellaneous.module')

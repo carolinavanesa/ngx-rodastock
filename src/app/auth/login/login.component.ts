@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { LoginService } from './login.service';
+import { Router } from '@angular/router';
 
 
 @Component({
@@ -9,7 +10,7 @@ import { LoginService } from './login.service';
 })
 export class LoginComponent implements OnInit {
 
-    constructor(private formBuilder: FormBuilder, private loginService: LoginService) {}
+    constructor(private formBuilder: FormBuilder, private loginService: LoginService, private router: Router) {}
 
     loginForm: FormGroup = this.formBuilder.group({
       email: ['', [
@@ -35,5 +36,9 @@ export class LoginComponent implements OnInit {
     }
 
     getConfigValue(key: string): any {}
+
+    faq(){
+      this.router.navigateByUrl("faq");
+    }
 }
 
