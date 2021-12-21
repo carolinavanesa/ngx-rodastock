@@ -412,7 +412,7 @@ export class ReportesService {
       return response.map(pedido => {
         return {
           id: pedido.id,
-          idProveedor: pedido.get('proveedor').get('id'),
+          idProveedor: pedido.get('proveedor').id,
           nombre: pedido.get('proveedor').get('nombre'),
           pedido: pedido.get('numero'),
           fecha: this.datePipe.transform(pedido.get('fechaRecibido'), 'dd/MM/yyyy'),
