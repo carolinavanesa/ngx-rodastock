@@ -22,6 +22,7 @@ export class OrdenesComponent implements OnInit {
   ordenesFull = [];
   ordenesEntrega = [];
   ordenesAtrasados = [];
+  isLista = false;
 
 
   dateForm: FormGroup = this.formBuilder.group({
@@ -29,7 +30,7 @@ export class OrdenesComponent implements OnInit {
     hasta: '',
   })
 
-  sourcePendientes: LocalDataSource = new LocalDataSource();
+  sourceLista: LocalDataSource = new LocalDataSource();
   settings = {
     mode: 'external',
     actions: {
@@ -44,37 +45,30 @@ export class OrdenesComponent implements OnInit {
       fecha: {
         title: 'Fecha',
         type: 'text',
-        editable: false,
       },
       numero: {
         title: 'Pedido Nº',
         type: 'text',
-        editable: false,
       },
       cliente: {
         title: 'Cliente',
         type: 'text',
-        editable: false,
       },
       telefono: {
         title: 'Telefono',
         type: 'text',
-        editable: false,
       },
       rodado: {
         title: 'Rodado',
         type: 'text',
-        editable: false,
       },
       importe: {
-        title: 'Importe',
-        type: 'text',
-        editable: false,
+        title: 'Importe $',
+        type: 'number',
       },
       fechaEntrega: {
         title: 'Fecha Entrega',
         type: 'text',
-        editable: false,
       },
     },
   };
@@ -102,12 +96,14 @@ export class OrdenesComponent implements OnInit {
       } else {
         this.ordenes = this.ordenesFull;
       }
+      this.cargarTabla(this.ordenes);
     });
 
     this.dateForm.valueChanges.subscribe(val => {
       this.service.cargarOrdenes(val.desde, val.hasta).then(ordenes => {
         this.ordenes = ordenes;
         this.ordenesFull = [...ordenes];
+        this.cargarTabla(this.ordenes);
       });
     });
   }
@@ -129,8 +125,13 @@ export class OrdenesComponent implements OnInit {
       this.ordenesEntrega = this.ordenes.filter(o => isToday(o.fechaEntrega) && o.estado !== 'Cancelado' && o.estado !== 'Entregado');
       this.ordenesAtrasados = this.ordenes.filter(o => (o.estado === 'Pendiente' || o.estado === 'En Curso') && this.menorFecha(o.fechaEntrega));
 
-      this.sourcePendientes.load(ordenes.filter(o => o.estado === 'Pendiente').map(o => ({
-        numero: o.numero,
+      this.cargarTabla(ordenes);
+    });
+  }
+
+  cargarTabla(ordenes: any[]) {
+    this.sourceLista.load(ordenes.map(o => ({
+      numero: o.numero,
         cliente: o.cliente.get('nombre'),
         telefono: o.cliente.get('telefono'),
         rodado: o.rodado,
@@ -138,9 +139,9 @@ export class OrdenesComponent implements OnInit {
         importe: o.importe,
         fechaEntrega: this.datePipe.transform(o.fechaEntrega, 'dd/MM/yyyy'),
         result: o,
-      })));
-    });
+    })));
   }
+
 
   menorFecha(fecha: Date) {
     const today = new Date();

@@ -36,10 +36,8 @@
       </div>
     </div>
 
-    <!-- <nb-tabset fullWidth class="w-100">
-      <nb-tab tabTitle="Todos" class="w-100"> -->
     <div class="row ml-2">
-      <div class="col-xs-12 col-md-6 col-lg-6">
+      <div class="col-xs-12 col-md-5 col-lg-5">
         <nb-icon
           icon="funnel-outline"
           pack="eva"
@@ -58,7 +56,7 @@
         </mat-form-field>
       </div>
 
-      <div class="col-xs-12 col-md-6 col-lg-6">
+      <div class="col-xs-12 col-md-5 col-lg-5">
         <form [formGroup]="dateForm">
           <mat-form-field appearance="fill" class="example-form-field">
             <mat-label>Ingrese el rango de fechas</mat-label>
@@ -92,10 +90,18 @@
           ></nb-icon>
         </form>
       </div>
+      <div class="col-xs-12 col-md-2 col-lg-2">
+        <mat-button-toggle-group [(ngModel)]="isLista">
+          <mat-button-toggle [value]="true"> Lista </mat-button-toggle>
+          <mat-button-toggle [value]="false"> Card </mat-button-toggle>
+        </mat-button-toggle-group>
+      </div>
+
     </div>
 
     <div class="row">
-      <div
+      <ng-container *ngIf="!isLista">
+        <div
         *ngFor="let pedido of pedidos | filterPedido: searchText"
         class="col-md-4 col-12 col-xs-12 col-lg-3"
       >
@@ -104,32 +110,17 @@
           (estadoChanged)="cargarPedidoProveedor()"
         ></ngx-pedido-card>
       </div>
-      <!-- <h4 class="mt-4 mx-auto" *ngIf="pedido.length === 0">Aun no tenes pedidos!</h4> -->
-    </div>
-    <!-- </nb-tab>
-      <nb-tab tabTitle="En curso" class="w-100">
-        <div class="row">
-          <div
-            *ngFor="let pedido of pedidosSolicitados | filterPedido: searchText"
-            class="col-md-4 col-12 col-xs-12 col-lg-3"
-          >
-            <ngx-pedido-card [pedido]="pedido" (estadoChanged)="cargarPedidoProveedor()"></ngx-pedido-card>
-          </div>
-          <h4 class="mt-4 mx-auto" *ngIf="pedidosEntregados.length === 0">No hay pedidos solicitados!</h4>
-        </div>
-      </nb-tab>
-      <nb-tab tabTitle="Recibidos" class="w-100">
-        <div class="row">
-          <div
-            *ngFor="let pedido of pedidosEntregados | filterPedido: searchText"
-            class="col-md-4 col-12 col-xs-12 col-lg-3"
-          >
-            <ngx-pedido-card [pedido]="pedido" (estadoChanged)="cargarPedidoProveedor()"></ngx-pedido-card>
-          </div>
-          <h4 class="mt-4 mx-auto" *ngIf="pedidosEntregados.length === 0">No hay pedidos recibidos!</h4>
-        </div> -->
-    <!-- </nb-tab> -->
+      </ng-container>
 
-    <!-- </nb-tabset> -->
+      <ng2-smart-table
+        *ngIf="isLista"
+        class="custom-table"
+        [settings]="settings"
+        [source]="sourceLista | filterPedido: searchText"
+        (edit)="openEstadoModal($event)"
+      >
+    </ng2-smart-table>
+    </div>
+
   </nb-card-body>
 </nb-card>

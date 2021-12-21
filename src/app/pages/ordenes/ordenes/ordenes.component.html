@@ -37,9 +37,12 @@
     </div>
 
     <nb-tabset fullWidth class="w-100">
-      <nb-tab [tabTitle]="'Todos: '+ordenes.length+' ('+ordenesTotal+')'" class="w-100">
+      <nb-tab
+        [tabTitle]="'Todos: ' + ordenes.length + ' (' + ordenesTotal + ')'"
+        class="w-100"
+      >
         <div class="row ml-2">
-          <div class="col-xs-12 col-md-6 col-lg-6">
+          <div class="col-xs-12 col-md-5 col-lg-5">
             <nb-icon
               icon="funnel-outline"
               pack="eva"
@@ -58,7 +61,7 @@
               </mat-select>
             </mat-form-field>
           </div>
-          <div class="col-xs-12 col-md-6 col-lg-6">
+          <div class="col-xs-12 col-md-5 col-lg-5">
             <form [formGroup]="dateForm">
               <mat-form-field appearance="fill" class="example-form-field">
                 <mat-label>Ingrese el rango de fechas</mat-label>
@@ -102,33 +105,41 @@
               ></nb-icon>
             </form>
           </div>
+          <div class="col-xs-12 col-md-2 col-lg-2">
+            <mat-button-toggle-group [(ngModel)]="isLista">
+              <mat-button-toggle [value]="true"> Lista </mat-button-toggle>
+              <mat-button-toggle [value]="false"> Card </mat-button-toggle>
+            </mat-button-toggle-group>
+          </div>
         </div>
 
         <div class="row">
-          <div
-            *ngFor="let orden of ordenes | filterOrden: searchText"
-            class="col-md-4 col-12 col-xs-12 col-lg-3"
-          >
-            <ngx-orden-card
-              [orden]="orden"
-              (estadoChanged)="cargarOrdenes()"
-            ></ngx-orden-card>
-          </div>
-          <!-- <h4 class="mt-4 mx-auto" *ngIf="ordenes.length === 0">Aun no tenes pedidos!</h4> -->
+          <ng-container *ngIf="!isLista">
+            <div
+              *ngFor="let orden of ordenes | filterOrden: searchText"
+              class="col-md-4 col-12 col-xs-12 col-lg-3"
+            >
+              <ngx-orden-card
+                [orden]="orden"
+                (estadoChanged)="cargarOrdenes()"
+              ></ngx-orden-card>
+            </div>
+          </ng-container>
+
+          <ng2-smart-table
+            *ngIf="isLista"
+            class="custom-table"
+            [settings]="settings"
+            [source]="sourceLista | filterOrden: searchText"
+            (edit)="openEstadoModal($event)"
+          ></ng2-smart-table>
         </div>
       </nb-tab>
 
-      <nb-tab [tabTitle]="'Pendientes: '+sourcePendientes.count()" class="w-100">
-        <ng2-smart-table
-          class="custom-table"
-          [settings]="settings"
-          [source]="sourcePendientes"
-          (edit)="openEstadoModal($event)"
-        >
-        </ng2-smart-table>
-      </nb-tab>
-
-      <nb-tab [tabTitle]="'Entrega Hoy: '+ordenesEntrega.length" class="w-100">
+      <nb-tab
+        [tabTitle]="'Entrega Hoy: ' + ordenesEntrega.length"
+        class="w-100"
+      >
         <div class="row">
           <div
             *ngFor="let orden of ordenesEntrega | filterOrden: searchText"
@@ -144,7 +155,10 @@
           </h4>
         </div>
       </nb-tab>
-      <nb-tab [tabTitle]="'Atrasados: '+ordenesAtrasados.length" class="w-100">
+      <nb-tab
+        [tabTitle]="'Atrasados: ' + ordenesAtrasados.length"
+        class="w-100"
+      >
         <div class="row">
           <div
             *ngFor="let orden of ordenesAtrasados | filterOrden: searchText"
