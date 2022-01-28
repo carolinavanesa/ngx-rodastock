@@ -14,6 +14,7 @@ import { TipoReparacionService } from '../tipo-reparaciones.service';
 })
 export class TipoReparacionComponent implements OnInit, OnDestroy {
   settings = {
+    noDataMessage: 'No hay resultados',
     mode: 'external',
     actions: {
       add: false,

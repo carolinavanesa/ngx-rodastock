@@ -16,6 +16,7 @@ import { TipoReparacionService } from '../tipo-reparaciones.service';
 })
 export class NuevoReparacionComponent {
   settings = {
+    noDataMessage: 'No hay resultados',
     actions: {
       add: false,
       edit: false,

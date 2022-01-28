@@ -16,6 +16,7 @@ import { Router } from '@angular/router';
 })
 export class InventarioComponent implements OnInit {
   settings = {
+    noDataMessage: 'No hay resultados',
     mode: 'external',
     actions: {
       add: false,

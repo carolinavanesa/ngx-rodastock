@@ -23,6 +23,7 @@ export class ReporteRepuestoMasUtilizadoComponent implements OnInit{
 
   sourceRepuesto: LocalDataSource = new LocalDataSource();
   settings = {
+    noDataMessage: 'No hay resultados',
     mode: 'external',
     sort: false,
     actions: {

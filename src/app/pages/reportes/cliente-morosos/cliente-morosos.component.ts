@@ -12,6 +12,7 @@ export class ClienteMorososComponent implements OnInit {
   constructor(private service: ReportesService, private router: Router) { }
 
   settings = {
+    noDataMessage: 'No hay resultados',
     mode: 'external',
     actions: {
       add: false,

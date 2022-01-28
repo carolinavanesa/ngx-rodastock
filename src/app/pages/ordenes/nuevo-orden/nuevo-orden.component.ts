@@ -20,6 +20,7 @@ import { AgregarReparacionModalComponent } from '../agregar-reparacion-modal/agr
 })
 export class NuevoOrdenComponent {
   settings = {
+    noDataMessage: 'No hay resultados',
     actions: {
       add: false,
       edit: false,

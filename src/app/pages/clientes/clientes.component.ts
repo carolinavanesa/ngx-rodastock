@@ -14,6 +14,7 @@ import { AlertService } from '../../shared/alert.service';
 })
 export class ClientesComponent implements OnInit, OnDestroy {
   settings = {
+    noDataMessage: 'No hay resultados',
     actions: {
       add: false,
     },

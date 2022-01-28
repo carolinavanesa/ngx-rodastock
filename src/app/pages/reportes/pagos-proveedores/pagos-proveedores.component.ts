@@ -29,6 +29,7 @@ export class ReportePagosProveedoresComponent implements OnInit {
 
   sourceProveedores: any[];
   settings = {
+    noDataMessage: 'No hay resultados',
     mode: 'external',
     sort: false,
     actions: {

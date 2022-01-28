@@ -14,6 +14,7 @@ import { ProveedoresService } from './proveedores.service';
 })
 export class ProveedoresComponent implements OnInit, OnDestroy {
   settings = {
+    noDataMessage: 'No hay resultados',
     actions: {
       add: false,
     },

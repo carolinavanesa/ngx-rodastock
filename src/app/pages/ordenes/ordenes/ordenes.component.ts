@@ -32,6 +32,7 @@ export class OrdenesComponent implements OnInit {
 
   sourceLista: LocalDataSource = new LocalDataSource();
   settings = {
+    noDataMessage: 'No hay resultados',
     mode: 'external',
     actions: {
       add: false,

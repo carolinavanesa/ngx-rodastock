@@ -31,6 +31,7 @@ import { OrdenCardComponent } from './orden-card/orden-card.component';
 import { EstadosModalComponent } from './estados-modal/estados-modal.component';
 import { DetalleOrdenComponent } from './detalle-orden/detalle-orden.component';
 import { SharedPipesModule } from '../../shared/shared-pipes.module';
+import { MAT_DATE_LOCALE } from '@angular/material/core';
 
 @NgModule({
   imports: [
@@ -52,7 +53,7 @@ import { SharedPipesModule } from '../../shared/shared-pipes.module';
     SharedModalModule,
     SharedAngularMaterialModule,
     OrdenesRoutingModule,
-    SharedPipesModule
+    SharedPipesModule,
   ],
   declarations: [
     OrdenesMainComponent,
@@ -63,6 +64,12 @@ import { SharedPipesModule } from '../../shared/shared-pipes.module';
     EstadosModalComponent,
     DetalleOrdenComponent,
   ],
-  providers: [OrdenesService, InventarioService, ClientesService, TipoReparacionService],
+  providers: [
+    OrdenesService,
+    InventarioService,
+    ClientesService,
+    TipoReparacionService,
+    { provide: MAT_DATE_LOCALE, useValue: 'en-GB' },
+  ],
 })
 export class OrdenesModule {}

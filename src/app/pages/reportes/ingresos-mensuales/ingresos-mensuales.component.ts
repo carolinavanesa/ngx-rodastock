@@ -29,6 +29,7 @@ export class ReporteIngresosMensualesComponent implements OnInit{
 
   sourceIngreso: LocalDataSource = new LocalDataSource();
   settings = {
+    noDataMessage: 'No hay resultados',
     mode: 'external',
     sort: false,
     actions: {

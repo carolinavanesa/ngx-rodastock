@@ -12,7 +12,6 @@ export class DetalleRepuestoChartComponent implements AfterViewInit, OnDestroy {
   themeSubscription: any;
 
   @Input() ingresos: any[];
-  @Input() egresos: any[];
 
   constructor(private theme: NbThemeService) {
   }
@@ -33,7 +32,7 @@ export class DetalleRepuestoChartComponent implements AfterViewInit, OnDestroy {
           },
         },
         legend: {
-          data: ['Ingresos Mensuales', 'Pedidos Mensuales'],
+          data: ['Cambios de stock'],
           textStyle: {
             color: echarts.textColor,
           },
@@ -63,7 +62,7 @@ export class DetalleRepuestoChartComponent implements AfterViewInit, OnDestroy {
               label: {
                 formatter: params => {
                   return (
-                    'Ingresos de ' + params.value + (params.seriesData.length ? '：' + params.seriesData[0].data : '')
+                    'Stock del dia ' + params.value + (params.seriesData.length ? '：' + params.seriesData[0].data : '')
                   );
                 },
               },
@@ -78,7 +77,7 @@ export class DetalleRepuestoChartComponent implements AfterViewInit, OnDestroy {
             axisLine: {
               onZero: false,
               lineStyle: {
-                color: '#8fcf50',
+                color: '#40bbf4',
               },
             },
             axisLabel: {
@@ -90,12 +89,12 @@ export class DetalleRepuestoChartComponent implements AfterViewInit, OnDestroy {
               label: {
                 formatter: params => {
                   return (
-                    'Egresos de ' + params.value + (params.seriesData.length ? '：' + params.seriesData[0].data : '')
+                    'Stock de ' + params.value + (params.seriesData.length ? '：' + params.seriesData[0].data : '')
                   );
                 },
               },
             },
-            data: this.egresos.map(x => x.fecha),
+            data: [],
           },
         ],
         yAxis: [
@@ -126,11 +125,12 @@ export class DetalleRepuestoChartComponent implements AfterViewInit, OnDestroy {
             smooth: true,
             data: this.ingresos.map(x => x.stockSiguiente),
           },
-          {
-            name: 'Pedidos a Proveedor totales',
+                    {
+            name: 'Pedidos totales',
             type: 'line',
+            xAxisIndex: 1,
             smooth: true,
-            data: this.egresos.map(x => x.stockSiguiente),
+            data: [],
           },
         ],
       };

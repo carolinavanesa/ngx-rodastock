@@ -18,6 +18,7 @@ import { MatSelect } from '@angular/material/select';
 })
 export class NuevoPedidoComponent {
   settings = {
+    noDataMessage: 'No hay resultados',
     actions: {
       add: false,
       edit: false,
