@@ -38,7 +38,7 @@ export class ReportePagosProveedoresComponent implements OnInit {
       columnTitle: '',
     },
     edit: {
-      editButtonContent: '<i class="nb-compose"></i>',
+      editButtonContent: '<i class="nb-compose" data-toggle="tooltip" title="Ir al detalle del pedido"></i>',
     },
     columns: {
       fecha: {

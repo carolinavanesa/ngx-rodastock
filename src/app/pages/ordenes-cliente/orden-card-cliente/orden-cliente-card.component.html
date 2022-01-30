@@ -47,11 +47,13 @@
 
   <nb-card-footer>
     <nb-icon
+    nbTooltip="Ver detalle"
       icon="printer-outline"
       pack="eva"
       (click)="openDetalle()"
     ></nb-icon>
     <nb-icon
+      nbTooltip="Ver Calificación"
       *ngIf="orden.estado === 'Entregado'"
       [icon]="orden.calificacion ? 'star' : 'star-outline'"
       pack="eva"

@@ -8,6 +8,7 @@ import {
   NbListModule,
   NbIconModule,
   NbAlertModule,
+  NbTooltipModule
 } from '@nebular/theme';
 
 import { ThemeModule } from '../../@theme/theme.module';
@@ -40,6 +41,7 @@ import { ReviewModalComponent } from './review-modal/review-modal.component';
     NbIconModule,
     NbButtonModule,
     NbAlertModule,
+    NbTooltipModule,
     Ng2SmartTableModule,
     SharedModalModule,
     SharedAngularMaterialModule,

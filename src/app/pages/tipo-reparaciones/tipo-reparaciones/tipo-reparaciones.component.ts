@@ -26,12 +26,12 @@ export class TipoReparacionComponent implements OnInit, OnDestroy {
       cancelButtonContent: '<i class="nb-close"></i>',
     },
     edit: {
-      editButtonContent: '<i class="nb-edit"></i>',
+      editButtonContent: '<i class="nb-edit" data-toggle="tooltip" title="Editar"></i>',
       saveButtonContent: '<i class="nb-checkmark"></i>',
       cancelButtonContent: '<i class="nb-close"></i>',
     },
     delete: {
-      deleteButtonContent: '<i class="nb-trash"></i>',
+      deleteButtonContent: '<i class="nb-trash" data-toggle="tooltip" title="Eliminar reparación"></i>',
       confirmDelete: true,
     },
     columns: {

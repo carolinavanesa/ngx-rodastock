@@ -15,6 +15,7 @@ import {
   NbListModule,
   NbIconModule,
   NbStepperModule,
+  NbTooltipModule
 } from '@nebular/theme';
 import { Ng2SmartTableModule } from 'ng2-smart-table';
 import { SharedModalModule } from '../../shared/modal/modal.module';
@@ -56,6 +57,7 @@ import { ProveedoresService } from '../proveedores/proveedores.service';
     NbIconModule,
     NbButtonModule,
     NbStepperModule,
+    NbTooltipModule,
     Ng2SmartTableModule,
     SharedModalModule,
     SharedAngularMaterialModule,

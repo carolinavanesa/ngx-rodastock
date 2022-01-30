@@ -34,7 +34,7 @@ export class PedidosProveedorComponent implements OnInit {
       columnTitle: '',
     },
     edit: {
-      editButtonContent: '<i class="nb-edit"></i>',
+      editButtonContent: '<i class="nb-edit" data-toggle="tooltip" title="Actualizar estado"></i>',
     },
     columns: {
       fecha: {

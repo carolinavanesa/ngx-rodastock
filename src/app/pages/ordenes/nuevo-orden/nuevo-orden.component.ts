@@ -33,7 +33,7 @@ export class NuevoOrdenComponent {
       confirmSave: true,
     },
     delete: {
-      deleteButtonContent: '<i class="nb-trash"></i>',
+      deleteButtonContent: '<i class="nb-trash" data-toggle="tooltip" title="Quitar reparación"></i>',
       confirmDelete: true,
     },
     columns: {
@@ -297,11 +297,8 @@ export class NuevoOrdenComponent {
   }
 
   onDeleteConfirm(event: any) {
-    if (!event.data.id) {
-      event.confirm.resolve();
-    } else {
-      // TODO: Se puede editar una orden?
-    }
-    this.calcularCostoTotalReparaciones;
+    event.confirm.resolve();
+    this.reparaciones = this.reparaciones.filter(x => x.nombre !== event.data.nombre);
+    this.calcularCostoTotalReparaciones();
   }
 }

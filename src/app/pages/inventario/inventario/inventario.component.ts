@@ -27,22 +27,16 @@ export class InventarioComponent implements OnInit {
       confirmCreate: true,
     },
     edit: {
-      editButtonContent: '<i class="nb-compose"></i>',
+      editButtonContent: '<i class="nb-compose" data-toggle="tooltip" title="Ver historial de movimientos"></i>',
       saveButtonContent: '<i class="nb-checkmark"></i>',
       cancelButtonContent: '<i class="nb-close"></i>',
       confirmSave: true,
     },
     delete: {
-      deleteButtonContent: '<i class="nb-trash"></i>',
+      deleteButtonContent: '<i class="nb-trash" data-toggle="tooltip" title="Eliminar repuesto"></i>',
       confirmDelete: true,
     },
     columns: {
-      // id: {
-      //   title: 'ID',
-      //   type: 'text',
-      //   hide: true,
-      //   editable: false,
-      // },
       nombre: {
         title: 'Nombre',
         type: 'text',

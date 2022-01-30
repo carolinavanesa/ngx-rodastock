@@ -19,13 +19,13 @@ export class ClientesComponent implements OnInit, OnDestroy {
       add: false,
     },
     edit: {
-      editButtonContent: '<i class="nb-edit"></i>',
+      editButtonContent: '<i class="nb-edit" data-toggle="tooltip" title="Editar"></i>',
       saveButtonContent: '<i class="nb-checkmark"></i>',
       cancelButtonContent: '<i class="nb-close"></i>',
       confirmSave: true,
     },
     delete: {
-      deleteButtonContent: '<i class="nb-trash"></i>',
+      deleteButtonContent: '<i class="nb-trash" data-toggle="tooltip" title="Eliminar cliente"></i>',
       confirmDelete: true,
     },
     columns: {

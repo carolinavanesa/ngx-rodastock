@@ -10,6 +10,7 @@ import {
   NbIconModule,
   NbStepperModule,
   NbAlertModule,
+  NbTooltipModule,
 } from '@nebular/theme';
 
 import { ThemeModule } from '../../@theme/theme.module';
@@ -49,6 +50,7 @@ import { MAT_DATE_LOCALE } from '@angular/material/core';
     NbButtonModule,
     NbStepperModule,
     NbAlertModule,
+    NbTooltipModule,
     Ng2SmartTableModule,
     SharedModalModule,
     SharedAngularMaterialModule,

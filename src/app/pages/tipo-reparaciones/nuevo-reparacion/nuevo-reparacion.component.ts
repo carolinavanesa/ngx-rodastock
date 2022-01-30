@@ -29,7 +29,7 @@ export class NuevoReparacionComponent {
       confirmSave: true,
     },
     delete: {
-      deleteButtonContent: '<i class="nb-trash"></i>',
+      deleteButtonContent: '<i class="nb-trash" data-toggle="tooltip" title="Quitar repuesto"></i>',
       confirmDelete: true,
     },
     columns: {
@@ -225,6 +225,7 @@ export class NuevoReparacionComponent {
         }
       });
     }
+    this.unidades = this.unidades.filter(x => x.nombre !== event.data.nombre);
     this.calcularCostoTotalRepuesto();
   }
 }

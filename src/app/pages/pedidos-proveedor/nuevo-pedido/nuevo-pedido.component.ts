@@ -31,7 +31,7 @@ export class NuevoPedidoComponent {
       confirmSave: true,
     },
     delete: {
-      deleteButtonContent: '<i class="nb-trash"></i>',
+      deleteButtonContent: '<i class="nb-trash" data-toggle="tooltip" title="Quitar repuesto"></i>',
       confirmDelete: true,
     },
     columns: {
