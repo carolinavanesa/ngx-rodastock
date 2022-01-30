@@ -17,14 +17,17 @@ export class ReviewModalComponent implements OnInit {
     private formBuilder: FormBuilder
   ) {}
 
-  puntuacion: number;
+  puntuacionTiempoEntrega: number;
+  puntuacionCalidadTrabajo: number;
+  puntuacionAtencion: number;
+  puntuacionPrecio: number;
   loading = false;
 
   nuevoForm: FormGroup = this.formBuilder.group({
     // puntuacion: ['', [Validators.required, Validators.maxLength(30), Validators.pattern("[a-zA-Z ,']*")]],
     comentario: [
       '',
-      [Validators.maxLength(100), Validators.pattern("[a-zA-Z0-9ñº# ,']*")],
+      [Validators.maxLength(100), Validators.pattern("[a-zA-Z0-9ñº# ,'!?]*")],
     ],
   });
 
@@ -37,8 +40,23 @@ export class ReviewModalComponent implements OnInit {
     this.modoEdicion = !this.calificacion;
   }
 
-  onRatingChanged(rating: number) {
-    this.puntuacion = rating;
+  onRatingChanged(rating: number, field: string) {
+    switch (field) {
+      case 'tiempoEntrega':
+        this.puntuacionTiempoEntrega = rating;
+        break;
+      case 'calidadTrabajo':
+        this.puntuacionCalidadTrabajo = rating;
+        break;
+      case 'atencion':
+        this.puntuacionAtencion = rating;
+        break;
+      case 'precio':
+        this.puntuacionPrecio = rating;
+        break;
+      default:
+        break;
+    }
   }
 
   onConfirm() {
@@ -46,7 +64,10 @@ export class ReviewModalComponent implements OnInit {
       this.loading = true;
       this.service
         .agregarCalificacion(
-          this.puntuacion,
+          this.puntuacionTiempoEntrega,
+          this.puntuacionCalidadTrabajo,
+          this.puntuacionAtencion,
+          this.puntuacionPrecio,
           this.nuevoForm.get('comentario').value,
           this.orden
         )

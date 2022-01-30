@@ -329,12 +329,20 @@ export class OrdenesService {
   }
 
   async agregarCalificacion(
-    puntuacion: number,
+    puntuacionTiempoEntrega: number,
+    puntuacionCalidadTrabajo: number,
+    puntuacionAtencion: number,
+    puntuacionPrecio: number,
     comentario: string,
     ordenParse: any,
   ): Promise<boolean> {
-    ;
     const nuevaCalificacion = new Calificacion();
+    const puntuacion = (puntuacionTiempoEntrega + puntuacionCalidadTrabajo + puntuacionAtencion +  puntuacionPrecio)  / 4
+
+    nuevaCalificacion.set('tiempoEntrega', puntuacionTiempoEntrega);
+    nuevaCalificacion.set('calidadTrabajo', puntuacionCalidadTrabajo);
+    nuevaCalificacion.set('atencion', puntuacionAtencion);
+    nuevaCalificacion.set('precio', puntuacionPrecio);
     nuevaCalificacion.set('puntuacion', puntuacion);
     nuevaCalificacion.set('comentario', comentario);
     nuevaCalificacion.set('cliente', ordenParse.get('cliente'));

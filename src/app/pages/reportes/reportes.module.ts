@@ -34,6 +34,7 @@ import { PedidosMultipleXaxisComponent } from './pedidos-mensuales/pedidos-multi
 import { SharedPipesModule } from '../../shared/shared-pipes.module';
 import { EncuestasClienteComponent } from './encuestas-cliente/encuestas-cliente.component';
 import { ReportePagosProveedoresComponent } from './pagos-proveedores/pagos-proveedores.component';
+import { EncuestasRadarComponent } from './encuestas-cliente/encuestas-radar.component';
 
 @NgModule({
   imports: [
@@ -71,6 +72,7 @@ import { ReportePagosProveedoresComponent } from './pagos-proveedores/pagos-prov
     PedidosMultipleXaxisComponent,
     EncuestasClienteComponent,
     ReportePagosProveedoresComponent,
+    EncuestasRadarComponent
   ],
   providers: [ReportesService],
 })

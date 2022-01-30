@@ -156,7 +156,7 @@
         <p class="lorem">Aun no te han calificado por este trabajo...</p>
       </div>
       <ng-template #calificacionTemplate>
-        <div class="row m-3">
+        <div class="row m-3" style="max-width: 800px;">
           <div class="col-12 col-md-12 col-lg-12 mt-2">
             <nb-icon icon="brush-outline" pack="eva"></nb-icon>
             <span>{{ orden.get('rodado') }}</span>
@@ -164,10 +164,39 @@
             <span>{{ orden.get('cliente').get('nombre') }}</span>
           </div>
           <div class="col-12 col-md-12 col-lg-12 mt-4">
-            <mat-star-rating
-              [readonly]="true"
-              [rating]="calificacion.get('puntuacion')"
-            ></mat-star-rating>
+            <div class="row">
+              <div class="col-md-6 col-lg-6 col-xs-12 mb-4">
+                <h6>Tiempo de entrega</h6>
+                <mat-star-rating
+                  [readonly]="true"
+                  [rating]="calificacion.get('tiempoEntrega')"
+                ></mat-star-rating>
+              </div>
+
+              <div class="col-md-6 col-lg-6 col-xs-12 mb-4">
+                <h6>Calidad del trabajo</h6>
+                <mat-star-rating
+                  [readonly]="true"
+                  [rating]="calificacion.get('calidadTrabajo')"
+                ></mat-star-rating>
+              </div>
+
+              <div class="col-md-6 col-lg-6 col-xs-12 mb-4">
+                <h6>Atencion</h6>
+                <mat-star-rating
+                  [readonly]="true"
+                  [rating]="calificacion.get('atencion')"
+                ></mat-star-rating>
+              </div>
+
+              <div class="col-md-6 col-lg-6 col-xs-12 mb-4">
+                <h6>Precio</h6>
+                <mat-star-rating
+                  [readonly]="true"
+                  [rating]="calificacion.get('precio')"
+                ></mat-star-rating>
+              </div>
+            </div>
           </div>
           <div class="font-weight-bold col-12 col-md-12 col-lg-12 mt-2">
             "{{ calificacion.get('comentario') }}"

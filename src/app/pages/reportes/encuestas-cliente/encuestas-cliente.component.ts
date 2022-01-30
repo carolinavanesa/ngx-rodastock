@@ -29,6 +29,23 @@ export class EncuestasClienteComponent implements OnInit {
     return promedio / this.encuestas.length;
   }
 
+  calcularChart(){
+    let sumAtencion = 0;
+    let sumCalidad = 0;
+    let sumTiempo = 0;
+    let sumPrecio = 0;
+    const n = this.encuestas.length;
+
+    this.encuestas.forEach(x => {
+      sumAtencion += x.get('atencion') || 0;
+      sumCalidad += x.get('calidadTrabajo') || 0;
+      sumTiempo += x.get('tiempoEntrega') || 0;
+      sumPrecio += x.get('precio') || 0;
+    });
+
+    return [sumAtencion/n, sumCalidad/n, sumTiempo/n, sumPrecio/n]
+  }
+
   onEdit(event: any) {
     this.router.navigateByUrl(`pages/ordenes/search/${event.data.nombre}`);
   }
