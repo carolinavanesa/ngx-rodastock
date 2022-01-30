@@ -82,6 +82,12 @@
       [ingresos]="ingresosChart"
     >
     </ngx-detalle-repuesto-chart>
+
+    <ngx-detalle-repuesto-bar
+      *ngIf="ingresosChart.length"
+      [ingresos]="ingresosChart"
+    >
+    </ngx-detalle-repuesto-bar>
   </nb-card-body>
   <nb-card-footer>
     <div class="row">

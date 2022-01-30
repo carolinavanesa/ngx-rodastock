@@ -23,6 +23,7 @@ import { DetalleRepuestoComponent } from './detalle-repuesto/detalle-repuesto.co
 import { DetalleRepuestoChartComponent } from './detalle-repuesto/detalle-repuesto-chart.component';
 import { InventarioMainComponent } from './inventario-main.component';
 import { NgxEchartsModule } from 'ngx-echarts';
+import { DetalleRepuestoBarComponent } from './detalle-repuesto/detalle-repuesto-bar.component';
 
 @NgModule({
   imports: [
@@ -50,6 +51,7 @@ import { NgxEchartsModule } from 'ngx-echarts';
     NuevoRepuestoModalComponent,
     DetalleRepuestoComponent,
     DetalleRepuestoChartComponent,
+    DetalleRepuestoBarComponent,
   ],
   providers: [InventarioService],
 })
