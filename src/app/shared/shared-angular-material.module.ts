@@ -1,4 +1,3 @@
-
 import { NgModule } from '@angular/core';
 
 import { MatNativeDateModule } from '@angular/material/core';
@@ -12,6 +11,7 @@ import { MatRadioModule } from '@angular/material/radio';
 import { MatButtonModule } from '@angular/material/button';
 import { MatButtonToggleModule } from '@angular/material/button-toggle';
 import { MatAutocompleteModule } from '@angular/material/autocomplete';
+import { MatDividerModule } from '@angular/material/divider';
 
 const materialModules = [
   MatFormFieldModule,
@@ -24,16 +24,12 @@ const materialModules = [
   MatRadioModule,
   MatButtonModule,
   MatButtonToggleModule,
-  MatAutocompleteModule
+  MatAutocompleteModule,
+  MatDividerModule,
 ];
 
 @NgModule({
-  imports: [
-    ...materialModules
-  ],
-  exports: [
-    ...materialModules
-  ]
+  imports: [...materialModules],
+  exports: [...materialModules],
 })
-export class SharedAngularMaterialModule {
-}
+export class SharedAngularMaterialModule {}

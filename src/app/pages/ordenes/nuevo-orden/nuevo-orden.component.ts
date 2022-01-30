@@ -85,6 +85,7 @@ export class NuevoOrdenComponent {
   repuestoInventario = [];
   erroresDeStock = [];
   fileToUpload: File | null = null;
+  minDate = new Date();
 
   constructor(
     private formBuilder: FormBuilder,
@@ -291,6 +292,8 @@ export class NuevoOrdenComponent {
         // TODO: Se puede editar una orden?
       }
     }
+
+
   }
 
   onDeleteConfirm(event: any) {

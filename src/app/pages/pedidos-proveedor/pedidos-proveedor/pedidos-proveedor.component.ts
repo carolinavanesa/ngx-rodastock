@@ -14,10 +14,10 @@ import { EstadosPedidosModalComponent } from '../estados-pedidos-modal/estados-p
   styleUrls: ['./pedidos-proveedor.component.scss'],
 })
 export class PedidosProveedorComponent implements OnInit {
-  searchText = '';
   pedidos = [];
   pedidosFull = [];
   estadoFormControl = new FormControl('Todos');
+  searchFormControl = new FormControl('');
   dateForm: FormGroup = this.formBuilder.group({
     desde: '',
     hasta: '',
@@ -80,12 +80,11 @@ export class PedidosProveedorComponent implements OnInit {
   ngOnInit() {
     this.cargarPedidoProveedor();
 
-    this.estadoFormControl.valueChanges.subscribe(val => {
-      if (val && val !== 'Todos') {
-        this.pedidos = this.pedidosFull.filter(x => x.estado === val);
-      } else {
-        this.pedidos = this.pedidosFull;
-      }
+    this.estadoFormControl.valueChanges.subscribe((val) => {
+      this.cargarTabla(this.pedidos);
+    });
+
+    this.searchFormControl.valueChanges.subscribe((val) => {
       this.cargarTabla(this.pedidos);
     });
 
@@ -112,6 +111,7 @@ export class PedidosProveedorComponent implements OnInit {
   }
 
   cargarTabla(pedidos: any[]) {
+    this.refreshOrden();
     this.sourceLista.load(pedidos.map(o => ({
       numero: o.numero,
       proveedor: o.proveedor.get('nombre'),
@@ -129,7 +129,7 @@ export class PedidosProveedorComponent implements OnInit {
   }
 
   clearSearch() {
-    this.searchText = '';
+    this.searchFormControl.setValue('');
   }
 
   openEstadoModal(event: any){
@@ -149,5 +149,43 @@ export class PedidosProveedorComponent implements OnInit {
           this.cargarPedidoProveedor();
         }
       });
+  }
+
+  searchOrden(obj: any, search: string) {
+    search = search.toLowerCase();
+    return (
+      obj.numero?.toString().includes(search) ||
+      obj.proveedor?.get('nombre')?.toLowerCase().includes(search) ||
+      obj.repuestos?.some((r) =>
+        r.get('nombre')?.toLowerCase().includes(search)
+      ) ||
+      obj.notas?.toLowerCase().includes(search) ||
+      obj.estado?.toLowerCase().includes(search)
+    );
+  }
+
+  refreshOrden() {
+    const estado = this.estadoFormControl.value;
+    const search = this.searchFormControl.value;
+
+    if ((estado && estado !== 'Todos') || search) {
+      if (estado && estado !== 'Todos') {
+        this.pedidos = this.pedidosFull.filter((x) => x.estado === estado);
+      }
+
+      if (search) {
+        if (estado && estado !== 'Todos') {
+          this.pedidos = this.pedidos.filter((x) =>
+            this.searchOrden(x, search)
+          );
+        } else {
+          this.pedidos = this.pedidosFull.filter((x) =>
+            this.searchOrden(x, search)
+          );
+        }
+      }
+    } else {
+      this.pedidos = this.pedidosFull;
+    }
   }
 }

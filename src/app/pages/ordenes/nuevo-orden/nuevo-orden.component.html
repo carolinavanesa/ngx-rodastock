@@ -21,6 +21,7 @@
               formControlName="fecha"
               autocomplete="off"
               matInput
+              [min]="minDate"
               [matDatepicker]="picker"
             />
             <mat-datepicker-toggle
@@ -223,6 +224,19 @@
         </div>
       </div>
 
+      <div class="row mt-2">
+        <div class="col-6 col-md-9">
+          <p class="float-right text-info">Total a pagar:</p>
+        </div>
+        <div class="col-6 col-md-3">
+          <p class="text-info">
+            {{ (calcularCostoTotalOrden() - nuevoForm.get('entregaInicial').value ) | currency }}
+          </p>
+        </div>
+      </div>
+
+      <mat-divider class="mt-2"></mat-divider>
+
       <!-- COSTO TOTAL -->
       <div class="row mt-2">
         <div class="col-6 col-md-9">
@@ -244,6 +258,7 @@
               autocomplete="off"
               matInput
               [matDatepicker]="picker2"
+              [min]="minDate"
             />
             <mat-datepicker-toggle
               matSuffix

@@ -15,8 +15,8 @@ import { NbDialogService } from '@nebular/theme';
   encapsulation: ViewEncapsulation.None,
 })
 export class OrdenesComponent implements OnInit {
-  searchText = '';
   estadoFormControl = new FormControl('Todos');
+  searchFormControl = new FormControl('');
   ordenesTotal = 0;
   ordenes = [];
   ordenesFull = [];
@@ -24,11 +24,10 @@ export class OrdenesComponent implements OnInit {
   ordenesAtrasados = [];
   isLista = false;
 
-
   dateForm: FormGroup = this.formBuilder.group({
     desde: '',
     hasta: '',
-  })
+  });
 
   sourceLista: LocalDataSource = new LocalDataSource();
   settings = {
@@ -80,28 +79,40 @@ export class OrdenesComponent implements OnInit {
     private route: ActivatedRoute,
     private formBuilder: FormBuilder,
     private datePipe: DatePipe,
-    private dialogService: NbDialogService,
+    private dialogService: NbDialogService
   ) {}
 
-  ngOnInit() {
-    this.cargarOrdenes();
+  searchOrden(obj: any, search: string) {
+    search = search.toLowerCase();
+    return (
+      obj.numero.toString().startsWith(search) ||
+      obj.cliente.get('nombre').toLowerCase().startsWith(search) ||
+      obj.reparaciones.some((r) =>
+        r.get('nombre').toLowerCase().startsWith(search)
+      ) ||
+      obj.rodado?.toLowerCase().startsWith(search) ||
+      obj.estado?.toLowerCase().startsWith(search)
+    );
+  }
 
+  ngOnInit() {
     const search = this.route.snapshot.paramMap.get('search');
     if (search) {
-      this.searchText = search;
+      this.searchFormControl.setValue(search);
     }
 
-    this.estadoFormControl.valueChanges.subscribe(val => {
-      if (val && val !== 'Todos') {
-        this.ordenes = this.ordenesFull.filter(x => x.estado === val);
-      } else {
-        this.ordenes = this.ordenesFull;
-      }
+    this.cargarOrdenes();
+
+    this.estadoFormControl.valueChanges.subscribe((val) => {
       this.cargarTabla(this.ordenes);
     });
 
-    this.dateForm.valueChanges.subscribe(val => {
-      this.service.cargarOrdenes(val.desde, val.hasta).then(ordenes => {
+    this.searchFormControl.valueChanges.subscribe((val) => {
+      this.cargarTabla(this.ordenes);
+    });
+
+    this.dateForm.valueChanges.subscribe((val) => {
+      this.service.cargarOrdenes(val.desde, val.hasta).then((ordenes) => {
         this.ordenes = ordenes;
         this.ordenesFull = [...ordenes];
         this.cargarTabla(this.ordenes);
@@ -110,7 +121,7 @@ export class OrdenesComponent implements OnInit {
   }
 
   clearSearch() {
-    this.searchText = '';
+    this.searchFormControl.setValue('');
   }
 
   clearDateSearch() {
@@ -123,16 +134,27 @@ export class OrdenesComponent implements OnInit {
       this.ordenesTotal = ordenes.length;
       this.ordenes = ordenes;
       this.ordenesFull = [...ordenes];
-      this.ordenesEntrega = this.ordenes.filter(o => isToday(o.fechaEntrega) && o.estado !== 'Cancelado' && o.estado !== 'Entregado');
-      this.ordenesAtrasados = this.ordenes.filter(o => (o.estado === 'Pendiente' || o.estado === 'En Curso') && this.menorFecha(o.fechaEntrega));
+      this.ordenesEntrega = this.ordenes.filter(
+        (o) =>
+          isToday(o.fechaEntrega) &&
+          o.estado !== 'Cancelado' &&
+          o.estado !== 'Entregado'
+      );
+      this.ordenesAtrasados = this.ordenes.filter(
+        (o) =>
+          (o.estado === 'Pendiente' || o.estado === 'En Curso') &&
+          this.menorFecha(o.fechaEntrega)
+      );
 
       this.cargarTabla(ordenes);
     });
   }
 
   cargarTabla(ordenes: any[]) {
-    this.sourceLista.load(ordenes.map(o => ({
-      numero: o.numero,
+    this.refreshOrden();
+    this.sourceLista.load(
+      ordenes.map((o) => ({
+        numero: o.numero,
         cliente: o.cliente.get('nombre'),
         telefono: o.cliente.get('telefono'),
         rodado: o.rodado,
@@ -140,9 +162,9 @@ export class OrdenesComponent implements OnInit {
         importe: o.importe,
         fechaEntrega: this.datePipe.transform(o.fechaEntrega, 'dd/MM/yyyy'),
         result: o,
-    })));
+      }))
+    );
   }
-
 
   menorFecha(fecha: Date) {
     const today = new Date();
@@ -163,7 +185,7 @@ export class OrdenesComponent implements OnInit {
     this.router.navigateByUrl(`pages/ordenes/nueva-orden`);
   }
 
-  openEstadoModal(event: any){
+  openEstadoModal(event: any) {
     const orden = event.data.result;
     this.dialogService
       .open(EstadosModalComponent, {
@@ -182,11 +204,38 @@ export class OrdenesComponent implements OnInit {
         }
       });
   }
+
+  refreshOrden() {
+    const estado = this.estadoFormControl.value;
+    const search = this.searchFormControl.value;
+
+    if ((estado && estado !== 'Todos') || search) {
+      if (estado && estado !== 'Todos') {
+        this.ordenes = this.ordenesFull.filter((x) => x.estado === estado);
+      }
+
+      if (search) {
+        if (estado && estado !== 'Todos') {
+          this.ordenes = this.ordenes.filter((x) =>
+            this.searchOrden(x, search)
+          );
+        } else {
+          this.ordenes = this.ordenesFull.filter((x) =>
+            this.searchOrden(x, search)
+          );
+        }
+      }
+    } else {
+      this.ordenes = this.ordenesFull;
+    }
+  }
 }
 
 const isToday = (someDate) => {
-  const today = new Date()
-  return someDate.getDate() == today.getDate() &&
+  const today = new Date();
+  return (
+    someDate.getDate() == today.getDate() &&
     someDate.getMonth() == today.getMonth() &&
     someDate.getFullYear() == today.getFullYear()
-}
+  );
+};

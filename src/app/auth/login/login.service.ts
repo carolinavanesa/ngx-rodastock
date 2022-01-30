@@ -45,7 +45,12 @@ export class LoginService {
       this.alertService.showSuccessToast("Exito","Se ha registrado correctamente");
       return true;
     } catch (error) {
-      this.alertService.showErrorToast("Error", "No se ha podido registrar");
+      let mensaje = "No se ha podido registrar el nuevo usuario. Intenta de nuevo mas tarde";
+      if (error.message == 'Account already exists for this username.'
+      ) {
+        mensaje = 'El email ya esta registrado. Revisa tus datos o ingresá a la app'
+      }
+      this.alertService.showErrorToast("Error", mensaje);
       return false;
     }
 }

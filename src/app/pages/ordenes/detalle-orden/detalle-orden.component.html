@@ -10,9 +10,9 @@
       <!-- FECHA PEDIDO -->
       <div class="col-6 col-md-6 col-xs-6 mt-2">
         <div class="row">
-          <div class="text-hint">Fecha:</div>
+          <div class="text-hint"><h5 class="text-hint">Fecha:</h5></div>
           <div class="ml-3">
-            {{ orden.get('fecha') | date: 'dd/MM/yyyy' }}
+            <h5 class="text-hint">{{ orden.get('fecha') | date: 'dd/MM/yyyy' }}</h5>
           </div>
         </div>
       </div>
@@ -79,38 +79,62 @@
     <!-- COSTO TOTAL REPUESTOS -->
     <div class="row mt-2">
       <div class="col-6 col-md-9">
-        <p class="float-right">Costo total de repuestos:</p>
+        <span class="float-right">Costo total de repuestos:</span>
       </div>
 
       <div class="col-6 col-md-3">
-        <p>{{ costoTotalRepuestos | currency }}</p>
+        <span>{{ costoTotalRepuestos | currency }}</span>
       </div>
     </div>
 
     <!-- COSTO TOTAL MANO -->
-    <div class="row mt-2">
+    <div class="row mt-1">
       <div class="col-6 col-md-9">
-        <p class="float-right">Costo total de mano de obra:</p>
+        <span class="float-right">Costo total de mano de obra:</span>
       </div>
 
       <div class="col-6 col-md-3">
-        <p>{{ costoTotalMano | currency }}</p>
+        <span>{{ costoTotalMano | currency }}</span>
       </div>
     </div>
 
     <!-- COSTO ADICIONAL -->
-    <div class="row mt-2" *ngIf="orden.get('costoAdicional') > 0">
+    <div class="row mt-1" *ngIf="orden.get('costoAdicional') > 0">
       <div class="col-6 col-md-9">
-        <p class="float-right">Costo adicional:</p>
+        <span class="float-right">Costo adicional:</span>
       </div>
 
       <div class="col-6 col-md-3">
-        <p>{{ orden.get('costoAdicional') | currency }}</p>
+        <span>{{ orden.get('costoAdicional') | currency }}</span>
       </div>
     </div>
 
+    <div class="row mt-3">
+      <div class="col-6 col-md-9">
+        <span class="float-right text-success">Entrega inicial:</span>
+      </div>
+      <div class="col-6 col-md-3">
+        <span class="text-success">
+          {{ orden.get('entregaInicial') | currency }}
+        </span>
+      </div>
+    </div>
+
+    <div class="row mt-1">
+      <div class="col-6 col-md-9">
+        <span class="float-right text-info">Total a pagar:</span>
+      </div>
+      <div class="col-6 col-md-3">
+        <span class="text-info">
+          {{ (calcularCostoTotalOrden() - orden.get('entregaInicial') ) | currency }}
+        </span>
+      </div>
+    </div>
+
+    <mat-divider class="mt-2"></mat-divider>
+
     <!-- COSTO TOTAL -->
-    <div class="row mt-2">
+    <div class="row mt-3">
       <div class="col-6 col-md-9">
         <h5 class="float-right">TOTAL:</h5>
       </div>
@@ -121,13 +145,12 @@
       </div>
     </div>
 
+
+
     <div class="row mt-4">
       <div class="col-12 col-md-6 col-xs-12">
-        Fecha de Entrega: {{ orden.get('fechaEntrega') | date: 'dd/MM/yyyy' }}
-      </div>
-      <div class="col-12 col-md-6 col-xs-12 w-100">
-        Entrega inicial: {{ orden.get('entregaInicial') | currency }}
-      </div>
+        <h6>Fecha de Entrega: {{ orden.get('fechaEntrega') | date: 'dd/MM/yyyy' }}</h6>
+        </div>
     </div>
   </nb-card-body>
   <nb-card-footer>
