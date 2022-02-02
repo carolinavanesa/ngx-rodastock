@@ -19,6 +19,7 @@ export class PedidosProveedorService {
     query.limit(1000);
     query.equalTo('deleted', false);
     query.include('proveedor');
+    query.descending("fecha");
 
     if(start) {
       query.greaterThan('fecha', start);

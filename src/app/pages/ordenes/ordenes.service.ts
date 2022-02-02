@@ -18,6 +18,7 @@ export class OrdenesService {
     query.equalTo('deleted', false);
     query.include('cliente');
     query.include('calificacion');
+    query.descending("fecha");
 
     if(start) {
       query.greaterThan('fecha', start);

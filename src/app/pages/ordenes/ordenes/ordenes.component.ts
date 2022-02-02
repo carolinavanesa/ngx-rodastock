@@ -43,7 +43,7 @@ export class OrdenesComponent implements OnInit {
     },
     columns: {
       fecha: {
-        title: 'Fecha',
+        title: 'Fecha Ingreso',
         type: 'text',
       },
       numero: {
@@ -104,18 +104,18 @@ export class OrdenesComponent implements OnInit {
     this.cargarOrdenes();
 
     this.estadoFormControl.valueChanges.subscribe((val) => {
-      this.cargarTabla(this.ordenes);
+      this.cargarTabla();
     });
 
     this.searchFormControl.valueChanges.subscribe((val) => {
-      this.cargarTabla(this.ordenes);
+      this.cargarTabla();
     });
 
     this.dateForm.valueChanges.subscribe((val) => {
       this.service.cargarOrdenes(val.desde, val.hasta).then((ordenes) => {
         this.ordenes = ordenes;
         this.ordenesFull = [...ordenes];
-        this.cargarTabla(this.ordenes);
+        this.cargarTabla();
       });
     });
   }
@@ -146,14 +146,14 @@ export class OrdenesComponent implements OnInit {
           this.menorFecha(o.fechaEntrega)
       );
 
-      this.cargarTabla(ordenes);
+      this.cargarTabla();
     });
   }
 
-  cargarTabla(ordenes: any[]) {
+  cargarTabla() {
     this.refreshOrden();
     this.sourceLista.load(
-      ordenes.map((o) => ({
+      this.ordenes.map((o) => ({
         numero: o.numero,
         cliente: o.cliente.get('nombre'),
         telefono: o.cliente.get('telefono'),

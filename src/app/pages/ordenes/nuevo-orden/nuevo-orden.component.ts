@@ -95,7 +95,8 @@ export class NuevoOrdenComponent {
     private inventarioService: InventarioService,
     private router: Router,
     private alertService: AlertService,
-    private dialogService: NbDialogService
+    private dialogService: NbDialogService,
+    private modalService: ModalService
   ) {}
 
   nuevoForm: FormGroup = this.formBuilder.group({
@@ -257,7 +258,16 @@ export class NuevoOrdenComponent {
   }
 
   goBack() {
-    this.router.navigateByUrl(`pages/ordenes`);
+    const config = {
+      title: 'Descartar cambios',
+      body: `¿Estas seguro que deseas volver? Perderas los cambios que hayas ingresado hasta el momento`,
+      icon: 'exclamation',
+    };
+    this.modalService.showConfirmationModal(config).then((res) => {
+      if (res) {
+        this.router.navigateByUrl(`pages/ordenes`);
+      }
+    });
   }
 
   confirm() {

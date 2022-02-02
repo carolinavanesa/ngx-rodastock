@@ -158,7 +158,16 @@ export class NuevoReparacionComponent {
   }
 
   goBack() {
-    this.router.navigateByUrl(`pages/tipo-reparaciones`);
+    const config = {
+      title: 'Descartar cambios',
+      body: `¿Estas seguro que deseas volver? Perderas los cambios que hayas ingresado hasta el momento`,
+      icon: 'exclamation',
+    };
+    this.modalService.showConfirmationModal(config).then((res) => {
+      if (res) {
+        this.router.navigateByUrl(`pages/tipo-reparaciones`);
+      }
+    });
   }
 
   confirm() {

@@ -53,7 +53,7 @@ export class DetalleRepuestoComponent implements OnInit {
     },
     columns: {
       fecha: {
-        title: 'Fecha',
+        title: 'Fecha Ingreso',
         type: 'text',
       },
       cantidad: {

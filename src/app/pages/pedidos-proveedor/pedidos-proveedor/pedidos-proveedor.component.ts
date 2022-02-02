@@ -81,18 +81,18 @@ export class PedidosProveedorComponent implements OnInit {
     this.cargarPedidoProveedor();
 
     this.estadoFormControl.valueChanges.subscribe((val) => {
-      this.cargarTabla(this.pedidos);
+      this.cargarTabla();
     });
 
     this.searchFormControl.valueChanges.subscribe((val) => {
-      this.cargarTabla(this.pedidos);
+      this.cargarTabla();
     });
 
     this.dateForm.valueChanges.subscribe(val => {
       this.service.cargarPedidoProveedor(val.desde, val.hasta).then(pedidos => {
         this.pedidos = pedidos;
         this.pedidosFull = [...pedidos];
-        this.cargarTabla(this.pedidos);
+        this.cargarTabla();
       });
     });
   }
@@ -106,13 +106,13 @@ export class PedidosProveedorComponent implements OnInit {
     this.service.cargarPedidoProveedor().then((pedidos) => {
       this.pedidos = pedidos;
       this.pedidosFull = [...pedidos];
-      this.cargarTabla(pedidos);
+      this.cargarTabla();
     });
   }
 
-  cargarTabla(pedidos: any[]) {
+  cargarTabla() {
     this.refreshOrden();
-    this.sourceLista.load(pedidos.map(o => ({
+    this.sourceLista.load(this.pedidos.map(o => ({
       numero: o.numero,
       proveedor: o.proveedor.get('nombre'),
       telefono: o.proveedor.get('telefono'),
