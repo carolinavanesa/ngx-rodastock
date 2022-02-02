@@ -38,7 +38,7 @@ export class ReporteIngresosMensualesComponent implements OnInit{
       columnTitle: '',
     },
     edit: {
-      editButtonContent: '<i class="nb-compose"></i>',
+      editButtonContent: '<i class="nb-search"></i>',
     },
     columns: {
       fecha: {

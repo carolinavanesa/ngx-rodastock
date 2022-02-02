@@ -7,6 +7,8 @@ import { NuevoRepuestoModalComponent } from '../nuevo-repuesto-modal/nuevo-repue
 import { take } from 'rxjs/operators';
 import { Location } from '@angular/common';
 import { NbDialogService } from '@nebular/theme';
+import { ModalService } from '../../../shared/modal/modal.service';
+import { AlertService } from '../../../shared/alert.service';
 
 @Component({
   selector: 'ngx-detalle-repuesto',
@@ -21,6 +23,7 @@ export class DetalleRepuestoComponent implements OnInit {
     private datePipe: DatePipe,
     private router: Router,
     private dialogService: NbDialogService,
+    private alertService: AlertService,
     private location: Location // private location: Location,
   ) {}
 
@@ -49,7 +52,7 @@ export class DetalleRepuestoComponent implements OnInit {
       columnTitle: '',
     },
     edit: {
-      editButtonContent: '<i class="nb-compose" data-toggle="tooltip" title="Ir al detalle del pedido"></i>',
+      editButtonContent: '<i class="nb-search" data-toggle="tooltip" title="Ir al detalle del pedido"></i>',
     },
     columns: {
       fecha: {
@@ -150,9 +153,13 @@ export class DetalleRepuestoComponent implements OnInit {
   }
 
   onEditIngresos(event) {
-    this.router.navigateByUrl(
-      `pages/pedidos-proveedor/detalle/${event.data.id}`
-    );
+    if (event.data.pedido == 'Stock inicial') {
+      this.alertService.showPrimaryToast('Stock inicial!','No hay pedido para mostrar', 4000)
+    } else {
+      this.router.navigateByUrl(
+        `pages/pedidos-proveedor/detalle/${event.data.id}`
+      );
+    }
   }
   onEditEgresos(event) {
     this.router.navigateByUrl(`pages/ordenes/detalle-orden/${event.data.id}`);

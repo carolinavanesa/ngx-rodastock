@@ -32,7 +32,7 @@ export class ReporteRepuestoMasUtilizadoComponent implements OnInit{
       columnTitle: '',
     },
     edit: {
-      editButtonContent: '<i class="nb-compose" data-toggle="tooltip" title="Ir al historial"></i>',
+      editButtonContent: '<i class="nb-search" data-toggle="tooltip" title="Ir al historial"></i>',
     },
     columns: {
       nombre: {

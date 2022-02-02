@@ -27,7 +27,7 @@ export class InventarioComponent implements OnInit {
       confirmCreate: true,
     },
     edit: {
-      editButtonContent: '<i class="nb-compose" data-toggle="tooltip" title="Ver historial de movimientos"></i>',
+      editButtonContent: '<i class="nb-search" data-toggle="tooltip" title="Ver historial de movimientos"></i>',
       saveButtonContent: '<i class="nb-checkmark"></i>',
       cancelButtonContent: '<i class="nb-close"></i>',
       confirmSave: true,
