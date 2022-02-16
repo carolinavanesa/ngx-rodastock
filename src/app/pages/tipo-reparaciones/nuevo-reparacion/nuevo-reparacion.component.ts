@@ -82,7 +82,7 @@ export class NuevoReparacionComponent {
       ],
     ],
     tiempoEstimadoMedida: 'horas',
-    tiempoEstimadoUnidad: [0, [Validators.pattern('[0-9]')]],
+    tiempoEstimadoUnidad: [1, [Validators.pattern('[1-9]')]],
     costoMano: [
       '0',
       [

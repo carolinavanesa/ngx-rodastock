@@ -64,7 +64,7 @@ export class NuevoPedidoComponent {
   proveedorOptions = [];
   content = '';
   costoTotalRepuestos = 0;
-  estadoOptions = ['Pendiente', 'En curso', 'Entregado'];
+  estadoOptions = ['Pendiente', 'En curso', 'Recibido'];
 
   constructor(
     private formBuilder: FormBuilder,

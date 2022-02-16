@@ -3,40 +3,64 @@
     class="picture"
     style.background-image="url('{{ pedido.imagen }}')"
   ></div> -->
-  <div class="mx-auto picture-zone p-3">
-    <nb-icon icon="car-outline" pack="eva"></nb-icon>
-  </div>
+  <!-- <nb-card-header>
 
-  <div class="row m-2">
-    <div class="col-xs-12 col-lg-12 col-md-6">
-      <div class="h6">Pedido #{{ pedido.numero }}</div>
+  </nb-card-header> -->
+
+  <nb-card-body>
+    <!-- <div class="mx-auto picture-zone p-">
+      <nb-icon icon="car-outline" pack="eva"></nb-icon>
+    </div> -->
+
+    <div class="row m-2">
+      <div class="col-xs-12 col-lg-12 col-md-6">
+        <nb-icon icon="car-outline" pack="eva"></nb-icon>
+        <div class="h6">Pedido #{{ pedido.numero }}</div>
+      </div>
+      <div class="col-xs-12 col-lg-12 col-md-6">
+        <nb-icon icon="calendar-outline" pack="eva"></nb-icon
+        >{{ pedido.fecha | date: 'dd/MM/yyyy' }}
+      </div>
     </div>
-    <div class="col-xs-12 col-lg-12 col-md-6">
-      <nb-icon icon="calendar-outline" pack="eva"></nb-icon
-      >{{ pedido.fecha | date: 'dd/MM/yyyy' }}
+    <div class="row ml-1 mr-1">
+      <div class="col-xs-12 col-lg-12 col-md-12">
+        <nb-icon icon="person-outline" pack="eva"></nb-icon>
+        {{ pedido.proveedor?.get('nombre') }}
+      </div>
     </div>
-  </div>
-  <div class="row ml-1 mr-1">
-    <div class="col-xs-12 col-lg-12 col-md-12">
-      <nb-icon icon="person-outline" pack="eva"></nb-icon>
-      {{ pedido.proveedor?.get('nombre') }}
+    <div class="row ml-1 mr-1 mt-2">
+      <ul>
+        <ng-container *ngFor="let rep of pedido.repuestos; let i = index">
+          <ng-container *ngIf="i <= 2">
+            <li>
+              {{ rep.get('repuesto').get('nombre') }} x{{ rep.get('cantidad') }}
+            </li>
+          </ng-container>
+        </ng-container>
+      </ul>
     </div>
-  </div>
-  <div class="row ml-1 mr-1 mt-2">
-    <ul>
-      <li *ngFor="let rep of pedido.repuestos">
-        {{ rep.get('repuesto').get('nombre') }} x{{ rep.get('cantidad')}}
-      </li>
-    </ul>
-  </div>
-  <div class="row ml-1 mr-1 mt-1">
-    <div class="col-xs-12 col-lg-12 col-md-6">
-      <ngx-pedido-status [status]="pedido.estado"></ngx-pedido-status>
+    <div *ngIf="pedido.repuestos.length > 2" class="mx-auto text-hint">
+      ... +{{ pedido.repuestos.length - 2 }} repuestos
     </div>
-  </div>
+    <div class="row ml-1 mr-1 mt-1">
+      <div class="col-xs-12 col-lg-12 col-md-6">
+        <ngx-pedido-status [status]="pedido.estado"></ngx-pedido-status>
+      </div>
+    </div>
+  </nb-card-body>
 
   <nb-card-footer>
-    <nb-icon nbTooltip="Ver detalle" icon="printer-outline" pack="eva" (click)="openDetalle()"></nb-icon>
-    <nb-icon nbTooltip="Actualizar estado" icon="edit-outline" pack="eva" (click)="openEstadoModal()"></nb-icon>
+    <nb-icon
+      nbTooltip="Ver detalle"
+      icon="printer-outline"
+      pack="eva"
+      (click)="openDetalle()"
+    ></nb-icon>
+    <nb-icon
+      nbTooltip="Actualizar estado"
+      icon="edit-outline"
+      pack="eva"
+      (click)="openEstadoModal()"
+    ></nb-icon>
   </nb-card-footer>
 </nb-card>
