@@ -71,7 +71,7 @@ import { MAT_DATE_LOCALE } from '@angular/material/core';
     InventarioService,
     ClientesService,
     TipoReparacionService,
-    { provide: MAT_DATE_LOCALE, useValue: 'en-GB' },
+    { provide: MAT_DATE_LOCALE, useValue: 'es-AR' },
   ],
 })
 export class OrdenesModule {}
