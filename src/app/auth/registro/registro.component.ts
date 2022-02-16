@@ -9,7 +9,7 @@ import { take } from 'rxjs/operators';
 
 @Component({
   selector: 'my-registro',
-  templateUrl: './registro.component.html',
+  templateUrl: './registro.component.html'
 })
 export class RegistroComponent implements OnInit {
   constructor(

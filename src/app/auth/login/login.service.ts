@@ -18,7 +18,7 @@ export class LoginService {
         this.router.navigateByUrl("pages/mis-pedidos");
       }
     } catch (e) {
-      this.alertService.showErrorToast("Error", "Por favor compruebe que los datos ingresados son correctos");
+      this.alertService.showErrorToast("Error", "Por favor compruebe que los datos ingresados son correctos. Revisa tu email si todavía no validaste tu cuenta", 8000);
     }
   }
 
@@ -50,7 +50,7 @@ export class LoginService {
       ) {
         mensaje = 'El email ya esta registrado. Revisa tus datos o ingresá a la app'
       }
-      this.alertService.showErrorToast("Error", mensaje);
+      this.alertService.showErrorToast("Error", mensaje, 8000);
       return false;
     }
 }
