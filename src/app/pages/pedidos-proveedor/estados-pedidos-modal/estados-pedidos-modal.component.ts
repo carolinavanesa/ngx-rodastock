@@ -56,7 +56,7 @@ export class EstadosPedidosModalComponent implements OnInit {
         .cambiarEstado(estado, this.pedido, this.repuestos)
         .then((res) => {
           this.nuevoEstado = estado;
-          if (estado === 'Entregado') {
+          if (estado === 'Recibido') {
             this.completo = true;
           }
         })

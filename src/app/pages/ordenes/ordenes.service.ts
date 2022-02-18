@@ -203,7 +203,7 @@ export class OrdenesService {
     try {
       parseObject.set('estado', estado);
 
-      if (estado === 'Recibido') {
+      if (estado === 'Entregado') {
         const fechaRetirado = new Date();
         fechaRetirado.setHours(0);
         fechaRetirado.setMinutes(0);
