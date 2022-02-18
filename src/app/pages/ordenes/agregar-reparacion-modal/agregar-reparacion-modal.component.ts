@@ -30,8 +30,8 @@ export class AgregarReparacionModalComponent {
 
   ngOnInit() {
     this.service.cargarTipoReparacionForModal().then(reparaciones => {
-      // this.options = this.addedReparaciones.length > 0 ? reparaciones.filter(rep => this.addedReparaciones.find(a => a.id !== rep.id)) : reparaciones
-      this.options = reparaciones
+      this.options = this.addedReparaciones.length > 0 ? reparaciones.filter(rep => this.addedReparaciones.find(a => a.id !== rep.id)) : reparaciones
+      // this.options = reparaciones
     });
 
     this.filteredOptions = this.nuevoForm.get('reparacion').valueChanges.pipe(

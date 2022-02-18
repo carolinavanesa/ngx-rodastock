@@ -84,6 +84,7 @@ export class NuevoOrdenComponent {
   tipoReparacionesOptions = [];
   repuestoInventario = [];
   erroresDeStock = [];
+  mensajesDeStock = [];
   fileToUpload: File | null = null;
   minDate = new Date();
 
@@ -248,7 +249,17 @@ export class NuevoOrdenComponent {
               stock: stock,
               cantidad: cantidad,
             });
+          } else {
+            if ((stock - cantidad) <= 2) {
+              this.mensajesDeStock.push({
+                reparacion: reparacion.get('nombre'),
+                cantidad: cantidad,
+                repuesto: nombre,
+                stock: stock,
+              });
+            }
           }
+
 
           detalleRepuesto += nombre + ': ' + cantidad + ' , ';
         });
@@ -309,6 +320,9 @@ export class NuevoOrdenComponent {
   onDeleteConfirm(event: any) {
     event.confirm.resolve();
     this.reparaciones = this.reparaciones.filter(x => x.nombre !== event.data.nombre);
+    this.erroresDeStock =this.erroresDeStock.filter(x => x.reparacion !== event.data.nombre);
+    this.mensajesDeStock = this.mensajesDeStock.filter(x => x.reparacion !== event.data.nombre);
     this.calcularCostoTotalReparaciones();
+
   }
 }

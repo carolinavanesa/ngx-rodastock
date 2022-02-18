@@ -189,6 +189,13 @@
             >, Actual: <b>{{ msg.stock }}</b>
           </span>
         </div>
+
+        <div *ngFor="let msg of mensajesDeStock" class="border border-warning p-2 mt-3 mb-3">
+          <nb-icon icon="alert-circle-outline" pack="eva" status="warning"></nb-icon>
+          <span class="text-warning ml-2">
+            Stock bajo <b>{{ msg.repuesto }}</b>, Actual: <b>{{ msg.stock }}</b>, Siguiente: <b>{{ msg.stock - msg.cantidad }}</b>. Relice un pedido a proveedor de ser necesario
+          </span>
+        </div>
       </div>
 
       <!-- COSTO TOTAL REPUESTOS -->
