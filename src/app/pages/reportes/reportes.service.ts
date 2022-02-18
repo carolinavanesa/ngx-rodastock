@@ -22,15 +22,15 @@ export class ReportesService {
     query.include('repuesto');
 
     if(start) {
-      query.greaterThan('createdAt', start);
+      query.greaterThan('fechaCreacion', start);
 
       if(end) {
         end.setHours(23);
-        query.lessThan('createdAt', end);
+        query.lessThan('fechaCreacion', end);
       } else {
         const newEnd = new Date(start);
         newEnd.setHours(23);
-        query.lessThan('createdAt', newEnd);
+        query.lessThan('fechaCreacion', newEnd);
       }
     }
 
@@ -48,7 +48,7 @@ export class ReportesService {
             id: repuestoInventario.id,
             cantidad: actualizacion.get('cantidad'),
             nombre: repuestoInventario.get('nombre'),
-            fecha: actualizacion.get('createdAt'),
+            fecha: actualizacion.get('fechaCreacion'),
           })
         }
 
@@ -369,7 +369,7 @@ export class ReportesService {
     let result = [];
     const query = new Parse.Query(Calificacion);
     query.limit(1000);
-    query.descending('createdAt');
+    query.descending('fechaCreacion');
     query.include('cliente')
 
     try {

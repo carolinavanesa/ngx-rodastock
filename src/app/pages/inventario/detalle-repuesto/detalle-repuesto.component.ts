@@ -56,7 +56,7 @@ export class DetalleRepuestoComponent implements OnInit {
     },
     columns: {
       fecha: {
-        title: 'Fecha Ingreso',
+        title: 'Fecha',
         type: 'text',
       },
       cantidad: {
@@ -189,7 +189,7 @@ export class DetalleRepuestoComponent implements OnInit {
           tipo == 'ingreso'
             ? r.get('pedidoIngreso')?.id
             : r.get('pedidoEgreso')?.id,
-        fecha: this.datePipe.transform(r.get('createdAt'), 'dd/MM/yyyy'),
+        fecha: this.datePipe.transform(r.get('fechaCreacion'), 'dd/MM/yyyy'),
         cantidad: r.get('cantidad'),
         stockPrevio: r.get('stockPrevio'),
         stockSiguiente:

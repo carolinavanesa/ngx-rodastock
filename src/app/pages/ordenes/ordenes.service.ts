@@ -298,6 +298,7 @@ export class OrdenesService {
       nuevoActualizacionStock.set('repuesto', repuestoInventario);
       nuevoActualizacionStock.set('cantidad', o.get('cantidad'));
       nuevoActualizacionStock.set('stockPrevio', stockPrevio);
+      nuevoActualizacionStock.set('fechaCreacion', new Date());
       actualizacionStockPromises.push(nuevoActualizacionStock.save());
     });
 
@@ -347,6 +348,7 @@ export class OrdenesService {
     nuevaCalificacion.set('puntuacion', puntuacion);
     nuevaCalificacion.set('comentario', comentario);
     nuevaCalificacion.set('cliente', ordenParse.get('cliente'));
+    nuevaCalificacion.set('fechaCreacion', new Date());
 
     try {
       const resSaved = await nuevaCalificacion.save();

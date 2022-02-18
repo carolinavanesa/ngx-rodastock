@@ -57,7 +57,7 @@ export class InventarioService {
     query.include('pedidoEgreso');
     query.include('pedidoIngreso');
     query.include('repuesto');
-    query.descending("createdAt");
+    query.descending("fechaCreacion");
     query.limit(5000);
     try {
       result = await query.find();
@@ -100,6 +100,7 @@ export class InventarioService {
       nuevoActualizacionStock.set('tipo', 'inicial');
       nuevoActualizacionStock.set('cantidad', stock);
       nuevoActualizacionStock.set('stockPrevio', 0);
+      nuevoActualizacionStock.set('fechaCreacion', new Date());
       const resActualizacion = await nuevoActualizacionStock.save();
 
       this.alertService.showSuccessToast('Exito', 'Se ha agregado un nuevo repuesto');

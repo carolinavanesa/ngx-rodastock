@@ -53,7 +53,7 @@
             step="1"
             (change)="onStockChange($event)"
             max="999"
-            min="0"
+            min="1"
           />
           <mat-error *ngIf="nuevoForm.get('stock')?.hasError('required')">
             Este campo es requerido

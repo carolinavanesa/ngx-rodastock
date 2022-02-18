@@ -225,6 +225,7 @@ export class PedidosProveedorService {
       nuevoActualizacionStock.set('repuesto', repuestoInventario);
       nuevoActualizacionStock.set('cantidad', o.get('cantidad'));
       nuevoActualizacionStock.set('stockPrevio', stockPrevio);
+      nuevoActualizacionStock.set('fechaCreacion', new Date());
       actualizacionStockPromises.push(nuevoActualizacionStock.save());
     });
 
