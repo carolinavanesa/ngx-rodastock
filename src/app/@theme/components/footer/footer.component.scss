@@ -11,9 +11,13 @@
   .socials {
     font-size: 2rem;
 
+    nb-icon {
+      font-size: 1.75rem;
+    }
+
     a {
       padding: 0.4rem;
-      color: nb-theme(text-hint-color);
+      color: #fff;
       transition: color ease-out 0.1s;
 
       &:hover {
