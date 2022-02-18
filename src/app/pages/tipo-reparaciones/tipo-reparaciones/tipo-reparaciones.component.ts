@@ -2,9 +2,10 @@ import { Component, OnDestroy, OnInit, ViewEncapsulation } from '@angular/core';
 import { Router } from '@angular/router';
 import { NbDialogService } from '@nebular/theme';
 import { LocalDataSource } from 'ng2-smart-table';
-import { take } from 'rxjs/operators';
+import { take, delay } from 'rxjs/operators';
 import { ModalService } from '../../../shared/modal/modal.service';
 import { TipoReparacionService } from '../tipo-reparaciones.service';
+import { from } from 'rxjs';
 
 @Component({
   selector: 'ngx-dashboard',
@@ -26,12 +27,14 @@ export class TipoReparacionComponent implements OnInit, OnDestroy {
       cancelButtonContent: '<i class="nb-close"></i>',
     },
     edit: {
-      editButtonContent: '<i class="nb-edit" data-toggle="tooltip" title="Editar"></i>',
+      editButtonContent:
+        '<i class="nb-edit" data-toggle="tooltip" title="Editar"></i>',
       saveButtonContent: '<i class="nb-checkmark"></i>',
       cancelButtonContent: '<i class="nb-close"></i>',
     },
     delete: {
-      deleteButtonContent: '<i class="nb-trash" data-toggle="tooltip" title="Eliminar reparación"></i>',
+      deleteButtonContent:
+        '<i class="nb-trash" data-toggle="tooltip" title="Eliminar reparación"></i>',
       confirmDelete: true,
     },
     columns: {
@@ -89,9 +92,11 @@ export class TipoReparacionComponent implements OnInit, OnDestroy {
     };
     this.modalService.showConfirmationModal(config).then((res) => {
       if (res) {
-        this.service
-          .eliminarTipoReparacion(event.data.id)
-          .then((res) => this.cargarTipoReparacion());
+        from(this.service.eliminarTipoReparacion(event.data.id))
+          .pipe(delay(1000), take(1))
+          .subscribe((res) => {
+            this.cargarTipoReparacion();
+          });
       }
     });
   }

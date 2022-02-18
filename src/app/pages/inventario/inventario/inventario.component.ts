@@ -1,12 +1,19 @@
-import { Component, OnDestroy, OnInit, ViewEncapsulation } from '@angular/core';
+import {
+  Component,
+  OnDestroy,
+  OnInit,
+  ViewEncapsulation,
+  ChangeDetectorRef,
+} from '@angular/core';
 import { NbDialogService } from '@nebular/theme';
 import { LocalDataSource } from 'ng2-smart-table';
-import { take } from 'rxjs/operators';
+import { take, delay } from 'rxjs/operators';
 import { ModalService } from '../../../shared/modal/modal.service';
 import { InventarioService } from '../inventario.service';
 import { NuevoRepuestoModalComponent } from '../nuevo-repuesto-modal/nuevo-repuesto-modal.component';
 import { AlertService } from '../../../shared/alert.service';
 import { Router } from '@angular/router';
+import { from } from 'rxjs';
 
 @Component({
   selector: 'ngx-dashboard',
@@ -27,13 +34,15 @@ export class InventarioComponent implements OnInit {
       confirmCreate: true,
     },
     edit: {
-      editButtonContent: '<i class="nb-search" data-toggle="tooltip" title="Ver historial de movimientos"></i>',
+      editButtonContent:
+        '<i class="nb-search" data-toggle="tooltip" title="Ver historial de movimientos"></i>',
       saveButtonContent: '<i class="nb-checkmark"></i>',
       cancelButtonContent: '<i class="nb-close"></i>',
       confirmSave: true,
     },
     delete: {
-      deleteButtonContent: '<i class="nb-trash" data-toggle="tooltip" title="Eliminar repuesto"></i>',
+      deleteButtonContent:
+        '<i class="nb-trash" data-toggle="tooltip" title="Eliminar repuesto"></i>',
       confirmDelete: true,
     },
     columns: {
@@ -82,11 +91,11 @@ export class InventarioComponent implements OnInit {
     };
     this.modalService.showConfirmationModal(config).then((res) => {
       if (res) {
-        this.service
-          .eliminarRepuestoInventario(event.data.id)
-          // .then((res) =>
-          //   res ? event.confirm.resolve() : event.confirm.reject()
-          // );
+        from(this.service.eliminarRepuestoInventario(event.data.id))
+          .pipe(delay(1000), take(1))
+          .subscribe((res) => {
+            this.cargarInventario();
+          });
       }
     });
   }

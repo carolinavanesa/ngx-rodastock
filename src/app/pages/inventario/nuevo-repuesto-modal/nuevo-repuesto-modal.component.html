@@ -38,7 +38,7 @@
           <mat-error *ngIf="nuevoForm.get('costo').hasError('required')">
             Este campo es requerido
           </mat-error>
-          <mat-hint>Solo se permiten numeros de 0 a 99999</mat-hint>
+          <mat-hint>Solo se permiten numeros de 1 a 99999</mat-hint>
         </mat-form-field>
       </div>
 
@@ -58,7 +58,7 @@
           <mat-error *ngIf="nuevoForm.get('stock')?.hasError('required')">
             Este campo es requerido
           </mat-error>
-          <mat-hint>Solo se permiten numeros de 0 a 999</mat-hint>
+          <mat-hint>Solo se permiten numeros de 1 a 999</mat-hint>
         </mat-form-field>
       </div>
     </form>
